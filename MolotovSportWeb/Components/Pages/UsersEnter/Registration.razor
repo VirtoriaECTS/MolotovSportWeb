@@ -1,0 +1,83 @@
+﻿
+
+@page "/Registration"
+@rendermode InteractiveServer
+
+
+<div class="text-center">
+    <div class="ScreenLogUser">
+
+        <h5 class="textScreenInput">Имя </h5>
+        <br />
+        <div>
+            <input @onchange="CheakName" class="StyleInputRegistation" />
+            <h5 style="color: red">@errorName</h5>
+        </div>
+        <h5 class="textScreenInput">Email </h5>
+        <br />
+        <div>
+            <input @onchange="CheakEmail" class="StyleInputRegistation"  />
+            <h5 style="color: red">@errorEmail</h5>
+        </div>
+        <br />
+        <h5 class="textScreenInput">Пароль </h5>
+        <br />
+        <div>
+            <input @onchange="CheakPassword" type="password" class="StyleInputRegistation" />
+            <h5 style="color: red">@errorPassword</h5>
+        </div>
+        <br />
+        <button Disabled="@disableButton" @onclick="ClickButton" class="StyleButtonVhod">Зарегистироваться</button>
+
+
+    </div>
+</div>
+
+@code {
+
+    bool disableButton = true;
+
+    private string errorName = "Имя должно быть не короче 5 символов";
+    private string errorEmail = "Некоректный адресс электронной почты";
+    private string errorPassword = "Пароль должен быть не менее 6 символов";
+
+
+
+
+
+    Classes.CheakData.CheakingDataRegistration cheakingData = new Classes.CheakData.CheakingDataRegistration();
+
+
+    private void CheakName(ChangeEventArgs e)
+    {
+        string name = Convert.ToString(e.Value);
+        errorName = cheakingData.cheakName(name);
+        disableButton = cheakingData.DisableButton(errorName, errorEmail, errorPassword);
+    }
+
+    private void CheakEmail(ChangeEventArgs e)
+    {
+        string email = Convert.ToString(e.Value);
+        errorEmail = cheakingData.cheakEmail(email);
+        disableButton = cheakingData.DisableButton(errorName, errorEmail, errorPassword);
+
+    }
+
+    private void CheakPassword(ChangeEventArgs e)
+    {
+        string password = Convert.ToString(e.Value);
+        errorPassword = cheakingData.cheakPassword(password);
+        disableButton = cheakingData.DisableButton(errorName, errorEmail, errorPassword);
+
+    }
+
+
+
+    private void ClickButton()
+    {
+        
+    }
+
+    
+
+}
