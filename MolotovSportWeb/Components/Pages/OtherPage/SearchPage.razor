@@ -1,0 +1,24 @@
+﻿@page "/SearchPage/{myvalue}"
+@rendermode InteractiveServer
+
+<h3>SearchPage</h3>
+<h3>@searchText</h3>
+
+@code {
+
+    [Parameter]
+    public string? myvalue { get; set; }
+    string searchText;
+
+    protected override void OnParametersSet()
+    {
+        //the param will be set now
+        searchText = myvalue;
+    }
+
+
+
+
+
+
+}

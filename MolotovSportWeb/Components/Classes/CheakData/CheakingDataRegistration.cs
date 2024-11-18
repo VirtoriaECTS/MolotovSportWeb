@@ -39,7 +39,7 @@ namespace MolotovSportWeb.Components.Classes.CheakData
         public string cheakPassword(string password)
         {
             string errorPassword;
-            if(password.Length < 6)
+            if (password.Length < 6)
             {
                 errorPassword = "Пароль должен быть не менее 6 символов";
             }

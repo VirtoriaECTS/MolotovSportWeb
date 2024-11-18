@@ -1,17 +1,45 @@
 ﻿@page "/"
-
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
 <PageTitle>Home</PageTitle>
 
 <div class="text-center">
     <div>
 
-        <button class="ButtonClother"> </button>
-        <button class="ButtonShoes"> </button>
-        <button class="ButtonEquipment"> </button>
-        <button class="ButtonEquipment"> </button>
-        <button class="ButtonNutrition"> </button>
+        <button @onclick="ClickClother" class="ButtonClother"> </button>
+        <button @onclick="ClickShoes" class="ButtonShoes"> </button>
+        <button @onclick="ClickEquipment" class="ButtonEquipment"> </button>
+        <button @onclick="ClickAccessories" class="ButtonAccessories"> </button>
+        <button @onclick="ClickNutrition" class="ButtonNutrition"> </button>
 
     </div>
 
 
 </div>
+
+@code{
+    public void ClickClother(){
+        navigationManager.NavigateTo("/ClotherCatalog");
+    }
+
+    public void ClickShoes()
+    {
+        navigationManager.NavigateTo("/ShoesCatalog");
+    }
+
+    public void ClickEquipment()
+    {
+        navigationManager.NavigateTo("/EquipmentCatalog");
+    }
+
+    public void ClickAccessories()
+    {
+        navigationManager.NavigateTo("/AccessoriesCatalog");
+
+    }
+
+    public void ClickNutrition()
+    {
+        navigationManager.NavigateTo("/NutritionCatalog");
+    }
+}

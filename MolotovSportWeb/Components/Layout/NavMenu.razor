@@ -1,4 +1,6 @@
-﻿
+﻿@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@inject Classes.Servers.UserStateService UserState
 
 <header>
 
@@ -10,12 +12,12 @@
 
         <div>
 
-            <input type="text" class="searchText">
-            <button class="searchImage"></button>
+            <input type="text" class="searchText" @bind="searchText">
+            <button @onclick="ClickSearch" class="searchImage"></button>
         </div>
         <div>
-            <a style="color:#ffffff" class="EnterText" href="/LogSystem">Войти</a>
-            <button class="ShopCartImage"></button>
+            <a style="color:#ffffff" class="EnterText" @onclick="ClickVhod">@UserState.AuthState</a>
+            <button @onclick="ClickBacket" class="ShopCartImage"></button>
         </div>
 
     </div>
@@ -24,13 +26,57 @@
         <a class="MenuText" style="color:#ffffff" href="/">Каталог</a>
 
         <a class="MenuText" style="color:#ffffff" href="/ClotherCatalog">Одежда</a>
-        <a class="MenuText" style="color:#ffffff" href="#">Обувь</a>
-        <a class="MenuText" style="color:#ffffff" href="#">Инвентарь</a>
-        <a class="MenuText" style="color:#ffffff" href="#">Аксессуары</a>
-        <a class="MenuText" style="color:#ffffff" href="#">Питание</a>
+        <a class="MenuText" style="color:#ffffff" href="/ShoesCatalog">Обувь</a>
+        <a class="MenuText" style="color:#ffffff" href="/EquipmentCatalog">Инвентарь</a>
+        <a class="MenuText" style="color:#ffffff" href="/AccessoriesCatalog">Аксессуары</a>
+        <a class="MenuText" style="color:#ffffff" href="/NutritionCatalog">Питание</a>
     </div>
 
 
 
 </header>
+
+@code{
+    string searchText = "";
+
+    public void ClickSearch()
+    {
+        if (searchText.Length > 0)
+        {
+            navigationManager.NavigateTo($"/SearchPage/{searchText}");
+            searchText = "";
+        }
+
+
+    }
+    protected override void OnInitialized()
+    {
+        UserState.OnChange += StateHasChanged;
+    }
+
+    public void ClickBacket(){
+        navigationManager.NavigateTo($"/BasketPage");
+    }
+
+
+
+
+
+    public void ClickVhod()
+    {
+        if (!UserState.cheakAuthState())
+        {
+            navigationManager.NavigateTo($"/LogSystem");
+        }
+        else
+        {
+            //выход
+            UserState.Logout();
+            navigationManager.NavigateTo($"/");
+        }
+    }
+
+
+    
+}
 

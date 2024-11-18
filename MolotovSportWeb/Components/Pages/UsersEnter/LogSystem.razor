@@ -1,5 +1,9 @@
 ﻿@page "/LogSystem"
 
+@rendermode InteractiveServer
+@inject Classes.Servers.UserStateService UserState
+@inject NavigationManager navigationManager
+
 <div class="text-center">
     <div class="ScreenLogUser">
 
@@ -11,14 +15,21 @@
         <br />
         <input class="StyleInputRegistation" />
         <br />
-        <button class="StyleButtonVhod">Войти</button>
+        <button @onclick="ClickVhod" class="StyleButtonVhod">Войти</button>
         <br />
         <a href="/Registration" class="textScreenInputRegistation">Зарегистироваться</a>
+        <h1>@text</h1>
     </div>
 
 
 
 </div>
-@code {
+@code{
+    string text = "";
+    public void ClickVhod()
+    {
+        UserState.Login();
+        navigationManager.NavigateTo($"/");
+    }
 
 }

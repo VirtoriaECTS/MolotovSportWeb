@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using MolotovSportWeb.Components;
-
+using MolotovSportWeb.Components.Classes.Servers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddScoped<UserStateService>();
 
 
 
