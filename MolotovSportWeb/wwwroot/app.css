@@ -51,10 +51,13 @@ h1:focus {
 }
 
 
-
+table {
+    width: 100%;
+}
 
 html {
     font-size: 14px;
+
 }
 
 @media (min-width: 768px) {
@@ -249,4 +252,143 @@ body {
 
 .StyleButtonVhod:disabled {
     opacity: 0.5;
+}
+
+.ProductScreen {
+    
+}
+table {
+    width: 100%;
+}
+
+.FilrtProduct {
+    margin: 0px 0px 0px 0px;
+    width: 30vh;
+
+    background: #42557B;
+}
+
+
+.ProductDivStyle {
+    margin: 10px -100px 10px 10px;
+    display: inline-flex;
+
+    width: 50vh;
+}
+
+.ImageStyleProduct {
+    cursor: pointer;
+    width: 30vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 20px 20px 0px 0px;
+    border: 2px solid #13213C;
+}
+
+.TextProduct {
+    word-wrap: break-word; /* Перенос слов, если они слишком длинные */
+    word-break: break-word; /* Разрыв слов при переполнении */
+    overflow-wrap: break-word; /* Для современных браузеров */
+    white-space: normal; /* Обычное поведение текста с переносом */
+    width: 30vh;
+    height: 17vh;
+    padding: 10px 10px;
+    font-size: 2.1vh;
+    border-left: 2px solid #13213C;
+    border-right: 2px solid #13213C;
+}
+
+.StyleButtonKorzina {
+    font-size: 3vh;
+    margin: -20px 0px 0px 0px;
+    color: white;
+    background: #13213C;
+    width: 30vh;
+    height: 10vh;
+    border-radius: 0px 0px 20px 20px;
+}
+
+.ProductOneStyle {
+
+    padding: 20px 20px;
+
+}
+
+.ProductOneImage {
+
+    height: 55vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 20px 20px 20px 20px;
+    border: 2px solid #13213C;
+}
+
+.TableProductInfo{
+
+    vertical-align: top;
+    padding: 10px 10px;
+    width: 100%;
+
+}
+
+.TextFirm {
+    margin: 30px 0px 0px 50px;
+    font-weight: bold;
+    color: #4D4D4D;
+    font-size: 4vh;
+}
+
+.TextName {
+    word-wrap: break-word; /* Перенос слов, если они слишком длинные */
+    word-break: break-word; /* Разрыв слов при переполнении */
+    overflow-wrap: break-word; /* Для современных браузеров */
+    white-space: normal; /* Обычное поведение текста с переносом */
+    width: 120vh;
+    margin: 0px 0px 0px 50px;
+    font-weight: bold;
+    color: #000000;
+    font-size: 4vh;
+}
+
+.TextAllView {
+    margin: 50px 0px 20px 50px;
+    font-weight: bold;
+    color: #000000;
+    font-size: 3vh;
+}
+
+.TextCategoryProduct {
+    margin: 0px 0px 0px 50px;
+    font-weight: bold;
+    color: #000000;
+    font-size: 3vh;
+}
+
+.SpisokSize {
+    margin: 0px 0px 0px 50px;
+    display: inline-flex;
+}
+
+.ElementSize {
+    margin: 20px 20px 0px 0px;
+    border: 2px solid #000000;
+    width: 8vh;
+    align-items: center;
+    height: 8vh
+}
+
+.TextSize {
+    margin: 12px 0px 0px 0px;
+    font-size: 3vh;
+    text-align: center;
+}
+
+.OneElementButtonCart {
+    font-size: 3vh;
+    margin: 20px 0px 0px 50px;
+    color: white;
+    background: #13213C;
+    width: 100vh;
+    height: 10vh;
+    border-radius: 20px 20px 20px 20px;
 }

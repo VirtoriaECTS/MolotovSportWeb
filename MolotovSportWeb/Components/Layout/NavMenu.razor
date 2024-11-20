@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @inject Classes.Servers.UserStateService UserState
 
+
 <header>
 
     <div class="headerDesing">
@@ -33,10 +34,13 @@
     </div>
 
 
-
 </header>
 
+
+
 @code{
+
+
     string searchText = "";
 
     public void ClickSearch()
@@ -61,8 +65,7 @@
 
 
 
-
-    public void ClickVhod()
+    public  void ClickVhod()
     {
         if (!UserState.cheakAuthState())
         {
@@ -70,6 +73,7 @@
         }
         else
         {
+
             //выход
             UserState.Logout();
             navigationManager.NavigateTo($"/");

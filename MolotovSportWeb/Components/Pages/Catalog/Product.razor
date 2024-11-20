@@ -1,0 +1,62 @@
+﻿@page "/Product/{id:int}"
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext DbContext
+
+
+@if (SelectedProduct != null)
+{
+    <tr>
+
+        <td class="ProductOneStyle">
+            <img class="ProductOneImage" src=@SelectedProduct.ImageUrl />
+
+        </td>
+
+        <td class="TableProductInfo">
+            <pre class="TextFirm">@SelectedProduct.Firm.FirmName</pre>
+            <pre class="TextName">@SelectedProduct.ProductName</pre>
+            <pre class="TextAllView">Общие характеристики:</pre>
+            <pre class="TextCategoryProduct">Пол: @SelectedProduct.Gender.GenderName</pre>
+            <pre class="TextCategoryProduct">Категория: @SelectedProduct.CategoriesMini.Category.CategoryName</pre>
+            <pre class="TextCategoryProduct">Подкатегория: @SelectedProduct.CategoriesMini.CategoryMiniName</pre>
+
+            <div class="SpisokSize">
+                @foreach (var size in SelectedProduct.ProductSizes)
+                {
+                    <div class="ElementSize">
+
+                        <pre class="TextSize"> @size.Size</pre>
+                    </div>
+
+
+                }
+            </div>
+            <br />
+            <button class="OneElementButtonCart">В корзину</button>
+        </td>
+
+    </tr>
+}
+
+@code {
+    [Parameter]
+    public int? id { get; set; }
+
+    private MolotovSportWeb.Models.Product SelectedProduct;
+
+    protected override async Task OnInitializedAsync()
+    {
+        SelectedProduct = await DbContext.Products
+                                          .Include(p=> p.CategoriesMini)
+                                          .Include(p => p.CategoriesMini.Category)
+                                          .Include(p => p.Gender)
+                                          .Include(p => p.ProductSizes)
+                                         .Include(p => p.Firm) // Загрузка связанной фирмы
+                                         .FirstOrDefaultAsync(p => p.ProductId == id);
+    }
+
+}

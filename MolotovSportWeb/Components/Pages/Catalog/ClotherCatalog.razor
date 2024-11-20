@@ -1,7 +1,60 @@
 ﻿@page "/ClotherCatalog"
-<PageTitle>Home</PageTitle>
-<h3>Одежда</h3>
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext DbContext
+
+<PageTitle>Одежда</PageTitle>
+
+<table >
+    <tr><th></th><th></th></tr> 
+    <tr>
+        <td class="FilrtProduct">данные</td>
+
+
+        <td >
+
+
+
+            @foreach (var product in Products)
+            {
+
+                <div class="ProductDivStyle">
+                    <div >
+
+                        <img @onclick="() => clickImage(product.ProductId)" class="ImageStyleProduct" src="@product.ImageUrl" />
+                        <pre class="TextProduct"> 
+                            @Convert.ToInt32(product.Price) ₽<br /><br />@product.ProductName
+                                        </pre>
+                        <button  class="StyleButtonKorzina">В корзину</button>
+                        
+                    </div>
+
+                </div>
+
+
+
+            }
+        </td>
+    
+    </tr> <!--ряд с ячейками тела таблицы-->
+</table>
+
+
 
 @code {
 
+    private List<MolotovSportWeb.Models.Product> Products = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Products = await DbContext.Products.ToListAsync();
+    }
+
+    public void clickImage(int id)
+    {
+        navigationManager.NavigateTo($"/Product/{id}");
+    }
 }

@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using MolotovSportWeb.Components;
 using MolotovSportWeb.Components.Classes.Servers;
+using MolotovSportWeb.Models;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +12,11 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<UserStateService>();
+builder.Services.AddMudServices();
 
+//Подключение бд
+builder.Services.AddDbContext<MolotovSportWebContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 var app = builder.Build();
