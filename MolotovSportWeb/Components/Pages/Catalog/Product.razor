@@ -25,7 +25,7 @@
             <pre class="TextCategoryProduct">Подкатегория: @SelectedProduct.CategoriesMini.CategoryMiniName</pre>
 
             <div class="SpisokSize">
-                @foreach (var size in SelectedProduct.ProductSizes)
+                @foreach (var size in SelectedProduct.ProductSizes.Where(p => p.Count > 0))
                 {
                     <div class="ElementSize">
 

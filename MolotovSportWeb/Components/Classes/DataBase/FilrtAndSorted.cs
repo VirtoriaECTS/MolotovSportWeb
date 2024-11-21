@@ -12,6 +12,7 @@ namespace MolotovSportWeb.Components.Classes.DataBase
         private List<int> CheackListGender = new List<int>();
         private List<int> CheakListCategoryMini = new List<int>();
         private List<int> CheackListFirms = new List<int>();
+        public int SortedValue = 0;
 
 
         public List<MolotovSportWeb.Models.Product> Products = new();
@@ -32,7 +33,9 @@ namespace MolotovSportWeb.Components.Classes.DataBase
 
         public  void LoadingDataBaseAsync()
         {
-            Products =  context.Products.Where(p => p.CategoryId == IdCategoryScreen).ToList();
+            Products = context.Products.Where(p => p.CategoryId == IdCategoryScreen)
+                .Include(p => p.ProductSizes).Where(p => p.ProductSizes.Any(p => p.Count > 0))
+                .ToList();
             CategoryiesMini =  context.CategoriesMinis.Where(p => p.CategoryId == IdCategoryScreen).ToList();
             GenderList =  context.Genders.ToList();
             FirmList =  context.Firms.ToList();
@@ -55,6 +58,16 @@ namespace MolotovSportWeb.Components.Classes.DataBase
             {
                 Products = Products.Where(p => CheackListFirms.Contains(p.FirmId)).ToList();
 
+            }
+
+            if(SortedValue == 1)
+            {
+                Products = Products.OrderBy(p => p.Price).ToList();
+            }
+
+            if (SortedValue == -1)
+            {
+                Products = Products.OrderByDescending(p => p.Price).ToList();
             }
 
         }
@@ -99,6 +112,12 @@ namespace MolotovSportWeb.Components.Classes.DataBase
             }
             UpdateFiltr();
 
+        }
+
+        public void SortDataBase(int id)
+        {
+            SortedValue = id;
+            UpdateFiltr() ;
         }
     }
 }

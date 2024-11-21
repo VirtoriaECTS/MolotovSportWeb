@@ -14,7 +14,7 @@
         <td class="FilrtProduct">
 
             <pre class="TextHeading">Сортировка:</pre>
-            <select class="ListViewFiltr">
+            <select @onchange="Sorted" class="ListViewFiltr">
                 <option>Без сортировки</option>
                 <option>По возрастанию цены</option>
                 <option>По убыванию цены</option>
@@ -50,6 +50,7 @@
 
                 </div>
             }
+
 
         </td>
 
@@ -125,5 +126,23 @@
         Update();
     }
 
-
+    private void Sorted(ChangeEventArgs e)
+    {
+        string value = Convert.ToString(e.Value);
+        if (value == "" || value == "Без сортировки")
+        {
+            filrtAndSorted.SortDataBase(0);
+            Update();
+        }
+        else if (value == "По возрастанию цены")
+        {
+            filrtAndSorted.SortDataBase(1);
+            Update();
+        }
+        else
+        {
+            filrtAndSorted.SortDataBase(-1);
+            Update();
+        }
+    }
 }
