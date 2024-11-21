@@ -1,8 +1,68 @@
 ﻿@page "/SearchPage/{myvalue}"
 @rendermode InteractiveServer
 
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext DbContext
+
 <h3>SearchPage</h3>
 <h3>@searchText</h3>
+
+<table>
+    <tr><th></th><th></th></tr>
+    <tr>
+        <td class="FilrtProduct">
+
+            <pre class="TextHeading">Сортировка:</pre>
+            <select class="ListViewFiltr">
+                <option>Без сортировки</option>
+                <option>По возрастанию цены</option>
+                <option>По убыванию цены</option>
+
+            </select>
+
+            <pre class="TextHeading">Пол:</pre>
+           
+
+            <pre class="TextHeading">Подкатегория:</pre>
+           
+
+            <pre class="TextHeading">Фирма:</pre>
+           
+
+
+        </td>
+
+
+        <td>
+
+
+
+            @foreach (var product in Products)
+            {
+
+                <div class="ProductDivStyle">
+                    <div>
+
+                        <img @onclick="() => clickImage(product.ProductId)" class="ImageStyleProduct" src="@product.ImageUrl" />
+                        <pre class="TextProduct"> 
+                            @Convert.ToInt32(product.Price) ₽<br /><br />@product.ProductName
+                                                </pre>
+                        <button class="StyleButtonKorzina">В корзину</button>
+
+                    </div>
+
+                </div>
+
+
+
+            }
+        </td>
+
+    </tr> <!--ряд с ячейками тела таблицы-->
+</table>
 
 @code {
 
@@ -14,9 +74,20 @@
     {
         //the param will be set now
         searchText = myvalue;
+
+        Products = DbContext.Products
+            .Where(p => EF.Functions.Like(p.ProductName.ToLower(), $"%{searchText.ToLower()}%"))
+            .ToList();
     }
 
+    public List<MolotovSportWeb.Models.Product> Products;
 
+
+
+    public void clickImage(int id)
+    {
+        navigationManager.NavigateTo($"/Product/{id}");
+    }
 
 
 

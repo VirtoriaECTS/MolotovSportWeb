@@ -1,4 +1,4 @@
-﻿@page "/ClotherCatalog"
+﻿@page "/Catalog/{IdScreen:int}"
 @rendermode InteractiveServer
 @inject NavigationManager navigationManager
 @using Microsoft.EntityFrameworkCore
@@ -86,12 +86,15 @@
 
 
 @code {
-    int IdScreen = 1;
+    [Parameter]
+    public int IdScreen { get; set; }
 
-    Classes.DataBase.FilrtAndSorted filrtAndSorted = new Classes.DataBase.FilrtAndSorted(1);
+
+    Classes.DataBase.FilrtAndSorted filrtAndSorted;
 
     protected override async Task OnInitializedAsync()
     {
+        filrtAndSorted = new Classes.DataBase.FilrtAndSorted(IdScreen);
         filrtAndSorted.LoadingDataBaseAsync();
     }
 

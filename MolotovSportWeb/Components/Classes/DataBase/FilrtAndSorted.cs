@@ -7,6 +7,7 @@ namespace MolotovSportWeb.Components.Classes.DataBase
     public class FilrtAndSorted
     {
         private int IdCategoryScreen;
+
         MolotovSportWebContext context;
 
         private List<int> CheackListGender = new List<int>();
@@ -31,11 +32,15 @@ namespace MolotovSportWeb.Components.Classes.DataBase
 
         }
 
+
+
         public  void LoadingDataBaseAsync()
         {
             Products = context.Products.Where(p => p.CategoryId == IdCategoryScreen)
                 .Include(p => p.ProductSizes).Where(p => p.ProductSizes.Any(p => p.Count > 0))
                 .ToList();
+
+
             CategoryiesMini =  context.CategoriesMinis.Where(p => p.CategoryId == IdCategoryScreen).ToList();
             GenderList =  context.Genders.ToList();
             FirmList =  context.Firms.ToList();
