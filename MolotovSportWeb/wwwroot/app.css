@@ -262,10 +262,10 @@ table {
 }
 
 .FilrtProduct {
-    margin: 0px 0px 0px 0px;
+    margin: 20px 0px 0px 0px;
     width: 30vh;
+    display: flow;
 
-    background: #42557B;
 }
 
 
@@ -291,7 +291,7 @@ table {
     overflow-wrap: break-word; /* Для современных браузеров */
     white-space: normal; /* Обычное поведение текста с переносом */
     width: 30vh;
-    height: 17vh;
+    height: 24vh;
     padding: 10px 10px;
     font-size: 2.1vh;
     border-left: 2px solid #13213C;
@@ -316,7 +316,7 @@ table {
 
 .ProductOneImage {
 
-    height: 55vh;
+    height: 50vh;
     background-size: contain;
     background-repeat: no-repeat;
     border-radius: 20px 20px 20px 20px;
@@ -391,4 +391,39 @@ table {
     width: 100vh;
     height: 10vh;
     border-radius: 20px 20px 20px 20px;
+}
+
+.ListViewFiltr {
+    background: #E5E5E5;
+    border: 1px solid #000000;
+    border-radius: 5px 5px 5px 5px;
+    text-align: center;
+    font-size: 2vh;
+    height: 3vh;
+    width: 25vh;
+}
+
+.TextHeading {
+    margin: 30px 10px 20px 10px;
+    font-weight: bold;
+    
+    
+    font-size: 2.2vh;
+}
+
+.CheakBoxFiltrBack{
+    width: 25vh;
+    display: inline-flex
+}
+
+.CheakBoxFiltrStile{
+    width: 4vh;
+    height: 4vh;
+    accent-color: #13213C;
+}
+
+.TextCheakBoxFilrt {
+    margin: 0px 0px 0px 10px;
+    width: 20vh;
+    font-size: 2.2vh;
 }

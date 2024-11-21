@@ -8,28 +8,68 @@
 
 <PageTitle>Одежда</PageTitle>
 
-<table >
-    <tr><th></th><th></th></tr> 
+<table>
+    <tr><th></th><th></th></tr>
     <tr>
-        <td class="FilrtProduct">данные</td>
+        <td class="FilrtProduct">
+
+            <pre class="TextHeading">Сортировка:</pre>
+            <select class="ListViewFiltr">
+                <option>Без сортировки</option>
+                <option>По возрастанию цены</option>
+                <option>По убыванию цены</option>
+
+            </select>
+
+            <pre class="TextHeading">Пол:</pre>
+            @foreach (var gender in filrtAndSorted.GenderList)
+            {
+                <div class="CheakBoxFiltrBack">
+                    <input @onclick="() => ClickSortderGender(gender.GenderId)" class="CheakBoxFiltrStile" type="checkbox" />
+                    <pre class="TextCheakBoxFilrt">@gender.GenderName</pre>
+
+                </div>
+            }
+
+            <pre class="TextHeading">Подкатегория:</pre>
+            @foreach (var categoryiesMini in filrtAndSorted.CategoryiesMini)
+            {
+                <div class="CheakBoxFiltrBack">
+                    <input @onclick="() => ClickSortderCategoryMini(categoryiesMini.CategoryMiniId)" class="CheakBoxFiltrStile" type="checkbox" />
+                    <pre class="TextCheakBoxFilrt">@categoryiesMini.CategoryMiniName</pre>
+
+                </div>
+            }
+
+            <pre class="TextHeading">Фирма:</pre>
+            @foreach (var firms in filrtAndSorted.FirmList)
+            {
+                <div class="CheakBoxFiltrBack">
+                    <input @onclick="() => ClickSortderFirm(firms.FirmId)" class="CheakBoxFiltrStile" type="checkbox" />
+                    <pre class="TextCheakBoxFilrt">@firms.FirmName</pre>
+
+                </div>
+            }
+
+        </td>
 
 
-        <td >
+        <td>
 
 
 
-            @foreach (var product in Products)
+            @foreach (var product in filrtAndSorted.Products)
             {
 
                 <div class="ProductDivStyle">
-                    <div >
+                    <div>
 
                         <img @onclick="() => clickImage(product.ProductId)" class="ImageStyleProduct" src="@product.ImageUrl" />
                         <pre class="TextProduct"> 
                             @Convert.ToInt32(product.Price) ₽<br /><br />@product.ProductName
-                                        </pre>
-                        <button  class="StyleButtonKorzina">В корзину</button>
-                        
+                                            </pre>
+                        <button class="StyleButtonKorzina">В корзину</button>
+
                     </div>
 
                 </div>
@@ -38,23 +78,52 @@
 
             }
         </td>
-    
+
     </tr> <!--ряд с ячейками тела таблицы-->
 </table>
 
 
 
 @code {
+    int IdScreen = 1;
 
-    private List<MolotovSportWeb.Models.Product> Products = new();
+    Classes.DataBase.FilrtAndSorted filrtAndSorted = new Classes.DataBase.FilrtAndSorted(1);
 
     protected override async Task OnInitializedAsync()
     {
-        Products = await DbContext.Products.ToListAsync();
+        filrtAndSorted.LoadingDataBaseAsync();
     }
 
     public void clickImage(int id)
     {
         navigationManager.NavigateTo($"/Product/{id}");
     }
+
+    public async void Update()
+    {
+        filrtAndSorted.UpdateFiltr();
+        StateHasChanged();
+    }
+
+
+    private void ClickSortderGender(int id)
+    {
+        filrtAndSorted.SortderGenderCheakBox(id);
+        Update();
+
+    }
+
+    private void ClickSortderCategoryMini(int id)
+    {
+        filrtAndSorted.SortderCategoryCheakBox(id);
+        Update();
+    }
+
+    private void ClickSortderFirm(int id)
+    {
+        filrtAndSorted.SortderFirmsCheakBox(id);
+        Update();
+    }
+
+
 }
