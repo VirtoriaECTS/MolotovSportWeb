@@ -10,9 +10,9 @@
         // Событие для уведомления об изменении состояния
         public event Action? OnChange;
 
-        public void Login()
+        public void Login(string name)
         {
-            AuthState = "Выйти";
+            AuthState = name;
             NotifyStateChanged();
         }
 
@@ -29,7 +29,7 @@
 
         public bool cheakAuthState()
         {
-            if(AuthState == "Выйти") return true;
+            if(AuthState != "Войти") return true;
             else return false;
         }
     }

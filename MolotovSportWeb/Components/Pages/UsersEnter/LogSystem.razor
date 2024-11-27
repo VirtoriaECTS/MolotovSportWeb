@@ -1,24 +1,30 @@
 ﻿@page "/LogSystem"
 
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+@using Classes.Hash;
+
 @rendermode InteractiveServer
 @inject Classes.Servers.UserStateService UserState
 @inject NavigationManager navigationManager
 
+
+
 <div class="text-center">
     <div class="ScreenLogUser">
 
-        <h5 class="textScreenInput">Логин </h5>
+        <h5 class="textScreenInput">Email </h5>
         <br />
-        <input class="StyleInputRegistation" />
+        <input class="StyleInputRegistation" @bind=email />
         <br />
         <h5 class="textScreenInput">Пароль </h5>
         <br />
-        <input class="StyleInputRegistation" />
+        <input class="StyleInputRegistation" @bind=password />
         <br />
         <button @onclick="ClickVhod" class="StyleButtonVhod">Войти</button>
         <br />
         <a href="/Registration" class="textScreenInputRegistation">Зарегистироваться</a>
-        <h1>@text</h1>
+        <h5 style="color: red">@error</h5>
     </div>
 
 
@@ -26,10 +32,56 @@
 </div>
 @code{
     string text = "";
+
+    string email;
+    string password;
+
+    string error = "";
+
+    string nameUser ="";
+
+
     public void ClickVhod()
     {
-        UserState.Login();
-        navigationManager.NavigateTo($"/");
+        if (UserTruePassword())
+        {
+            error = "";
+            UserState.Login(nameUser);
+            navigationManager.NavigateTo($"/");
+        }
+        else
+        {
+            error = "Неверный email или пароль";
+        }
+
+
+
+
+
+    }
+
+    bool UserTruePassword()
+    {
+        using (var context = new MolotovSportWebContext())
+        {
+            try
+            {
+                var User = context.Users.Where(x => x.Email == email).First();
+
+                HashPassword hashPassword = new HashPassword();
+
+                bool cheak = hashPassword.unHashing(password, User.Salt, User.PasswordHash);
+
+                nameUser = User.UserName;
+                return cheak;
+            }
+            catch
+            {
+                return false;
+            }
+
+
+        }
     }
 
 }

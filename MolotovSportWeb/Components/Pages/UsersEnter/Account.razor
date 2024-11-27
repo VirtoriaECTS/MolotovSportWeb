@@ -1,0 +1,18 @@
+﻿@page "/Account"
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@inject Classes.Servers.UserStateService UserState
+
+
+<h3>Account</h3>
+
+<button @onclick="ClickExit">ВЫЙТИ</button>
+
+@code {
+
+    private void ClickExit()
+    {
+        UserState.Logout();
+        navigationManager.NavigateTo($"/");
+    }
+}

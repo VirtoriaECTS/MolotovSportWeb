@@ -25,18 +25,20 @@
             <pre class="TextCategoryProduct">Подкатегория: @SelectedProduct.CategoriesMini.CategoryMiniName</pre>
 
             <div class="SpisokSize">
+
                 @foreach (var size in SelectedProduct.ProductSizes.Where(p => p.Count > 0))
                 {
                     <div class="ElementSize">
 
-                        <pre class="TextSize"> @size.Size</pre>
+                        <button @onchange="ClickSize" class="TextSize"> @size.Size</button>
+
                     </div>
 
 
                 }
             </div>
             <br />
-            <button class="OneElementButtonCart">В корзину</button>
+            <button @onclick="ClickAddCart" class="OneElementButtonCart">В корзину</button>
         </td>
 
     </tr>
@@ -46,17 +48,30 @@
     [Parameter]
     public int? id { get; set; }
 
+
+
+
     private MolotovSportWeb.Models.Product SelectedProduct;
 
     protected override async Task OnInitializedAsync()
     {
-        SelectedProduct = await DbContext.Products
-                                          .Include(p=> p.CategoriesMini)
+        SelectedProduct = await DbContext.Products.Include(p=> p.CategoriesMini)
                                           .Include(p => p.CategoriesMini.Category)
                                           .Include(p => p.Gender)
                                           .Include(p => p.ProductSizes)
                                          .Include(p => p.Firm) // Загрузка связанной фирмы
                                          .FirstOrDefaultAsync(p => p.ProductId == id);
+
+
     }
 
+    private void ClickAddCart()
+    {
+
+    }
+
+    private void ClickSize(ChangeEventArgs e)
+    {
+        
+    }
 }

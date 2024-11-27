@@ -7,6 +7,7 @@ namespace MolotovSportWeb.Components.Classes.DataBase
     public class FilrtAndSorted
     {
         private int IdCategoryScreen;
+        private string searchText;
 
         MolotovSportWebContext context;
 
@@ -32,18 +33,43 @@ namespace MolotovSportWeb.Components.Classes.DataBase
 
         }
 
+        public FilrtAndSorted(string searchText)
+        {
+            context = new MolotovSportWebContext();
+            this.IdCategoryScreen = 0;
+            this.searchText = searchText;
+            LoadingDataBaseAsync();
+
+        }
+
 
 
         public  void LoadingDataBaseAsync()
         {
-            Products = context.Products.Where(p => p.CategoryId == IdCategoryScreen)
+            if(IdCategoryScreen > 0)
+            {
+                Products = context.Products.Where(p => p.CategoryId == IdCategoryScreen)
                 .Include(p => p.ProductSizes).Where(p => p.ProductSizes.Any(p => p.Count > 0))
                 .ToList();
 
 
-            CategoryiesMini =  context.CategoriesMinis.Where(p => p.CategoryId == IdCategoryScreen).ToList();
-            GenderList =  context.Genders.ToList();
-            FirmList =  context.Firms.ToList();
+                CategoryiesMini = context.CategoriesMinis.Where(p => p.CategoryId == IdCategoryScreen).ToList();
+                GenderList = context.Genders.ToList();
+                FirmList = context.Firms.ToList();
+            }
+
+            else if(IdCategoryScreen == 0) 
+            {
+                Products = context.Products.Where(p => EF.Functions.Like(p.ProductName.ToLower(), $"%{searchText.ToLower()}%"))
+                .Include(p => p.ProductSizes).Where(p => p.ProductSizes.Any(p => p.Count > 0))
+                .ToList();
+
+
+                CategoryiesMini = context.CategoriesMinis.ToList();
+                GenderList = context.Genders.ToList();
+                FirmList = context.Firms.ToList();
+            }
+
         }
 
         public async void UpdateFiltr()

@@ -1,7 +1,13 @@
 ﻿
 @page "/Registration"
 @rendermode InteractiveServer
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+@using Classes.Hash;
+@inject NavigationManager navigationManager
+@inject Classes.Servers.UserStateService UserState
 
+@inject MolotovSportWebContext DbContext
 
 <div class="text-center">
     <div class="ScreenLogUser">
@@ -41,22 +47,24 @@
     private string errorPassword = "Пароль должен быть не менее 6 символов";
 
 
-
-
+    string name = "";
+    string email = "";
+    string password = "";
 
     Classes.CheakData.CheakingDataRegistration cheakingData = new Classes.CheakData.CheakingDataRegistration();
 
 
     private void CheakName(ChangeEventArgs e)
     {
-        string name = Convert.ToString(e.Value);
+       
+        name = Convert.ToString(e.Value);
         errorName = cheakingData.cheakName(name);
         disableButton = cheakingData.DisableButton(errorName, errorEmail, errorPassword);
     }
 
     private void CheakEmail(ChangeEventArgs e)
     {
-        string email = Convert.ToString(e.Value);
+        email = Convert.ToString(e.Value);
         errorEmail = cheakingData.cheakEmail(email);
         disableButton = cheakingData.DisableButton(errorName, errorEmail, errorPassword);
 
@@ -64,7 +72,7 @@
 
     private void CheakPassword(ChangeEventArgs e)
     {
-        string password = Convert.ToString(e.Value);
+        password = Convert.ToString(e.Value);
         errorPassword = cheakingData.cheakPassword(password);
         disableButton = cheakingData.DisableButton(errorName, errorEmail, errorPassword);
 
@@ -74,7 +82,27 @@
 
     private void ClickButton()
     {
-        
+        using (var context = new MolotovSportWebContext())
+        {
+            HashPassword hashPassword = new HashPassword();
+            DataHash dataHash = hashPassword.hashing(password);
+            var newUser = new User
+                {
+                    UserName = name,
+                    PasswordHash = dataHash.Hash,
+                    Salt = dataHash.Salt,
+                    Email = email,
+                    RoleId = 1
+                };
+
+                context.Users.Add(newUser);
+                context.SaveChanges();
+        }
+
+        UserState.Login(name);
+        navigationManager.NavigateTo($"/");
+
+
     }
 
     

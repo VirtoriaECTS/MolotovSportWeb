@@ -7,8 +7,7 @@
 
 @inject MolotovSportWebContext DbContext
 
-<h3>SearchPage</h3>
-<h3>@searchText</h3>
+
 
 <table>
     <tr><th></th><th></th></tr>
@@ -16,7 +15,7 @@
         <td class="FilrtProduct">
 
             <pre class="TextHeading">Сортировка:</pre>
-            <select class="ListViewFiltr">
+            <select @onchange="Sorted" class="ListViewFiltr">
                 <option>Без сортировки</option>
                 <option>По возрастанию цены</option>
                 <option>По убыванию цены</option>
@@ -24,13 +23,34 @@
             </select>
 
             <pre class="TextHeading">Пол:</pre>
-           
+            @foreach (var gender in filrtAndSorted.GenderList)
+            {
+                <div class="CheakBoxFiltrBack">
+                    <input @onclick="() => ClickSortderGender(gender.GenderId)" class="CheakBoxFiltrStile" type="checkbox" />
+                    <pre class="TextCheakBoxFilrt">@gender.GenderName</pre>
+
+                </div>
+            }
 
             <pre class="TextHeading">Подкатегория:</pre>
-           
+            @foreach (var categoryiesMini in filrtAndSorted.CategoryiesMini)
+            {
+                <div class="CheakBoxFiltrBack">
+                    <input @onclick="() => ClickSortderCategoryMini(categoryiesMini.CategoryMiniId)" class="CheakBoxFiltrStile" type="checkbox" />
+                    <pre class="TextCheakBoxFilrt">@categoryiesMini.CategoryMiniName</pre>
+
+                </div>
+            }
 
             <pre class="TextHeading">Фирма:</pre>
-           
+            @foreach (var firms in filrtAndSorted.FirmList)
+            {
+                <div class="CheakBoxFiltrBack">
+                    <input @onclick="() => ClickSortderFirm(firms.FirmId)" class="CheakBoxFiltrStile" type="checkbox" />
+                    <pre class="TextCheakBoxFilrt">@firms.FirmName</pre>
+
+                </div>
+            }
 
 
         </td>
@@ -40,7 +60,7 @@
 
 
 
-            @foreach (var product in Products)
+            @foreach (var product in filrtAndSorted.Products)
             {
 
                 <div class="ProductDivStyle">
@@ -67,17 +87,18 @@
 @code {
 
     [Parameter]
+
     public string? myvalue { get; set; }
     string searchText;
 
+    Classes.DataBase.FilrtAndSorted filrtAndSorted;
+
     protected override void OnParametersSet()
     {
-        //the param will be set now
         searchText = myvalue;
-
-        Products = DbContext.Products
-            .Where(p => EF.Functions.Like(p.ProductName.ToLower(), $"%{searchText.ToLower()}%"))
-            .ToList();
+        //the param will be set now
+        filrtAndSorted = new Classes.DataBase.FilrtAndSorted(searchText);
+        filrtAndSorted.LoadingDataBaseAsync();
     }
 
     public List<MolotovSportWeb.Models.Product> Products;
@@ -89,7 +110,51 @@
         navigationManager.NavigateTo($"/Product/{id}");
     }
 
+    public async void Update()
+    {
+        filrtAndSorted.UpdateFiltr();
+        StateHasChanged();
+    }
 
+
+    private void ClickSortderGender(int id)
+    {
+        filrtAndSorted.SortderGenderCheakBox(id);
+        Update();
+
+    }
+
+    private void ClickSortderCategoryMini(int id)
+    {
+        filrtAndSorted.SortderCategoryCheakBox(id);
+        Update();
+    }
+
+    private void ClickSortderFirm(int id)
+    {
+        filrtAndSorted.SortderFirmsCheakBox(id);
+        Update();
+    }
+
+    private void Sorted(ChangeEventArgs e)
+    {
+        string value = Convert.ToString(e.Value);
+        if (value == "" || value == "Без сортировки")
+        {
+            filrtAndSorted.SortDataBase(0);
+            Update();
+        }
+        else if (value == "По возрастанию цены")
+        {
+            filrtAndSorted.SortDataBase(1);
+            Update();
+        }
+        else
+        {
+            filrtAndSorted.SortDataBase(-1);
+            Update();
+        }
+    }
 
 
 }
