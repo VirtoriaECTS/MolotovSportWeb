@@ -1,7 +1,52 @@
 ﻿@page "/BasketPage"
 @rendermode InteractiveServer
-<h3>Корзина</h3>
+
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext context
+@inject Classes.Servers.UserStateService UserState
+
+
+<h2  class="ZagolovokKorzina">Корзина</h2>
+<pre class="CountTovar">Товаров: @shopingItems.Count штук</pre>
+
+<tr>
+    <td >
+        @foreach (var product in shopingItems)
+        {
+
+            <div class="ShopingAll">
+                <img  class="ImageStyleProduct2" src="@product.Product.ImageUrl" />
+            </div>
+
+
+
+        }
+    </td>
+    <td>
+
+    </td>
+</tr>
+
 
 @code {
+    int idUser = 0;
+    List<ShopingItem> shopingItems = new List<ShopingItem>();
 
+
+    protected override void OnParametersSet()
+
+    {
+
+        idUser = UserState.CheakUserId();
+        if(idUser != 0)
+        {
+            var shopingCart = context.ShopingCarts.Where(u => u.UserId == idUser).First();
+            shopingItems = context.ShopingItems.Where(s => s.CartId == shopingCart.CartId).Include(p => p.Product).ToList();
+        }
+        
+    }
 }
+ 

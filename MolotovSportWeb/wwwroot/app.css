@@ -364,28 +364,7 @@ table {
     font-size: 3vh;
 }
 
-.SpisokSize {
-    margin: 0px 0px 0px 50px;
-    display: inline-flex;
-}
 
-.ElementSize {
-    margin: 20px 20px 0px 0px;
-    border: 2px solid #000000;
-    width: 8vh;
-    align-items: center;
-    height: 8vh
-}
-
-.TextSize {
-    margin: 1.5vh 0vh 0vh 1.5vh;
-    font-size: 3vh;
-    text-align: center;
-    cursor: pointer;
-}
-.TextSize:disabled {
-        background: #000000;
-    }
 
 .OneElementButtonCart {
     font-size: 3vh;
@@ -430,4 +409,73 @@ table {
     margin: 0px 0px 0px 10px;
     width: 20vh;
     font-size: 2.2vh;
+}
+
+
+#SizeElemenrProduct {
+    margin: 20px 0px 0px 50px;
+    height: 8vh;
+    background: #E5E5E5;
+    border: none;
+    overflow: hidden;
+}
+
+    #SizeElemenrProduct::-moz-focus-inner {
+        color: black;
+        border: 0;
+    }
+
+    #SizeElemenrProduct:focus {
+        outline: none;
+    }
+
+    #SizeElemenrProduct option {
+        color: black;
+        width: 7vh;
+        height: 7vh;
+        padding: 10px 0;
+        font-size: 2.7vh;
+        text-align: center;
+        margin-right: 20px;
+        display: inline-block;
+        cursor: pointer;
+        border: #000000 solid 0.2vh;
+        border-radius: 5px;
+    }
+
+
+
+
+.ZagolovokKorzina {
+    padding: 10px 10px;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.CountTovar {
+    padding: 0px 10px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+
+
+.ShopingAll{
+
+    margin: 10px 0px 0px 0%;
+    width: 1000px;
+    height: 200px;
+    border: #000000 solid 0.3vh;
+    border-radius: 20px;
+
+}
+
+.ImageStyleProduct2 {
+    margin: 10px 0px 0px 10px;
+    cursor: pointer;
+    height: 180px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 10px 10px 10px 10px;
+    border: 1px solid #13213C;
 }

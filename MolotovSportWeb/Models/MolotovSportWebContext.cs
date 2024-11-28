@@ -162,9 +162,7 @@ public partial class MolotovSportWebContext : DbContext
 
             entity.ToTable("ShopingCart");
 
-            entity.Property(e => e.CartId).ValueGeneratedNever();
             entity.Property(e => e.TotalAmout).HasColumnType("money");
-            entity.Property(e => e.UserId).ValueGeneratedOnAdd();
 
             entity.HasOne(d => d.User).WithMany(p => p.ShopingCarts)
                 .HasForeignKey(d => d.UserId)

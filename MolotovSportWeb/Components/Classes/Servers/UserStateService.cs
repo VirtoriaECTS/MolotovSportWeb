@@ -7,19 +7,29 @@
         // Текущее состояние авторизации
         public string AuthState { get; private set; } = "Войти";
 
+        public int UserId { get; private set; } = 0;
+
+
         // Событие для уведомления об изменении состояния
         public event Action? OnChange;
 
-        public void Login(string name)
+        public void Login(string name, int id)
         {
+            UserId = id;
             AuthState = name;
             NotifyStateChanged();
         }
 
         public void Logout()
         {
+            UserId = 0;
             AuthState = "Войти";
             NotifyStateChanged();
+        }
+
+        public int CheakUserId()
+        {
+            return UserId;
         }
 
         private void NotifyStateChanged()

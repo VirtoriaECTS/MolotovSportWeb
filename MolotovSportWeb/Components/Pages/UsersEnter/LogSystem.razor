@@ -39,6 +39,7 @@
     string error = "";
 
     string nameUser ="";
+    int idUser = 0;
 
 
     public void ClickVhod()
@@ -46,7 +47,7 @@
         if (UserTruePassword())
         {
             error = "";
-            UserState.Login(nameUser);
+            UserState.Login(nameUser, idUser);
             navigationManager.NavigateTo($"/");
         }
         else
@@ -73,6 +74,7 @@
                 bool cheak = hashPassword.unHashing(password, User.Salt, User.PasswordHash);
 
                 nameUser = User.UserName;
+                idUser = User.UserId;
                 return cheak;
             }
             catch

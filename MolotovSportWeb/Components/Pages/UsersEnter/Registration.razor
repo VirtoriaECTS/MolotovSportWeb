@@ -56,7 +56,7 @@
 
     private void CheakName(ChangeEventArgs e)
     {
-       
+
         name = Convert.ToString(e.Value);
         errorName = cheakingData.cheakName(name);
         disableButton = cheakingData.DisableButton(errorName, errorEmail, errorPassword);
@@ -95,11 +95,23 @@
                     RoleId = 1
                 };
 
-                context.Users.Add(newUser);
-                context.SaveChanges();
+            context.Users.Add(newUser);
+            context.SaveChanges();
+
+            User user = context.Users.Where(u => u.Email == email).First();
+
+            var newCartUser = new ShopingCart
+                {
+                    UserId = user.UserId,
+                    TotalAmout = 0
+                };
+            context.ShopingCarts.Add(newCartUser);
+            context.SaveChanges();
+
+            UserState.Login(name, user.UserId);
         }
 
-        UserState.Login(name);
+
         navigationManager.NavigateTo($"/");
 
 

@@ -5,6 +5,7 @@
 @using MolotovSportWeb.Models
 
 @inject MolotovSportWebContext DbContext
+@inject Classes.Servers.UserStateService UserState
 
 
 @if (SelectedProduct != null)
@@ -25,20 +26,20 @@
             <pre class="TextCategoryProduct">Подкатегория: @SelectedProduct.CategoriesMini.CategoryMiniName</pre>
 
             <div class="SpisokSize">
+                <select  id="SizeElemenrProduct" multiple>
+                    @foreach (var size in SelectedProduct.ProductSizes.Where(p => p.Count > 0))
+                    {
 
-                @foreach (var size in SelectedProduct.ProductSizes.Where(p => p.Count > 0))
-                {
-                    <div class="ElementSize">
+                        <option @onclick="() => ChangeSize(size.SizeId)" value=@size.SizeId>@size.Size</option>
 
-                        <button @onchange="ClickSize" class="TextSize"> @size.Size</button>
+                    }
 
-                    </div>
-
-
-                }
+                </select>
             </div>
+            <h5 style="color: red">@error</h5>
             <br />
             <button @onclick="ClickAddCart" class="OneElementButtonCart">В корзину</button>
+
         </td>
 
     </tr>
@@ -47,7 +48,8 @@
 @code {
     [Parameter]
     public int? id { get; set; }
-
+    string error = "";
+    int idSize = 0;
 
 
 
@@ -67,11 +69,42 @@
 
     private void ClickAddCart()
     {
+        if(idSize == 0)
+        {
+            error = "Выберите размер";
+        }
+        else if(UserState.CheakUserId() == 0)
+        {
+            error = "Необходимо войти в систему";
+        }
+        else
+        {
+            error = "";
+            using (var context = new MolotovSportWebContext())
+            {
+                ShopingCart shopingCart = context.ShopingCarts.Where(u => u.UserId == UserState.UserId).First();
+
+                var shopintItems = new ShopingItem
+                    {
+
+                        CartId = shopingCart.CartId,
+                        ProductId = SelectedProduct.ProductId,
+                        SizeId = idSize,
+                        Count = 1,
+                        Price = SelectedProduct.Price
+                    };
+
+                context.ShopingItems.Add(shopintItems);
+                context.SaveChanges();
+
+            }
+        }
 
     }
 
-    private void ClickSize(ChangeEventArgs e)
+    private void ChangeSize(int id)
     {
-        
+        idSize = id;
+
     }
 }
