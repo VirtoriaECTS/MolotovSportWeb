@@ -8,6 +8,7 @@
 @inject Classes.Servers.UserStateService UserState
 
 
+
 @if (SelectedProduct != null)
 {
     <tr>
@@ -51,7 +52,7 @@
     string error = "";
     int idSize = 0;
 
-
+    Classes.DataBase.ChangeProductUser changeProduct;
 
     private MolotovSportWeb.Models.Product SelectedProduct;
 
@@ -64,7 +65,7 @@
                                          .Include(p => p.Firm) // Загрузка связанной фирмы
                                          .FirstOrDefaultAsync(p => p.ProductId == id);
 
-
+        changeProduct = new Classes.DataBase.ChangeProductUser(UserState.UserId);
     }
 
     private void ClickAddCart()
@@ -80,24 +81,7 @@
         else
         {
             error = "";
-            using (var context = new MolotovSportWebContext())
-            {
-                ShopingCart shopingCart = context.ShopingCarts.Where(u => u.UserId == UserState.UserId).First();
-
-                var shopintItems = new ShopingItem
-                    {
-
-                        CartId = shopingCart.CartId,
-                        ProductId = SelectedProduct.ProductId,
-                        SizeId = idSize,
-                        Count = 1,
-                        Price = SelectedProduct.Price
-                    };
-
-                context.ShopingItems.Add(shopintItems);
-                context.SaveChanges();
-
-            }
+            changeProduct.NewProductAddBasket(SelectedProduct, idSize);
         }
 
     }

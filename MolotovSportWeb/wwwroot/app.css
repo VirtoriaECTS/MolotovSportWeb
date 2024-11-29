@@ -461,7 +461,7 @@ table {
 
 
 .ShopingAll{
-
+    display: inline-flex;;
     margin: 10px 0px 0px 0%;
     width: 1000px;
     height: 200px;
@@ -478,4 +478,92 @@ table {
     background-repeat: no-repeat;
     border-radius: 10px 10px 10px 10px;
     border: 1px solid #13213C;
+}
+.StyleSize{
+    display: inline-flex;
+    width: 300px;
+    margin: 10px 0px 0px 30px;
+    display: block;
+}
+
+.ImageTextNameBacket {
+    font-weight: bold;
+    font-size: 23px;
+    word-wrap: break-word; /* Перенос слов, если они слишком длинные */
+    word-break: break-word; /* Разрыв слов при переполнении */
+    overflow-wrap: break-word; /* Для современных браузеров */
+    white-space: normal; /* Обычное поведение текста с переносом */
+}
+
+.ImageSizeNameBacket {
+    font-size: 25px;
+}
+
+.ButtonDivCount{
+    margin: 70px 0px 0px 0px;
+    display: inline-flex;
+}
+
+.buttonMinus {
+    font-size: 25px;
+    height: 40px;
+    width: 40px;
+    background: #D9D9D9;
+    border: #000000 solid 1px;
+    border-radius: 10px 0px 0px 10px;
+}
+
+.buttonPlus {
+    font-size: 25px;
+    height: 40px;
+    width: 40px;
+    background: #D9D9D9;
+    border: #000000 solid 1px;
+    border-radius: 0px 10px 10px 0px;
+}
+
+.TextCountBasket {
+    
+    text-align: center;
+    font-size: 22px;
+    width: 55px;
+    height: 40px;
+    border: #000000 solid 1px;
+    background: #EDEDED;
+}
+
+.PriceProductBasket {
+    margin: 70px 0px 70px 200px;
+    font-size: 25px;
+}
+
+
+.ItogBasket {
+
+    border: #000000 solid 2px;
+    margin: 100px 0px 0px 0px;
+    border-radius: 20px;
+    display: flow;
+}
+
+.TableOneBakset {
+
+    width: 1400px;
+}
+
+.PriceProductBasketAll {
+    margin: 40px 0px 0px 0px;
+    font-weight: bold;
+    font-size: 40px;
+    text-align: center;
+}
+
+.ClickCreateOrder {
+    margin: 40px 0px 0px 0px;
+    font-size: 25px;
+    width: 500px;
+    height: 60px;
+    background: #13213C;
+    color: white;
+    border-radius: 10px;
 }

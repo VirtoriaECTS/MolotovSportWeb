@@ -13,40 +13,83 @@
 <pre class="CountTovar">Товаров: @shopingItems.Count штук</pre>
 
 <tr>
-    <td >
+    <td class="TableOneBakset">
         @foreach (var product in shopingItems)
         {
 
             <div class="ShopingAll">
-                <img  class="ImageStyleProduct2" src="@product.Product.ImageUrl" />
-            </div>
+                <img class="ImageStyleProduct2" src="@product.Product.ImageUrl" />
 
+                <div class="StyleSize">
+                    <pre class="ImageTextNameBacket">@product.Product.ProductName</pre>
+                    <pre class="ImageSizeNameBacket">@product.Size.Size размер</pre>
+                </div>
+
+                <div class="ButtonDivCount">
+                    <button class="buttonMinus" @onclick="() =>ClickMinusCount(product)">-</button>
+                    <pre class="TextCountBasket">@product.Count</pre>
+                    <button @onclick="() =>ClickPlusCount(product)" class="buttonPlus">+</button>
+                </div>
+                <pre class="PriceProductBasket">@Convert.ToInt32(product.Price) ₽</pre>
+
+            </div>
+            <br />
 
 
         }
     </td>
-    <td>
-
+    <td class="ItogBasket">
+        <pre class="PriceProductBasketAll">Итог: @Convert.ToInt32(totalPrice) ₽</pre>
+        <button class="ClickCreateOrder">Заказать</button>
     </td>
 </tr>
 
 
 @code {
     int idUser = 0;
+    decimal totalPrice = 0;
+    Classes.DataBase.ChangeProductUser changeProduct;
     List<ShopingItem> shopingItems = new List<ShopingItem>();
+    ShopingCart shopingCart = new ShopingCart();
 
+    public void LoadData()
+    {
+        ShopingCart ShopingCart = context.ShopingCarts.Where(u => u.UserId == idUser).First();
+        shopingCart = ShopingCart;
+        List<ShopingItem> ShopingItems = context.ShopingItems.Where(s => s.CartId == shopingCart.CartId).Include(p => p.Product).Include(p => p.Size).ToList();
+        shopingItems = ShopingItems;
+
+
+    }
 
     protected override void OnParametersSet()
 
     {
-
+        changeProduct = new Classes.DataBase.ChangeProductUser(UserState.UserId);
         idUser = UserState.CheakUserId();
-        if(idUser != 0)
+        if (idUser != 0)
         {
-            var shopingCart = context.ShopingCarts.Where(u => u.UserId == idUser).First();
-            shopingItems = context.ShopingItems.Where(s => s.CartId == shopingCart.CartId).Include(p => p.Product).ToList();
+            totalPrice = Classes.DataBase.StaticTotal.GetTotalPrice(idUser);
+             LoadData();
         }
-        
+        StateHasChanged();
+    }
+
+
+
+    public void ClickMinusCount(ShopingItem item)
+    {
+        changeProduct.ChangeMinusCount(item);
+        OnParametersSet();
+        StateHasChanged();
+    }
+
+
+    public void ClickPlusCount(ShopingItem item)
+    {
+
+        changeProduct.ChangePlusCount(item);
+        OnParametersSet();
+        StateHasChanged();
     }
 }
- 
