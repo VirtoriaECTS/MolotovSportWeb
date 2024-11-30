@@ -9,6 +9,10 @@ namespace MolotovSportWeb.Components.Classes.DataBase
             using (var context = new MolotovSportWebContext())
             {
                 var basket = context.ShopingCarts.Where(p => p.UserId == id).FirstOrDefault();
+                if(basket == null)
+                {
+                    return 0;
+                }
                 return basket.TotalAmout;
             }
         }

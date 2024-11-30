@@ -56,14 +56,14 @@
 
     private MolotovSportWeb.Models.Product SelectedProduct;
 
-    protected override async Task OnInitializedAsync()
+    protected override  void OnInitialized()
     {
-        SelectedProduct = await DbContext.Products.Include(p=> p.CategoriesMini)
+        SelectedProduct =  DbContext.Products.Include(p=> p.CategoriesMini)
                                           .Include(p => p.CategoriesMini.Category)
                                           .Include(p => p.Gender)
                                           .Include(p => p.ProductSizes)
                                          .Include(p => p.Firm) // Загрузка связанной фирмы
-                                         .FirstOrDefaultAsync(p => p.ProductId == id);
+                                         .FirstOrDefault(p => p.ProductId == id);
 
         changeProduct = new Classes.DataBase.ChangeProductUser(UserState.UserId);
     }
@@ -81,7 +81,7 @@
         else
         {
             error = "";
-            changeProduct.NewProductAddBasket(SelectedProduct, idSize);
+            changeProduct.NewProductAddBasket(SelectedProduct, idSize, Convert.ToInt32(SelectedProduct.Price));
         }
 
     }

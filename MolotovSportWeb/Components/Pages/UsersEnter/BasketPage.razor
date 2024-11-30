@@ -26,9 +26,9 @@
                 </div>
 
                 <div class="ButtonDivCount">
-                    <button class="buttonMinus" @onclick="() =>ClickMinusCount(product)">-</button>
+                    <button class="buttonMinus" @onclick="() =>ClickMinusCount(product,Convert.ToInt32(product.Price / product.Count))">-</button>
                     <pre class="TextCountBasket">@product.Count</pre>
-                    <button @onclick="() =>ClickPlusCount(product)" class="buttonPlus">+</button>
+                    <button @onclick="() =>ClickPlusCount(product,Convert.ToInt32(product.Price / product.Count))" class="buttonPlus">+</button>
                 </div>
                 <pre class="PriceProductBasket">@Convert.ToInt32(product.Price) ₽</pre>
 
@@ -40,7 +40,7 @@
     </td>
     <td class="ItogBasket">
         <pre class="PriceProductBasketAll">Итог: @Convert.ToInt32(totalPrice) ₽</pre>
-        <button class="ClickCreateOrder">Заказать</button>
+        <button  class="ClickCreateOrder">Заказать</button>
     </td>
 </tr>
 
@@ -70,26 +70,32 @@
         if (idUser != 0)
         {
             totalPrice = Classes.DataBase.StaticTotal.GetTotalPrice(idUser);
-             LoadData();
+            LoadData();
         }
         StateHasChanged();
     }
 
 
 
-    public void ClickMinusCount(ShopingItem item)
+    public void ClickMinusCount(ShopingItem item, int price)
     {
-        changeProduct.ChangeMinusCount(item);
+        
+        changeProduct.ChangeMinusCount(item, price);
         OnParametersSet();
         StateHasChanged();
     }
 
 
-    public void ClickPlusCount(ShopingItem item)
+    public void ClickPlusCount(ShopingItem item, int price)
     {
-
-        changeProduct.ChangePlusCount(item);
+        
+        changeProduct.ChangePlusCount(item, price);
         OnParametersSet();
         StateHasChanged();
+    }
+
+    //не добавлен в кнопку
+    public void ClickOrder(){
+        navigationManager.NavigateTo($"/");
     }
 }

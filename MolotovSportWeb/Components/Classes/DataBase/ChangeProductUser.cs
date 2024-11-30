@@ -15,18 +15,10 @@ namespace MolotovSportWeb.Components.Classes.DataBase
             this.UserId = UserId;
         }
 
-        public int GetPriceProduct(int idProduct)
-        {
-            using (var context = new MolotovSportWebContext())
-            {
-                var product = context.Products.Where(p => p.ProductId == idProduct).FirstOrDefault();
-                int price = Convert.ToInt32(product.Price);
-                return price;
-            }
-        }
 
 
-        public void NewProductAddBasket(Product SelectedProduct, int idSize)
+
+        public void NewProductAddBasket(Product SelectedProduct, int idSize, int priceProduct)
         {
             using (var context = new MolotovSportWebContext())
             {
@@ -45,7 +37,7 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 context.ShopingItems.Add(shopintItems);
                 context.SaveChanges();
 
-                shopingCart.TotalAmout = shopingCart.TotalAmout + GetPriceProduct(SelectedProduct.ProductId);
+                shopingCart.TotalAmout = shopingCart.TotalAmout + priceProduct;
                 context.Update(shopingCart);
 
                 context.SaveChanges();
@@ -54,13 +46,13 @@ namespace MolotovSportWeb.Components.Classes.DataBase
         }
 
 
-        public void DeleteProduct(int id)
+        public void DeleteProduct(int id, int priceProduct)
         {
             using (var context = new MolotovSportWebContext())
             {
-                int price = GetPriceProduct(id);
+
                 var basket = context.ShopingCarts.Where(u => u.UserId == UserId).First();
-                basket.TotalAmout -= price;
+                basket.TotalAmout -= priceProduct;
                 var item2 = context.ShopingItems.Where(p => p.CardItemId == id).First();
                 context.Remove(item2);
                 context.Update(basket);
@@ -68,24 +60,23 @@ namespace MolotovSportWeb.Components.Classes.DataBase
             }
         }
 
-        public void ChangeMinusCount(ShopingItem item)
+        public void ChangeMinusCount(ShopingItem item, int priceProduct)
         {
             using (var context = new MolotovSportWebContext())
             {
                 if (item.Count == 1)
                 {
-                    DeleteProduct(item.CardItemId);
+                    DeleteProduct(item.CardItemId,priceProduct);
 
                 }
                 else
                 {
-                    int price = GetPriceProduct(item.ProductId);
                     item.Count = item.Count - 1;
-                    item.Price -= price;
+                    item.Price -= priceProduct;
                     context.Update(item);
                     
                     var basket = context.ShopingCarts.Where(u => u.UserId == UserId).First();
-                    basket.TotalAmout -= price;
+                    basket.TotalAmout -= priceProduct;
                     context.Update(basket);
 
                     context.SaveChanges();
@@ -94,17 +85,16 @@ namespace MolotovSportWeb.Components.Classes.DataBase
             }
         }
 
-        public void ChangePlusCount(ShopingItem item)
+        public void ChangePlusCount(ShopingItem item, int priceProduct)
         {
             using (var context = new MolotovSportWebContext())
             {
-                int price = GetPriceProduct(item.ProductId);
                 item.Count = item.Count + 1;
-                item.Price += price;
+                item.Price += priceProduct;
                 context.Update(item);
 
                 var basket = context.ShopingCarts.Where(u => u.UserId == UserId).First();
-                basket.TotalAmout += price;
+                basket.TotalAmout += priceProduct;
                 context.Update(basket);
 
                 context.SaveChanges();
