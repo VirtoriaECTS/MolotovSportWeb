@@ -11,6 +11,7 @@ namespace MolotovSportWeb.Components.Classes.DataBase
 
         MolotovSportWebContext context;
 
+
         private List<int> CheackListGender = new List<int>();
         private List<int> CheakListCategoryMini = new List<int>();
         private List<int> CheackListFirms = new List<int>();
@@ -22,6 +23,8 @@ namespace MolotovSportWeb.Components.Classes.DataBase
         public List<MolotovSportWeb.Models.Gender> GenderList = new();
 
         public List<MolotovSportWeb.Models.CategoriesMini> CategoryiesMini = new();
+
+        public List<MolotovSportWeb.Models.Category> Categoryies= new();
 
         public List<MolotovSportWeb.Models.Firm> FirmList = new();
 
@@ -75,7 +78,7 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 .Include(p => p.ProductSizes).Include(p => p.Gender).Include(p => p.Firm).Include(p => p.CategoriesMini).Include(p => p.CategoriesMini.Category).Where(p => p.ProductSizes.Any(p => p.Count > 0))
                 .ToList();
 
-
+                Categoryies = context.Categories.ToList();
                 CategoryiesMini = context.CategoriesMinis.ToList();
                 GenderList = context.Genders.ToList();
                 FirmList = context.Firms.ToList();

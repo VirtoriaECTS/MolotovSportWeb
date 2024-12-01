@@ -3,62 +3,92 @@
 @inject NavigationManager navigationManager
 @using Microsoft.EntityFrameworkCore
 @using MolotovSportWeb.Models
-
+@layout Layout.AdminLayot;
 @inject MolotovSportWebContext DbContext
+@inject NavigationManager navigationManager
 
-<button class="AdminGlavButton">Добавить товар</button>
-<table>
-
+<button @onclick="onClickNewProduct" class="buttonChangeAndDeleteProduct">Добавить товар</button>
+<table class="ReadactProduct">
     <tr>
-       <td>
-            @foreach (var product in Products.Products)
-            {
-                <pre>@product.ImageUrl</pre>
-            }
-       </td>
+        <td class="imageTD">
+            <pre class="textAdminNameProduct">Изображение</pre>
+        </td>
 
-       <td>
-            @foreach (var product in Products.Products)
-            {
-                <pre>@product.ProductName</pre>
-            }
-       </td>
+        <td class="textTD">
+            <pre class="textAdminNameProduct">Название</pre>
+        </td>
 
-       <td>
-            @foreach (var product in Products.Products)
-            {
-                <pre>@product.Firm.FirmName</pre>
-            }
-       </td>
+        <td class="tableReadctProduct">
+            <pre class="textAdminNameProduct">Фирма</pre>
+        </td>
 
-       <td>
-            @foreach (var product in Products.Products)
-            {
-                <pre>@product.CategoriesMini.Category.CategoryName</pre>
-            }
-       </td>
+        <td class="tableReadctProduct">
+            <pre class="textAdminNameProduct">Категория</pre>
+        </td>
 
-       <td>
-            @foreach (var product in Products.Products)
-            {
-                <pre>@product.CategoriesMini.CategoryMiniName</pre>
-            }
-       </td>
+        <td class="tableReadctProduct">
+            <pre class="textAdminNameProduct">Подкатегория</pre>
+        </td>
 
-       <td>
-            @foreach (var product in Products.Products)
-            {
-                <pre>@product.Gender.GenderName</pre>
-            }
-       </td>
+        <td class="tableReadctProduct">
+            <pre class="textAdminNameProduct">Гендер</pre>
+        </td>
 
-       <td>
-            @foreach (var product in Products.Products)
-            {
-                <pre>@product.Price</pre>
-            }
-       </td>
+        <td class="tableReadctProduct">
+            <pre class="textAdminNameProduct">Цена</pre>
+        </td>
+
+        <td class="ButtonTD">
+            
+        </td>
+
+        <td class="ButtonTD">
+            
+        </td>
     </tr>
+    @foreach (var product in Products.Products)
+    {
+        <tr>
+            <td class="imageTD">
+
+                <img class="ProductImageAdmin" src="@product.ImageUrl"/>
+            </td>
+
+            <td class="textTD">
+                <pre class="textAdminNameProduct">@product.ProductName</pre>
+            </td>
+
+            <td class="tableReadctProduct">
+                <pre class="textAdminNameProduct">@product.Firm.FirmName</pre>
+            </td>
+
+            <td class="tableReadctProduct">
+                <pre class="textAdminNameProduct">@product.CategoriesMini.Category.CategoryName</pre>
+            </td>
+
+            <td class="tableReadctProduct">
+                <pre class="textAdminNameProduct">@product.CategoriesMini.CategoryMiniName</pre>
+            </td>
+
+            <td class="tableReadctProduct">
+                <pre class="textAdminNameProduct">@product.Gender.GenderName</pre>
+            </td>
+
+            <td class="tableReadctProduct">
+                <pre class="textAdminNameProduct">@product.Price</pre>
+            </td>
+
+            <td class="ButtonTD">
+                <button class="buttonChangeAndDeleteProduct">Изменить</button>
+            </td>
+
+            <td class="ButtonTD">
+                <button class="buttonChangeAndDeleteProduct">Удалить</button>
+            </td>
+
+        </tr>
+
+    }
 
     
 
@@ -74,5 +104,10 @@
 
         Products = new Classes.DataBase.FilrtAndSorted(-1);
         Products.LoadingDataBaseAsync();
+    }
+
+    public void onClickNewProduct(){
+        navigationManager.NavigateTo("AddNewProduct");
+
     }
 }

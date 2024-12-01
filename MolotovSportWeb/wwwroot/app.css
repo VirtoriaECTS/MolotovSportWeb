@@ -591,3 +591,70 @@ table {
     height: 10vh;
     border-radius: 20px 20px 20px 20px;
 }
+
+.ReadactProduct {
+    border-top: 3px solid #000000;
+    border: #000000 solid 3px;
+    border-bottom: 3px solid #000000;
+}
+
+.tableReadctProduct {
+    margin: 10px 10px 10px 10px;
+    border-top: 3px solid #000000;
+    border: #000000 solid 3px;
+    border-bottom: 3px solid #000000;
+}
+
+
+.ProductImageAdmin {
+    margin: 10px 10px 10px 10px;
+    width: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 20px 20px 20px 20px;
+    border: 2px solid #13213C;
+}
+
+.imageTD {
+    border-top: 3px solid #000000;
+    border: #000000 solid 3px;
+    border-bottom: 3px solid #000000;
+    width: 220px;
+}
+
+.textTD {
+    width: 400px;
+    border-top: 3px solid #000000;
+    border: #000000 solid 3px;
+    border-bottom: 3px solid #000000;
+
+}
+
+.textAdminNameProduct {
+    text-align: center;
+    margin: 10px 10px 10px 10px;
+    font-size: 20px;
+    color: #000000;
+    word-wrap: break-word; /* Перенос слов, если они слишком длинные */
+    word-break: break-word; /* Разрыв слов при переполнении */
+    overflow-wrap: break-word; /* Для современных браузеров */
+    white-space: normal; /* Обычное поведение текста с переносом */
+}
+
+.ButtonTD {
+    border-bottom: 3px solid #000000;
+}
+
+.buttonChangeAndDeleteProduct {
+    font-size: 20px;
+    margin: 10px 10px 10px 10px;
+    color: white;
+    background: #13213C;
+    width: 250px;
+    height: 50px;
+    border-radius: 10px 10px 10px 10px;
+}
+
+.AddSizeProduct{
+    display: inline-flex;
+}

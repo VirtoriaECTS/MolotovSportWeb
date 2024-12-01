@@ -1,12 +1,18 @@
 ﻿@page "/Admin"
 @layout Layout.AdminLayot;
+@rendermode InteractiveServer
 
+@inject NavigationManager navigationManager
 <div class="AdminScreen">
-    <button class="AdminGlavButton">Товары</button>
+    <button @onclick="clickProduct" class="AdminGlavButton">Товары</button>
     <button class="AdminGlavButton">Подкатегории</button>
     <button class="AdminGlavButton">Фирмы</button>
 </div>
 
 @code {
 
+    public void clickProduct()
+    {
+        navigationManager.NavigateTo($"/ProductAdmin");
+    }
 }

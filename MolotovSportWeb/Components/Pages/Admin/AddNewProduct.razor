@@ -1,0 +1,135 @@
+﻿@page "/AddNewProduct"
+@layout Layout.AdminLayot;
+
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext DbContext
+@inject Classes.Servers.UserStateService UserState
+
+
+
+
+    <tr>
+
+        <td class="ProductOneStyle">
+        <img class="ProductOneImage" src=@Image />
+
+        </td>
+
+        <td class="TableProductInfo">
+
+
+
+        <div>
+            <div>
+                <h5 class="textScreenInput">Название</h5>
+                <br />
+                <input class="StyleInputRegistation" />
+            </div>
+            <div>
+                <h5 class="textScreenInput">Фирма</h5>
+                <br />
+                <select>
+                    @foreach (var firm in Products.FirmList)
+                    {
+                        <option>@firm.FirmName</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <h5 class="textScreenInput">Категория</h5>
+                <br />
+                <select>
+                    @foreach (var firm in Products.Categoryies)
+                    {
+                        <option>@firm.CategoryName</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <h5 class="textScreenInput">Подкатегория</h5>
+                <br />
+                <select>
+                    @foreach (var firm in Products.CategoryiesMini)
+                    {
+                        <option>@firm.CategoryMiniName</option>
+                    }
+                </select>
+            </div>
+
+
+            <div>
+                <h5 class="textScreenInput">Гендер</h5>
+                <br />
+                <select>
+                    @foreach (var firm in Products.GenderList)
+                    {
+                        <option>@firm.GenderName</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <h5 class="textScreenInput">Размер</h5>
+                <br />
+                <input class="StyleInputRegistation" @bind="sizeOneText" />
+                <button @onclick="OnClickAddSize">Добавить</button>
+                <div >
+                    @foreach(string size in sizeProdict)
+                    {
+                        <div >
+                            <pre class="AddSizeProduct">@size</pre>
+                            <button @onclick="() => DeleteSize(size)">Удалить</button>
+
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div>
+                <h5 class="textScreenInput">Цена</h5>
+                <br />
+                <input class="StyleInputRegistation" />
+            </div>
+
+        </div>
+
+        </td>
+
+        <button>Добавить товар</button>
+
+    </tr>
+
+@code {
+    string sizeOneText;
+    string Image = "https://fitowatt.ru/assets/static/noimage.jpg";
+    List<string> sizeProdict = new List<string>();
+
+    Classes.DataBase.FilrtAndSorted Products;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Products = new Classes.DataBase.FilrtAndSorted(-1);
+        Products.LoadingDataBaseAsync();
+    }
+
+    public void OnClickAddSize()
+    {
+        sizeProdict.Add(sizeOneText);
+        sizeOneText = "";
+        StateHasChanged();
+    }
+
+    public void DeleteSize(string text)
+    {
+        sizeProdict.Remove(text);
+        sizeOneText = "";
+        StateHasChanged();
+    }
+}
