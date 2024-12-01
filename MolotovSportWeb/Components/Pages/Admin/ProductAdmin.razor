@@ -1,0 +1,78 @@
+﻿@page "/ProductAdmin"
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext DbContext
+
+<button class="AdminGlavButton">Добавить товар</button>
+<table>
+
+    <tr>
+       <td>
+            @foreach (var product in Products.Products)
+            {
+                <pre>@product.ImageUrl</pre>
+            }
+       </td>
+
+       <td>
+            @foreach (var product in Products.Products)
+            {
+                <pre>@product.ProductName</pre>
+            }
+       </td>
+
+       <td>
+            @foreach (var product in Products.Products)
+            {
+                <pre>@product.Firm.FirmName</pre>
+            }
+       </td>
+
+       <td>
+            @foreach (var product in Products.Products)
+            {
+                <pre>@product.CategoriesMini.Category.CategoryName</pre>
+            }
+       </td>
+
+       <td>
+            @foreach (var product in Products.Products)
+            {
+                <pre>@product.CategoriesMini.CategoryMiniName</pre>
+            }
+       </td>
+
+       <td>
+            @foreach (var product in Products.Products)
+            {
+                <pre>@product.Gender.GenderName</pre>
+            }
+       </td>
+
+       <td>
+            @foreach (var product in Products.Products)
+            {
+                <pre>@product.Price</pre>
+            }
+       </td>
+    </tr>
+
+    
+
+
+
+</table>
+
+@code {
+    Classes.DataBase.FilrtAndSorted Products;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Products = new Classes.DataBase.FilrtAndSorted(-1);
+        Products.LoadingDataBaseAsync();
+    }
+}

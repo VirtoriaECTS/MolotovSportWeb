@@ -12,7 +12,8 @@
 
 <div class="text-center">
     <div class="ScreenLogUser">
-
+        <h2 class="textHeaderPage">Авторизация</h2>
+        <br />
         <h5 class="textScreenInput">Email </h5>
         <br />
         <input class="StyleInputRegistation" @bind=email />
@@ -40,15 +41,22 @@
 
     string nameUser ="";
     int idUser = 0;
-
+    int idRole = 0;
 
     public void ClickVhod()
     {
         if (UserTruePassword())
         {
             error = "";
-            UserState.Login(nameUser, idUser);
-            navigationManager.NavigateTo($"/");
+            UserState.Login(nameUser, idUser, idRole);
+            if(idRole == 1)
+            {
+                navigationManager.NavigateTo($"/");
+            }
+            else if(idRole == 2)
+            {
+                navigationManager.NavigateTo($"/Admin");
+            }
         }
         else
         {
@@ -75,6 +83,7 @@
 
                 nameUser = User.UserName;
                 idUser = User.UserId;
+                idRole = User.RoleId;
                 return cheak;
             }
             catch

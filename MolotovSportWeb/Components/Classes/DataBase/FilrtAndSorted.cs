@@ -69,7 +69,17 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 GenderList = context.Genders.ToList();
                 FirmList = context.Firms.ToList();
             }
+            else if (IdCategoryScreen == -1)
+            {
+                Products = context.Products
+                .Include(p => p.ProductSizes).Include(p => p.Gender).Include(p => p.Firm).Include(p => p.CategoriesMini).Include(p => p.CategoriesMini.Category).Where(p => p.ProductSizes.Any(p => p.Count > 0))
+                .ToList();
 
+
+                CategoryiesMini = context.CategoriesMinis.ToList();
+                GenderList = context.Genders.ToList();
+                FirmList = context.Firms.ToList();
+            }
         }
 
         public async void UpdateFiltr()

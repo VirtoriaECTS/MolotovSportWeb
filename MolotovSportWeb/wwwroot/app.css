@@ -567,3 +567,27 @@ table {
     color: white;
     border-radius: 10px;
 }
+
+.textHeaderPage{
+    font-weight: bold;
+    font-size: 40px;
+    color: #000000;
+
+
+}
+
+.AdminScreen {
+
+    justify-content: center;
+    display: flex;
+}
+
+.AdminGlavButton{
+    font-size: 3vh;
+    margin: 20px 0px 0px 50px;
+    color: white;
+    background: #13213C;
+    width: 50vh;
+    height: 10vh;
+    border-radius: 20px 20px 20px 20px;
+}

@@ -8,15 +8,17 @@
         public string AuthState { get; private set; } = "Войти";
 
         public int UserId { get; private set; } = 0;
+        public int UserRole { get; private set; } = 0;
 
 
         // Событие для уведомления об изменении состояния
         public event Action? OnChange;
 
-        public void Login(string name, int id)
+        public void Login(string name, int id, int role)
         {
             UserId = id;
             AuthState = name;
+            UserRole = role;
             NotifyStateChanged();
         }
 

@@ -11,7 +11,8 @@
 
 <div class="text-center">
     <div class="ScreenLogUser">
-
+        <h2 class="textHeaderPage">Регистрация</h2>
+        <br />
         <h5 class="textScreenInput">Имя </h5>
         <br />
         <div>
@@ -108,7 +109,7 @@
             context.ShopingCarts.Add(newCartUser);
             context.SaveChanges();
 
-            UserState.Login(name, user.UserId);
+            UserState.Login(name, user.UserId, 1);
         }
 
 
