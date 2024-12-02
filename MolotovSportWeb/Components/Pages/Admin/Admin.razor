@@ -5,8 +5,8 @@
 @inject NavigationManager navigationManager
 <div class="AdminScreen">
     <button @onclick="clickProduct" class="AdminGlavButton">Товары</button>
-    <button @onclick="ClickFirms" class="AdminGlavButton">Подкатегории</button>
-    <button class="AdminGlavButton">Фирмы</button>
+    <button @onclick="CLickCategoryMini" class="AdminGlavButton">Подкатегории</button>
+    <button @onclick="ClickFirms" class="AdminGlavButton">Фирмы</button>
 </div>
 
 @code {
@@ -16,8 +16,15 @@
         navigationManager.NavigateTo($"/ProductAdmin");
     }
 
+    public void CLickCategoryMini()
+    {
+        navigationManager.NavigateTo("/AddNewCategoryMini");
+    }
+
     public void ClickFirms()
     {
         navigationManager.NavigateTo("/AddNewFirm");
     }
+
+
 }

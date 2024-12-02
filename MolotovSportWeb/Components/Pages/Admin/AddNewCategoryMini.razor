@@ -1,0 +1,75 @@
+﻿@page "/AddNewCategoryMini"
+@layout Layout.AdminLayot;
+
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext DbContext
+@inject Classes.Servers.UserStateService UserState
+
+<div class="text-center">
+    <div class="ScreenLogUser">
+        <h2 class="textHeaderPage">Редактирование списка подкатегория</h2>
+
+        <h5 class="textScreenInput">Выберите категорию</h5>
+        <br />
+        <select @onchange="selectCategory" selected="@Products.Categoryies.Select( p => p.CategoryName).First()" class="StyleInputRegistation">
+            @foreach (var item in Products.Categoryies)
+            {
+                <option>@item.CategoryName</option>
+            }
+        </select>
+        <br />
+        <h5 class="textScreenInput">Название подкатегории</h5>
+        <br />
+        <div>
+            <input class="StyleInputRegistation" />
+            <h5 style="color: red">@error</h5>
+            <button class="AdminButtonAddProduct">Добавить</button>
+        </div>
+
+        <div class="PrintFirmForAdmin">
+            <table class="tableFirmsAdmin">
+
+                @foreach (var item in Products.CategoryiesMini.Where( p => p.CategoryId == idCategory))
+                {
+                    <tr class="table_center_by_css">
+                        <td>
+                            <pre class="TextFirmForAdmin">@item.CategoryMiniName</pre>
+
+                        </td>
+
+                        <td>
+                            <button class="ButtonDeleteListView"></button>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    int idCategory = 0;
+    string error = "";
+    Classes.DataBase.FilrtAndSorted Products;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Products = new Classes.DataBase.FilrtAndSorted(-1);
+        idCategory = Products.Categoryies.Select(p => p.CategoryId).First();
+        Products.LoadingDataBaseAsync();
+    }
+
+    public void selectCategory(ChangeEventArgs e)
+    {
+        idCategory = Products.Categoryies.Where(p => p.CategoryName == Convert.ToString(e.Value)).Select(p => p.CategoryId).First();
+
+    }
+}

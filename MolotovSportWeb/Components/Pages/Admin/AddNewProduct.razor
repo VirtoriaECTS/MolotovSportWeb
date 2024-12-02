@@ -97,19 +97,19 @@
                             </td>
                         </tr>
 
-                        @foreach (string size in sizeProdict)
+                        @foreach (var size in sizeCountProduct)
                         {
-                            <tr class="table_center_by_css">
+                            <tr @onclick="() => ClickName(size.Key)" class="table_center_by_css">
                                 <td>
-                                    <pre class="textListView">@size</pre>
+                                    <pre class="textListView">@size.Key</pre>
                                 </td>
 
                                 <td>
-                                    <input type="number" class="InputCountScladForNewProduct" placeholder="Количество на складе" />
+                                    <input @onchange="changeCount" type="number" class="InputCountScladForNewProduct" placeholder="Количество на складе"  />
                                 </td>
        
                                 <td>
-                                    <button class="ButtonDeleteListView" @onclick="() => DeleteSize(size)"></button>
+                                    <button class="ButtonDeleteListView" @onclick="() => DeleteSize(size.Key)"></button>
                                 </td>
                                
                                
@@ -149,10 +149,13 @@
 
     string error = " ";
 
-
+    string nameSize = "";
+    string sizeInput;
     string sizeOneText;
     string ImagePicture = "https://fitowatt.ru/assets/static/noimage.jpg";
-    List<string> sizeProdict = new List<string>();
+    // List<string> sizeProdict = new List<string>();
+
+    Dictionary<string, int> sizeCountProduct = new Dictionary<string, int>();
 
     Classes.DataBase.AddInfo addProduct = new Classes.DataBase.AddInfo();
     Classes.CheakData.CheakNewProduct cheakNewProduct = new Classes.CheakData.CheakNewProduct();
@@ -167,14 +170,40 @@
 
     public void OnClickAddSize()
     {
-        sizeProdict.Add(sizeOneText);
-        sizeOneText = "";
-        StateHasChanged();
+        if(sizeOneText.Length > 0)
+        {
+            try
+            {
+                sizeCountProduct[sizeOneText] =  0;
+            }
+            catch
+            {
+                error = "Ошибка с размерами";
+            }
+
+            // sizeProdict.Add(sizeOneText);
+            // sizeCountProduct.Add(sizeOneText, 0);
+            sizeOneText = "";
+            StateHasChanged();
+        }
+
+    }
+
+    public void changeCount(ChangeEventArgs e)
+
+    {
+        string text = Convert.ToString(e.Value);
+        sizeCountProduct[nameSize] = Convert.ToInt32(text);
+    }
+
+    public void ClickName(string nameSizeTextInput)
+    {
+        nameSize = nameSizeTextInput;
     }
 
     public void DeleteSize(string text)
     {
-        sizeProdict.Remove(text);
+        sizeCountProduct.Remove(text);
         sizeOneText = "";
         StateHasChanged();
     }
@@ -228,7 +257,7 @@
 
             try
             {
-                addProduct.AddProduct(name, IdFirm, IdCaregory, IdCaregoryMini, idGender, image, Convert.ToInt32(price), sizeProdict);
+                addProduct.AddProduct(name, IdFirm, IdCaregory, IdCaregoryMini, idGender, image, Convert.ToInt32(price), sizeCountProduct);
                 navigationManager.NavigateTo("/ProductAdmin");
             }
             catch

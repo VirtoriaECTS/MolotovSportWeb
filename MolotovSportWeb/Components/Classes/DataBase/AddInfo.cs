@@ -5,7 +5,7 @@
 
     public class AddInfo
     {
-        public void AddProduct(string name, int IdFirm, int IdCaregory, int IdCaregoryMini, int idGender, string image, int price, List<string> Size)
+        public void AddProduct(string name, int IdFirm, int IdCaregory, int IdCaregoryMini, int idGender, string image, int price, Dictionary<string, int> Size)
         {
             using (var context = new MolotovSportWebContext())
             {
@@ -27,13 +27,13 @@
                     .Where(p => p.ImageUrl == image).Where(p => p.Price == price).FirstOrDefault();
 
 
-                foreach (string item in Size)
+                foreach (var item in Size)
                 {
                     var sizeNew = new ProductSize
                     {
                         ProductId = productNew.ProductId,
-                        Size = item,
-                        Count = 1
+                        Size = item.Key,
+                        Count = item.Value
                     };
                     context.Add(sizeNew);
                 }
