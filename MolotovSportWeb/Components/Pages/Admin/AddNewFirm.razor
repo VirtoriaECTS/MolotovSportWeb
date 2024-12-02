@@ -1,0 +1,63 @@
+﻿@page "/AddNewFirm"
+@layout Layout.AdminLayot;
+
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext DbContext
+@inject Classes.Servers.UserStateService UserState
+
+<div class="text-center">
+    <div class="ScreenLogUser">
+        <h2 class="textHeaderPage">Редактирование списка фирм</h2>
+        <br />
+        <h5 class="textScreenInput">Название фирмы</h5>
+        <br />
+        <div>
+            <input  class="StyleInputRegistation" />
+            <h5 style="color: red">@error</h5>
+            <button class="AdminButtonAddProduct">Добавить</button>
+        </div>
+
+        <div  class="PrintFirmForAdmin" >
+            <table class="tableFirmsAdmin">
+
+                @foreach(var firm in Products.FirmList)
+                {
+                    <tr class="table_center_by_css">
+                        <td >
+                            <pre class="TextFirmForAdmin">@firm.FirmName</pre>
+ 
+                        </td>
+
+                        <td >
+                            <button class="ButtonDeleteListView"></button>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    string error = "";
+
+    Classes.DataBase.FilrtAndSorted Products;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Products = new Classes.DataBase.FilrtAndSorted(-1);
+        Products.LoadingDataBaseAsync();
+    }
+
+    public void ClickAddNewFirm()
+    {
+        
+    }
+}

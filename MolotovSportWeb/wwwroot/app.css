@@ -655,6 +655,71 @@ table {
     border-radius: 10px 10px 10px 10px;
 }
 
-.AddSizeProduct{
+
+
+
+.AdminButtonAddProduct {
+    font-size: 20px;
+    margin: 30px 30px 30px 30px;
+    color: white;
+    background: #13213C;
+    width: 500px;
+    height: 50px;
+    border-radius: 20px 20px 20px 20px;
+}
+
+.BackGroundListView {
+    margin: 30px 10px 0px 0px;
+    width: 500px;
+
+}
+
+.textListView {
+
+    margin: 10px 10px 10px 10px;
     display: inline-flex;
+    font-size: 20px;
+}
+
+.ButtonDeleteListView {
+    height: 40px;
+    width: 40px;
+    margin: 0px, 0px, 400px, 0px;
+    background-image: url("../images/deleteButton.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/*.PrintFirmForAdmin {
+
+    border: 1px solid #000000;
+    border-radius: 20px 20px 20px 20px;
+}
+*/
+.TextFirmForAdmin {
+
+    font-size: 20px;
+}
+
+.tableFirmsAdmin {
+    padding: 20px 20px;
+    margin: auto;
+}
+
+
+.table_center_by_css {
+    border-radius: 10px 10px 10px 10px;
+    border: 1px solid #000;
+    margin: auto;
+}
+
+.TableSizeCountAdminNewProduct {
+    border: 1px solid #000;
+}
+
+.InputCountScladForNewProduct {
+    font-size: 20px;
+    border-radius: 5px 5px 5px 5px;
+    border: 0.5px solid #000;
+    background: #E5E5E5;
 }

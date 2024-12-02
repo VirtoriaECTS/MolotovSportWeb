@@ -15,8 +15,11 @@
     <tr>
 
         <td class="ProductOneStyle">
-        <img class="ProductOneImage" src=@Image />
+        <img class="ProductOneImage" src=@ImagePicture />
 
+        <br />
+        <input placeholder="Вставьте ссылку на изображение"  class="StyleInputRegistation" @bind="image" />
+        <button @onclick="PutImage" class="AdminButtonAddProduct">Вставить изображение</button>
         </td>
 
         <td class="TableProductInfo">
@@ -27,15 +30,15 @@
             <div>
                 <h5 class="textScreenInput">Название</h5>
                 <br />
-                <input class="StyleInputRegistation" />
+                <input class="StyleInputRegistation" @bind="name" />
             </div>
             <div>
                 <h5 class="textScreenInput">Фирма</h5>
                 <br />
-                <select>
+                <select @onchange="choiceFirm" class="ListViewFiltr">
                     @foreach (var firm in Products.FirmList)
                     {
-                        <option>@firm.FirmName</option>
+                        <option >@firm.FirmName</option>
                     }
                 </select>
             </div>
@@ -43,7 +46,7 @@
             <div>
                 <h5 class="textScreenInput">Категория</h5>
                 <br />
-                <select>
+                <select @onchange="choiceCategory" class="ListViewFiltr">
                     @foreach (var firm in Products.Categoryies)
                     {
                         <option>@firm.CategoryName</option>
@@ -54,7 +57,7 @@
             <div>
                 <h5 class="textScreenInput">Подкатегория</h5>
                 <br />
-                <select>
+                <select @onchange="choiceCategoryMini" class="ListViewFiltr">
                     @foreach (var firm in Products.CategoryiesMini)
                     {
                         <option>@firm.CategoryMiniName</option>
@@ -66,7 +69,7 @@
             <div>
                 <h5 class="textScreenInput">Гендер</h5>
                 <br />
-                <select>
+                <select @onchange="choicGender" class="ListViewFiltr">
                     @foreach (var firm in Products.GenderList)
                     {
                         <option>@firm.GenderName</option>
@@ -79,37 +82,80 @@
                 <br />
                 <input class="StyleInputRegistation" @bind="sizeOneText" />
                 <button @onclick="OnClickAddSize">Добавить</button>
-                <div >
-                    @foreach(string size in sizeProdict)
-                    {
-                        <div >
-                            <pre class="AddSizeProduct">@size</pre>
-                            <button @onclick="() => DeleteSize(size)">Удалить</button>
+                <div class="BackGroundListView">
+                    <table >
+                        <tr class="table_center_by_css">
+                            <td>
+                                <pre class="textListView">Размер</pre>
+                            </td>
 
-                        </div>
-                    }
+                            <td>
+                                <pre class="textListView">Количество на складе</pre>
+                            </td>
+
+                            <td>
+                            </td>
+                        </tr>
+
+                        @foreach (string size in sizeProdict)
+                        {
+                            <tr class="table_center_by_css">
+                                <td>
+                                    <pre class="textListView">@size</pre>
+                                </td>
+
+                                <td>
+                                    <input type="number" class="InputCountScladForNewProduct" placeholder="Количество на складе" />
+                                </td>
+       
+                                <td>
+                                    <button class="ButtonDeleteListView" @onclick="() => DeleteSize(size)"></button>
+                                </td>
+                               
+                               
+                               
+                            </tr>
+                            
+                        }
+                    </table>
+                   
                 </div>
             </div>
 
             <div>
                 <h5 class="textScreenInput">Цена</h5>
                 <br />
-                <input class="StyleInputRegistation" />
+                <input class="StyleInputRegistation" @bind="price" />
             </div>
 
         </div>
+        <button @onclick="ClickAddProduct" class="AdminButtonAddProduct"> Добавить товар</button>
+        <h5 style="color: red">@error</h5>
 
         </td>
 
-        <button>Добавить товар</button>
+
 
     </tr>
 
 @code {
+    string name = " ";
+    int IdFirm = 0;
+    int IdCaregory = 0;
+    int IdCaregoryMini = 0;
+    int idGender = 0;
+    string image = " ";
+    string price = " ";
+
+    string error = " ";
+
+
     string sizeOneText;
-    string Image = "https://fitowatt.ru/assets/static/noimage.jpg";
+    string ImagePicture = "https://fitowatt.ru/assets/static/noimage.jpg";
     List<string> sizeProdict = new List<string>();
 
+    Classes.DataBase.AddInfo addProduct = new Classes.DataBase.AddInfo();
+    Classes.CheakData.CheakNewProduct cheakNewProduct = new Classes.CheakData.CheakNewProduct();
     Classes.DataBase.FilrtAndSorted Products;
 
     protected override async Task OnInitializedAsync()
@@ -131,5 +177,70 @@
         sizeProdict.Remove(text);
         sizeOneText = "";
         StateHasChanged();
+    }
+
+    public void PutImage()
+    {
+        ImagePicture = image;
+    }
+
+    public void choiceFirm(ChangeEventArgs e)
+    {
+        var firm = Products.FirmList.Where(p => p.FirmName == Convert.ToString(e.Value)).First();
+        IdFirm = firm.FirmId;
+    }
+
+    public void choiceCategory(ChangeEventArgs e)
+    {
+        var category = Products.Categoryies.Where(p => p.CategoryName == Convert.ToString(e.Value)).First();
+        IdCaregory = category.CategoryId;
+    }
+
+    public void choiceCategoryMini(ChangeEventArgs e)
+    {
+        var categoryMini = Products.CategoryiesMini.Where(p => p.CategoryMiniName == Convert.ToString(e.Value)).First();
+        IdCaregoryMini = categoryMini.CategoryId;
+    }
+
+    public void choicGender(ChangeEventArgs e)
+    {
+        string text = Convert.ToString(e.Value);
+        if (text == "Мужчины   ")
+        {
+            idGender = 1;
+        }
+        else if (text == "Женщины   ")
+        {
+            idGender = 2;
+        }
+        else
+        {
+            idGender = 3;
+        }
+        // var gender = Products.GenderList.Where(p => p.GenderName == Convert.ToString(e.Value)).First();
+        // idGender = gender.GenderId;
+    }
+
+    public void ClickAddProduct()
+    {
+        if(cheakNewProduct.cheakPrice(price) && cheakNewProduct.cheakName(name))
+        {
+
+            try
+            {
+                addProduct.AddProduct(name, IdFirm, IdCaregory, IdCaregoryMini, idGender, image, Convert.ToInt32(price), sizeProdict);
+                navigationManager.NavigateTo("/ProductAdmin");
+            }
+            catch
+            {
+                error = "Ошибка загрузки данных";
+            }
+
+
+        }
+        else
+        {
+            error = "Заполните поле названия и цены верно";
+        }
     }
 }
