@@ -642,6 +642,7 @@ table {
 }
 
 .ButtonTD {
+
     border-bottom: 3px solid #000000;
 }
 
@@ -725,6 +726,9 @@ table {
 }
 
 .tdImageStileSklad {
+    border-top: #000000 solid 3px;
+    border-left: #000000 solid 3px;
+    border-bottom: #000000 solid 3px;
     width: 200px;
 }
 
@@ -814,5 +818,33 @@ table {
     width: 4vh;
     height: 4vh;
     accent-color: #13213C;
+}
+
+.BorderTable{
+    border: 3px solid #000000;
+}
+
+.DisplayInline {
+    justify-content: space-between;
+    display: flex;
+    margin: 10px 10px 10px 10px;
+    display: inline-flex;
+}
+
+
+.TextFilrtAdminProduct {
+    margin: 0px 0px 50px 50px;
+    font-weight: bold;
+    font-size: 2vh;
+}
+
+.ButtonAddNewProductAdmin {
+    font-size: 20px;
+    margin: 0px 0px 40px 0px;
+    color: white;
+    background: #13213C;
+    width: 250px;
+    height: 50px;
+    border-radius: 10px 10px 10px 10px;
 }
 

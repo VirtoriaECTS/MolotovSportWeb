@@ -36,12 +36,12 @@
                 @foreach (var item in Products.CategoryiesMini.Where( p => p.CategoryId == idCategory))
                 {
                     <tr class="table_center_by_css">
-                        <td>
+                        <td class="BorderTable">
                             <pre class="TextFirmForAdmin">@item.CategoryMiniName</pre>
 
                         </td>
 
-                        <td>
+                        <td class="BorderTable">
                             <button class="ButtonDeleteListView"></button>
                         </td>
                     </tr>

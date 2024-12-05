@@ -7,9 +7,76 @@
 @inject MolotovSportWebContext DbContext
 @inject NavigationManager navigationManager
 
-<button @onclick="onClickNewProduct" class="buttonChangeAndDeleteProduct">Добавить товар</button>
+<div class="ScreenLogUser">
+    <div class="text-center">
+        <h2 class="textHeaderPage">Товары</h2>
+    </div>
+
+</div>
+
+<div class="DisplayInline">
+    <button @onclick="onClickNewProduct" class="ButtonAddNewProductAdmin">Добавить товар</button>
+
+    <pre class="TextFilrtAdminProduct">Сортировка:</pre>
+    <select  class="ListViewFiltr">
+        <option>Без сортировки</option>
+        <option>По возрастанию цены</option>
+        <option>По убыванию цены</option>
+
+    </select>
+
+    <pre class="TextFilrtAdminProduct">Пол:</pre>
+
+    <select class="ListViewFiltr">
+        <option>Без фильтрации</option>
+        @foreach (var gender in Products.GenderList)
+        {
+            <option>
+                @gender.GenderName
+            </option>
+        }
+    </select>
+
+    <pre class="TextFilrtAdminProduct">Подкатегория:</pre>
+
+    <select class="ListViewFiltr">
+        <option>Без фильтрации</option>
+        @foreach (var categoryiesMini in Products.CategoryiesMini)
+        {
+            <option>
+                @categoryiesMini.CategoryMiniName
+            </option>
+        }
+    </select>
+
+
+    <pre class="TextFilrtAdminProduct">Фирмы:</pre>
+
+    <select class="ListViewFiltr">
+        <option>Без фильтрации</option>
+        @foreach (var firms in Products.FirmList)
+        {
+            <option>
+                @firms.FirmName
+            </option>
+        }
+    </select>
+
+    
+</div>
+
+
+
+
 <table class="ReadactProduct">
+
+
+
+
+
     <tr>
+        
+
         <td class="imageTD">
             <pre class="textAdminNameProduct">Изображение</pre>
         </td>
@@ -42,12 +109,14 @@
             
         </td>
 
-        <td class="ButtonTD">
-            
-        </td>
+
     </tr>
+
+    
+
     @foreach (var product in Products.Products)
     {
+
         <tr>
             <td class="imageTD">
 
@@ -79,12 +148,15 @@
             </td>
 
             <td class="ButtonTD">
-                <button class="buttonChangeAndDeleteProduct">Изменить</button>
+                <div style="text-align:center">
+                    <button class="buttonChangeAndDeleteProduct">Изменить</button>
+                    <br />
+                    <button class="buttonChangeAndDeleteProduct">Удалить</button>
+                </div>
+
             </td>
 
-            <td class="ButtonTD">
-                <button class="buttonChangeAndDeleteProduct">Удалить</button>
-            </td>
+
 
         </tr>
 

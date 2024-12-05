@@ -20,23 +20,23 @@
         <div>
             <table>
 
-                <tr class="table_center_by_css">
+                <tr class="table_center_by_css" >
                     <td class="tdImageStileSklad">
                         <pre class="textCountSklad">Изображение</pre>
                     </td>
 
-                    <td>
+                    <td class="BorderTable">
                         <pre class="textCountSklad">Наименование</pre>
                     </td>
 
-                    <td>
+                    <td class="BorderTable">
                         <table>
                             <tr>
-                                <td>
+                                <td >
                                     <pre class="textCountSklad">Размер</pre>
                                 </td>
 
-                                <td>
+                                <td >
                                     <pre class="textCountSklad">Количество на складе</pre>
                                 </td>
                             </tr>
@@ -53,21 +53,21 @@
 
                         </td>
 
-                        <td>
+                        <td class="BorderTable">
                             <pre class="textCountSklad">@product.ProductName</pre>
                         </td>
 
-                        <td>
+                        <td class="BorderTable">
                             @foreach (var size in product.ProductSizes)
                             {
 
                                 <table>
                                     <tr>
-                                        <td>
+                                        <td >
                                             <pre class="textCountSklad">@size.Size</pre>
                                         </td>
 
-                                        <td>
+                                        <td >
                                             <input type="number" @oninput="() => ClickAddNewSize(size.SizeId, size.Count)" class="InputCountScladForNewProduct" @bind="size.Count" />
                                         </td>
                                     </tr>
