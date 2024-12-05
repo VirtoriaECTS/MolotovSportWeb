@@ -1,0 +1,128 @@
+﻿@page "/OrdersAdmin"
+@layout Layout.AdminLayot;
+
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext DbContext
+@inject Classes.Servers.UserStateService UserState
+
+<div class="text-center">
+    <div class="ScreenLogUser">
+        <h2 class="textHeaderPage">Заказы</h2>
+        <br />
+
+        <div>
+            <table>
+                <tr >
+                    <td class="textOrderTD" >
+                        <pre class="txtOrderArmin" >Пользователь</pre>
+                    </td>
+                    <td class="textOrderTD"  >
+                        <pre class="txtOrderArmin">Дата заказа</pre>
+                    </td>
+                    <td class="BorderSettingNoRight">
+                        <pre class="txtOrderArmin">Адресс</pre>
+                    </td>
+                    
+                    <td>
+                        <table>
+
+                            <tr>
+                                <td class="textOrderTD">
+                                    <pre class="txtOrderArmin">Изображение</pre>
+                                </td>
+
+                                <td class="textOrderTD">
+                                    <pre class="txtOrderArmin">Название</pre>
+                                </td>
+
+                                <td class="textOrderTD">
+                                    <pre class="txtOrderArmin">Количество</pre>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <td class="BorderSettingNoBottomLeft">
+                        <pre class="txtOrderArmin">Общая сумма</pre>
+                    </td>
+
+                    <td class="textOrderTD">
+                        <pre class="txtOrderArmin">Статус</pre>
+                    </td>
+                </tr>
+                
+                @foreach(var order in orders)
+                {
+                    <tr >
+                        <td class="textOrderTD" style="vertical-align: top;">
+                            <pre class="txtOrderArmin">@users.Where(p => p.UserId == order.UserId).Select(p => p.UserName).First()</pre>
+                        </td>
+                        <td class="textOrderTD" style="vertical-align: top;">
+                            <pre class="txtOrderArmin">@order.OrderData</pre>
+                        </td>
+                        <td class="BorderSettingNoRight" style="vertical-align: top;">
+                            <pre class="txtOrderArmin">@order.Adress</pre>
+                        </td>
+
+                        <td >
+                            <table>
+
+                                @foreach(var item in order.OrderItems)
+                                {
+                                    <tr>
+                                        <td class="BorderSettingNoBottomTop">
+                                            <img class="ProductImageAdminOrder" src="@products.Where( p => p.ProductId == item.ProductId).Select(p => p.ImageUrl).First()" />
+                                        </td>
+
+                                        <td class="BorderSettingNoBottomTop">
+                                            <pre class="txtOrderArmin">@products.Where(p => p.ProductId == item.ProductId).Select(p => p.ProductName).First()</pre>
+                                        </td>
+                                        <td class="BorderSettingNoBottomTop">
+                                            <pre class="txtOrderArmin">@item.Count</pre>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+
+                        <td class="BorderSettingNoBottomLeft" style="vertical-align: top;">
+                            <pre class="txtOrderArmin">@Convert.ToInt32(order.TotalAmout) рублей</pre>
+                        </td>
+
+                        <td class="textOrderTD" style="vertical-align: top;">
+                            <input class="CheakBoxFiltrStileAdmin" type="checkbox" @bind="order.StatusOrder" />
+                        </td>
+                    </tr>
+
+                }
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    string error = "";
+
+    Classes.DataBase.OrdersDataBase ordersDataBase = new Classes.DataBase.OrdersDataBase();
+    List<Order> orders = new List<Order>();
+    List<Product> products = new List<Product>();
+    List<User> users = new List<User>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        orders =  ordersDataBase.FillOrderList();
+        products = ordersDataBase.FillProductList();
+        users = ordersDataBase.FillUsersList();
+        StateHasChanged();
+        //orders.LoadingDataBaseAsync();
+    }
+
+
+}

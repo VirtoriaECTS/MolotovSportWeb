@@ -22,9 +22,9 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 var shopingItems = context.ShopingItems.Where(p => p.CartId == shoppingCart.CartId);
 
                 var order = new Order
-                {
+                {    
                     UserId = UserId,
-                    OrderData = 1,
+                    OrderData = curDate,
                     TotalAmout = Convert.ToInt32(shoppingCart.TotalAmout) + 500,
                     StatusOrder = false,
                     Adress = adress,
