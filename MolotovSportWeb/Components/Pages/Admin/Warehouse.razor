@@ -1,0 +1,104 @@
+﻿@page "/Warehouse"
+@layout Layout.AdminLayot;
+
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext DbContext
+@inject Classes.Servers.UserStateService UserState
+
+
+
+<div class="text-center">
+    <div class="ScreenLogUser">
+        <h2 class="textHeaderPage">Склад</h2>
+        <br />
+
+        <div >
+            <table >
+                <tr class="table_center_by_css">
+                    <td class="tdImageStileSklad">
+                        <pre class="textCountSklad">Изображение</pre>
+                    </td>
+
+                    <td>
+                        <pre class="textCountSklad">Наименование</pre>
+                    </td>
+
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <pre class="textCountSklad">Размер</pre>
+                                </td>
+
+                                <td>
+                                    <pre class="textCountSklad">Количество на складе</pre>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+
+                @foreach (var product in Products.Products)
+                {
+                    <tr class="table_center_by_css">
+                        <td class="tdImageStileSklad">
+                            <img class="ImageStuleSklasTable" src="@product.ImageUrl" />
+
+                        </td>
+
+                        <td>
+                            <pre class="textCountSklad">@product.ProductName</pre>
+                        </td>
+
+                        <td>
+                            @foreach (var size in product.ProductSizes)
+                            {
+
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <pre class="textCountSklad">@size.Size</pre>
+                                        </td>
+
+                                        <td>
+                                            <input type="number" @oninput="() => ClickAddNewSize(size.SizeId, size.Count)" class="InputCountScladForNewProduct" @bind="size.Count" />
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            }
+                        </td>
+
+
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    string error = "";
+
+    Classes.DataBase.FilrtAndSorted Products;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Products = new Classes.DataBase.FilrtAndSorted(-1);
+        Products.LoadingDataBaseAsync();
+    }
+
+    public void ClickAddNewSize(int sizeId, int count)
+    {
+        Classes.DataBase.ChangeCount changeCount = new Classes.DataBase.ChangeCount();
+        changeCount.changeCountAdmin(sizeId, count);
+    }
+}
