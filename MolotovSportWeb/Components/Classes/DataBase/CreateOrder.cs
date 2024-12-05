@@ -22,9 +22,11 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 var shopingItems = context.ShopingItems.Where(p => p.CartId == shoppingCart.CartId);
 
                 var order = new Order
+
                 {    
                     UserId = UserId,
                     OrderData = curDate,
+
                     TotalAmout = Convert.ToInt32(shoppingCart.TotalAmout) + 500,
                     StatusOrder = false,
                     Adress = adress,
@@ -39,6 +41,7 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                     .First();
 
                 foreach (var item in shopingItems)
+
                 {
 
                     var newItemOrder = new OrderItem
@@ -56,6 +59,7 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 context.SaveChanges();
 
                 foreach (var item in shopingItems)
+
                 {
                     context.ShopingItems.Remove(item);
                 }
