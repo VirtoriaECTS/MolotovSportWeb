@@ -40,7 +40,7 @@
     </td>
     <td class="ItogBasket">
         <pre class="PriceProductBasketAll">Итог: @Convert.ToInt32(totalPrice) ₽</pre>
-        <button  class="ClickCreateOrder">Заказать</button>
+        <button @onclick="ClickOrder" class="ClickCreateOrder">Заказать</button>
     </td>
 </tr>
 
@@ -94,8 +94,9 @@
         StateHasChanged();
     }
 
-    //не добавлен в кнопку
     public void ClickOrder(){
-        navigationManager.NavigateTo($"/");
+        navigationManager.NavigateTo($"/MakingOrder");
     }
+
+
 }

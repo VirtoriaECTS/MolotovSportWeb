@@ -1,6 +1,32 @@
 ﻿@page "/MakingOrder"
+@rendermode InteractiveServer
+
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext context
+@inject Classes.Servers.UserStateService UserState
 
 
+<button @onclick="ClickNewOrder" class="StyleButtonVhod">Оформить</button>
 @code {
+    int idUser = 0;
+    string adress = "Г. Березовский, ул. Красных героев 11, кв 41";
 
+    protected override void OnParametersSet()
+
+    {
+        idUser = UserState.CheakUserId();
+    }
+
+
+    public void ClickNewOrder()
+    {
+        Classes.DataBase.CreateOrder createOrder = new Classes.DataBase.CreateOrder(idUser);
+
+        createOrder.Create(adress);
+
+        navigationManager.NavigateTo("/");
+    }
 }

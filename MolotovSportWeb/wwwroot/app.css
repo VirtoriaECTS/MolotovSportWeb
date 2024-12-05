@@ -723,3 +723,96 @@ table {
     border: 0.5px solid #000;
     background: #E5E5E5;
 }
+
+.tdImageStileSklad {
+    width: 200px;
+}
+
+.ImageStuleSklasTable {
+    border-radius: 5px 5px 5px 5px;
+    margin: 10px 10px 10px 10px;
+    border: #000000 solid 1px;
+    width: 150px;
+}
+
+.textCountSklad {
+    font-size: 20px;
+}
+
+
+.imageOrderTD {
+    margin: 10px 10px 10px 10px;
+    border: #000000 solid 3px;
+    width: 200px;
+}
+
+.textOrderTD {
+
+    text-align: center;
+    width: 200px;
+    border: #000000 solid 3px;
+}
+
+.txtOrderArmin {
+    margin: 10px 10px 10px 10px;
+    font-size: 20px;
+    text-align: center;
+    word-wrap: break-word; /* Перенос слов, если они слишком длинные */
+    word-break: break-word; /* Разрыв слов при переполнении */
+    overflow-wrap: break-word; /* Для современных браузеров */
+    white-space: normal; /* Обычное поведение текста с переносом */
+}
+
+
+.BorderSettingNoRight {
+    width: 200px;
+    border-top: #000000 solid 3px;
+    border-left: #000000 solid 3px;
+    border-bottom: #000000 solid 3px;
+}
+
+.BorderSettingNoBottom {
+    width: 200px;
+    border-left: #000000 solid 3px;
+    border-right: #000000 solid 3px;
+    border-top: #000000 solid 3px;
+}
+
+
+.BorderSettingNoBottomLeft {
+    width: 200px;
+    border-bottom: #000000 solid 3px;
+    border-right: #000000 solid 3px;
+    border-top: #000000 solid 3px;
+}
+
+.BorderSettingNoBottomTop {
+    width: 200px;
+    border-left: #000000 solid 3px;
+    border-right: #000000 solid 3px;
+    border-bottom: #000000 solid 3px;
+}
+
+.ProductImageAdminOrder {
+    
+    margin: 10px 10px 10px 10px;
+    width: 160px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 20px 20px 20px 20px;
+    border: 2px solid #13213C;
+}
+
+.CheakBoxFiltrBackAdmin {
+    margin: 10px 10px 10px 10px;
+    width: 25vh;
+    display: inline-flex
+}
+
+.CheakBoxFiltrStileAdmin {
+    margin: 10px 10px 10px 10px;
+    width: 4vh;
+    height: 4vh;
+    accent-color: #13213C;
+}
+

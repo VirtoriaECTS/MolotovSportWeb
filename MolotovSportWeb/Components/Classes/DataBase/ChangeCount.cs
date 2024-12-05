@@ -7,7 +7,9 @@ namespace MolotovSportWeb.Components.Classes.DataBase
 
         public void changeCountAdmin(int sizeId, int count)
         {
-            using(var context = new MolotovSportWebContext())
+
+            using (var context = new MolotovSportWebContext())
+
             {
                 var sizeChange = context.ProductSizes.Where(p => p.SizeId == sizeId).First();
 

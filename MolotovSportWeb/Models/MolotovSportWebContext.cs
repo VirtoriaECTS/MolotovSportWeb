@@ -83,6 +83,8 @@ public partial class MolotovSportWebContext : DbContext
         {
             entity.ToTable("Order");
 
+            entity.Property(e => e.OrderData).HasColumnType("datetime");
+
             entity.HasOne(d => d.User).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
