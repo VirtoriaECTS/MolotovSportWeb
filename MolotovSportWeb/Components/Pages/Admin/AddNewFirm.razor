@@ -16,23 +16,23 @@
         <h5 class="textScreenInput">Название фирмы</h5>
         <br />
         <div>
-            <input  class="StyleInputRegistation" />
+            <input class="StyleInputRegistation" />
             <h5 style="color: red">@error</h5>
             <button class="AdminButtonAddProduct">Добавить</button>
         </div>
 
-        <div  class="PrintFirmForAdmin" >
+        <div class="PrintFirmForAdmin">
             <table class="tableFirmsAdmin">
 
-                @foreach(var firm in Products.FirmList)
+                @foreach (var firm in Products.FirmList)
                 {
                     <tr class="table_center_by_css">
-                        <td >
+                        <td>
                             <pre class="TextFirmForAdmin">@firm.FirmName</pre>
- 
+
                         </td>
 
-                        <td >
+                        <td>
                             <button class="ButtonDeleteListView"></button>
                         </td>
                     </tr>
@@ -58,6 +58,6 @@
 
     public void ClickAddNewFirm()
     {
-        
+
     }
 }

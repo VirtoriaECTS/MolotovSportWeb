@@ -723,3 +723,18 @@ table {
     border: 0.5px solid #000;
     background: #E5E5E5;
 }
+
+.tdImageStileSklad {
+    width: 200px;
+}
+
+.ImageStuleSklasTable {
+    border-radius: 5px 5px 5px 5px;
+    margin: 10px 10px 10px 10px;
+    border: #000000 solid 1px;
+    width: 150px;
+}
+
+.textCountSklad {
+    font-size: 20px;
+}
