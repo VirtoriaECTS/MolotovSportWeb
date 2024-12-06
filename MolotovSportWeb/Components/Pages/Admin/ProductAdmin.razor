@@ -149,7 +149,7 @@
 
             <td class="ButtonTD">
                 <div style="text-align:center">
-                    <button class="buttonChangeAndDeleteProduct">Изменить</button>
+                    <button @onclick="() => onClickChangeProduct(product.ProductId)" class="buttonChangeAndDeleteProduct">Изменить</button>
                     <br />
                     <button class="buttonChangeAndDeleteProduct">Удалить</button>
                 </div>
@@ -181,5 +181,10 @@
     public void onClickNewProduct(){
         navigationManager.NavigateTo("AddNewProduct");
 
+    }
+
+    public void onClickChangeProduct(int id)
+    {
+        navigationManager.NavigateTo($"/AddChangeProduct/{id}");
     }
 }

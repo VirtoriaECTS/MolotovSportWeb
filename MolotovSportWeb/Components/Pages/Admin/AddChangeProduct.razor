@@ -1,0 +1,276 @@
+﻿@page "/AddChangeProduct/{id:int}"
+@layout Layout.AdminLayot;
+
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext DbContext
+@inject Classes.Servers.UserStateService UserState
+
+<div class="ScreenLogUser">
+    <div class="text-center">
+        <h2 class="textHeaderPage">Изменение товара</h2>
+    </div>
+
+</div>
+
+
+
+<tr>
+
+    <td class="ProductOneStyle">
+        <img class="ProductOneImage" src=@ImagePicture />
+
+        <br />
+        <input placeholder="Вставьте ссылку на изображение" class="StyleInputRegistation" @bind="image" />
+        <button @onclick="PutImage" class="AdminButtonAddProduct">Вставить изображение</button>
+    </td>
+
+    <td class="TableProductInfo">
+
+
+
+        <div>
+            <div>
+                <h5 class="textScreenInput">Название</h5>
+                <br />
+                <input class="StyleInputRegistation" @bind="name" />
+            </div>
+            <div>
+                <h5 class="textScreenInput">Фирма</h5>
+                <br />
+                <select @onchange="choiceFirm" class="ListViewFiltr">
+                    @foreach (var firm in Products.FirmList)
+                    {
+                        <option>@firm.FirmName</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <h5 class="textScreenInput">Категория</h5>
+                <br />
+                <select @onchange="choiceCategory" class="ListViewFiltr">
+                    @foreach (var firm in Products.Categoryies)
+                    {
+                        <option>@firm.CategoryName</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <h5 class="textScreenInput">Подкатегория</h5>
+                <br />
+                <select @onchange="choiceCategoryMini" class="ListViewFiltr">
+                    @foreach (var firm in Products.CategoryiesMini)
+                    {
+                        <option>@firm.CategoryMiniName</option>
+                    }
+                </select>
+            </div>
+
+
+            <div>
+                <h5 class="textScreenInput">Гендер</h5>
+                <br />
+                <select @onchange="choicGender" class="ListViewFiltr">
+                    @foreach (var firm in Products.GenderList)
+                    {
+                        <option>@firm.GenderName</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <h5 class="textScreenInput">Размер</h5>
+                <br />
+                <input class="StyleInputRegistation" @bind="sizeOneText" />
+                <button @onclick="OnClickAddSize">Добавить</button>
+                <div class="BackGroundListView">
+                    <table>
+                        <tr class="table_center_by_css">
+                            <td>
+                                <pre class="textListView">Размер</pre>
+                            </td>
+
+                            <td>
+                                <pre class="textListView">Количество на складе</pre>
+                            </td>
+
+                            <td>
+                            </td>
+                        </tr>
+
+                        @foreach (var size in sizeCountProduct)
+                        {
+                            <tr @onclick="() => ClickName(size.Key)" class="table_center_by_css">
+                                <td>
+                                    <pre class="textListView">@size.Key</pre>
+                                </td>
+
+                                <td>
+                                    <input @onchange="changeCount" type="number" class="InputCountScladForNewProduct" placeholder="Количество на складе" />
+                                </td>
+
+                                <td>
+                                    <button class="ButtonDeleteListView" @onclick="() => DeleteSize(size.Key)"></button>
+                                </td>
+
+
+
+                            </tr>
+
+                        }
+                    </table>
+
+                </div>
+            </div>
+
+            <div>
+                <h5 class="textScreenInput">Цена</h5>
+                <br />
+                <input class="StyleInputRegistation" @bind="price" />
+            </div>
+
+        </div>
+        <button  class="AdminButtonAddProduct"> Добавить товар</button>
+        <h5 style="color: red">@error</h5>
+
+    </td>
+
+
+
+</tr>
+
+@code {
+    [Parameter]
+    public int? id { get; set; }
+
+    string name = " ";
+    int IdFirm = 0;
+    int IdCaregory = 0;
+    int IdCaregoryMini = 0;
+    int idGender = 0;
+    string image = " ";
+    string price = " ";
+
+    string error = " ";
+
+    string nameSize = "";
+    string sizeInput;
+    string sizeOneText;
+    string ImagePicture = "https://fitowatt.ru/assets/static/noimage.jpg";
+    // List<string> sizeProdict = new List<string>();
+
+    Dictionary<string, int> sizeCountProduct = new Dictionary<string, int>();
+
+    Classes.DataBase.AddInfo addProduct = new Classes.DataBase.AddInfo();
+    Classes.CheakData.CheakNewProduct cheakNewProduct = new Classes.CheakData.CheakNewProduct();
+    Classes.DataBase.FilrtAndSorted Products;
+
+    Product product = new Product();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Products = new Classes.DataBase.FilrtAndSorted(-1);
+        Products.LoadingDataBaseAsync();
+
+        product = Products.Products.Where(p => p.ProductId == id).First();
+        name = product.ProductName;
+        IdFirm = product.FirmId;
+        IdCaregory = product.CategoryId;
+        IdCaregoryMini = product.CategoryIdMini;
+        idGender = product.GenderId;
+        ImagePicture = product.ImageUrl;
+        image = product.ImageUrl;
+        price = Convert.ToString(product.Price);
+
+    }
+
+    public void OnClickAddSize()
+    {
+        if (sizeOneText.Length > 0)
+        {
+            try
+            {
+                sizeCountProduct[sizeOneText] = 0;
+            }
+            catch
+            {
+                error = "Ошибка с размерами";
+            }
+
+            // sizeProdict.Add(sizeOneText);
+            // sizeCountProduct.Add(sizeOneText, 0);
+            sizeOneText = "";
+            StateHasChanged();
+        }
+
+    }
+
+    public void changeCount(ChangeEventArgs e)
+
+    {
+        string text = Convert.ToString(e.Value);
+        sizeCountProduct[nameSize] = Convert.ToInt32(text);
+    }
+
+    public void ClickName(string nameSizeTextInput)
+    {
+        nameSize = nameSizeTextInput;
+    }
+
+    public void DeleteSize(string text)
+    {
+        sizeCountProduct.Remove(text);
+        sizeOneText = "";
+        StateHasChanged();
+    }
+
+    public void PutImage()
+    {
+        ImagePicture = image;
+    }
+
+    public void choiceFirm(ChangeEventArgs e)
+    {
+        var firm = Products.FirmList.Where(p => p.FirmName == Convert.ToString(e.Value)).First();
+        IdFirm = firm.FirmId;
+    }
+
+    public void choiceCategory(ChangeEventArgs e)
+    {
+        var category = Products.Categoryies.Where(p => p.CategoryName == Convert.ToString(e.Value)).First();
+        IdCaregory = category.CategoryId;
+    }
+
+    public void choiceCategoryMini(ChangeEventArgs e)
+    {
+        var categoryMini = Products.CategoryiesMini.Where(p => p.CategoryMiniName == Convert.ToString(e.Value)).First();
+        IdCaregoryMini = categoryMini.CategoryId;
+    }
+
+    public void choicGender(ChangeEventArgs e)
+    {
+        string text = Convert.ToString(e.Value);
+        if (text == "Мужчины   ")
+        {
+            idGender = 1;
+        }
+        else if (text == "Женщины   ")
+        {
+            idGender = 2;
+        }
+        else
+        {
+            idGender = 3;
+        }
+        // var gender = Products.GenderList.Where(p => p.GenderName == Convert.ToString(e.Value)).First();
+        // idGender = gender.GenderId;
+    }
+
+
+}
