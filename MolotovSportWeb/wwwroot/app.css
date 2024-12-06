@@ -848,3 +848,12 @@ table {
     border-radius: 10px 10px 10px 10px;
 }
 
+
+#map {
+    overflow: hidden;
+    width: 500px; /* Ширина карты */
+    height: 500px; /* Высота карты */
+    border: 3px solid #000000; /* Черная обводка */
+    border-radius: 10px; /* Закругленные углы */
+    margin: 20px; /* Отступы вокруг карты */
+}
