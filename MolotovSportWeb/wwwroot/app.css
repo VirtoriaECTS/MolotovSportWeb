@@ -850,6 +850,8 @@ table {
 
 
 #map {
+
+    text-align:center;
     overflow: hidden;
     width: 500px; /* Ширина карты */
     height: 500px; /* Высота карты */

@@ -7,7 +7,7 @@ function init() {
         // Минимальная стоимость.
         MINIMUM_COST = 500,
         myMap = new ymaps.Map('map', {
-            center: [60.906882, 30.067233],
+            center: [56.845144, 60.587456],
             zoom: 9,
             controls: []
         }),
@@ -41,7 +41,7 @@ function init() {
     // Если вы хотите задать неизменяемую точку "откуда", раскомментируйте код ниже.
     routePanelControl.routePanel.state.set({
         fromEnabled: false,
-        from: 'Москва, Льва Толстого 16'
+        from: 'Свердловская область, Березовский, Кольцевая 5'
     });
     myMap.controls.add(routePanelControl).add(zoomControl);
 

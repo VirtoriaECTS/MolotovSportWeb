@@ -79,7 +79,7 @@
 
     public void ClickMinusCount(ShopingItem item, int price)
     {
-        
+
         changeProduct.ChangeMinusCount(item, price);
         OnParametersSet();
         StateHasChanged();
@@ -88,14 +88,15 @@
 
     public void ClickPlusCount(ShopingItem item, int price)
     {
-        
+
         changeProduct.ChangePlusCount(item, price);
         OnParametersSet();
         StateHasChanged();
     }
 
     public void ClickOrder(){
-        navigationManager.NavigateTo($"/MakingOrder");
+        navigationManager.NavigateTo("/MakingOrderUser");
+
     }
 
 

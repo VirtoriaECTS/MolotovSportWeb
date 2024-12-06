@@ -1,7 +1,6 @@
-﻿@page "/MakingOrder"
+﻿@page "/MakingOrderUser"
 @inject IJSRuntime JSRuntime
 @rendermode InteractiveServer
-
 @inject NavigationManager navigationManager
 @using Microsoft.EntityFrameworkCore
 @using MolotovSportWeb.Models
@@ -9,17 +8,20 @@
 @inject MolotovSportWebContext context
 @inject Classes.Servers.UserStateService UserState
 
+<script src="js/deliveryCalculator.js" type="text/javascript"></script>
+
+<div class="ScreenLogUser">
+    <div class="text-center">
+        <h2 class="textHeaderPage">Выберите адрес</h2>
+        <div class="text-center" id="map" style="height: 500px; margin: 0px 0px 0px 780px;"></div>
+        <p>@location</p>
+        <button @onclick="ClickNewOrder" class="StyleButtonVhod">Оформить заказ</button>
+    </div>
+
+</div>
 
 
-<script  src="js/deliveryCalculator.js" type="text/javascript"></script>
-<div id="map" ></div>
 
-
-
-<button @onclick=getLocationFromJS>Get Location</button>
-<p>@location</p>
-
-<button @onclick="ClickNewOrder" class="StyleButtonVhod">Оформить</button>
 @code {
     string location { get; set; }
 
