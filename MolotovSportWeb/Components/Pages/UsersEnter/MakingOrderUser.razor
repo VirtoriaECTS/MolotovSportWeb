@@ -13,7 +13,10 @@
 <div class="ScreenLogUser">
     <div class="text-center">
         <h2 class="textHeaderPage">Выберите адрес</h2>
-        <div class="text-center" id="map" style="height: 500px; margin: 0px 0px 0px 780px;"></div>
+
+            <div class="text-center" style="height: 500px; margin: 0px 0px 0px 780px;" id="map"></div>
+
+    
         <p>@location</p>
         <button @onclick="ClickNewOrder" class="StyleButtonVhod">Оформить заказ</button>
     </div>
@@ -23,7 +26,14 @@
 
 
 @code {
+    bool cheak = false;
     string location { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        StateHasChanged();
+    }
+
 
     async Task getLocationFromJS()
     {
