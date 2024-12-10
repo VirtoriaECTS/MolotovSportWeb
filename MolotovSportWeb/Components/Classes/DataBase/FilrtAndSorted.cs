@@ -75,7 +75,9 @@ namespace MolotovSportWeb.Components.Classes.DataBase
             else if (IdCategoryScreen == -1)
             {
                 Products = context.Products
-                .Include(p => p.ProductSizes).Include(p => p.Gender).Include(p => p.Firm).Include(p => p.CategoriesMini).Include(p => p.CategoriesMini.Category).Where(p => p.ProductSizes.Any(p => p.Count > 0))
+                .Include(p => p.ProductSizes).Include(p => p.Gender).Include(p => p.Firm)
+                .Include(p => p.CategoriesMini).Include(p => p.CategoriesMini.Category)
+                .Where(p => p.ProductSizes.Any(p => p.Count > 0))
                 .ToList();
 
                 Categoryies = context.Categories.ToList();

@@ -230,12 +230,14 @@
     {
         var category = Products.Categoryies.Where(p => p.CategoryName == Convert.ToString(e.Value)).First();
         IdCaregory = category.CategoryId;
+        error = IdCaregory + " " + IdCaregoryMini;
     }
 
     public void choiceCategoryMini(ChangeEventArgs e)
     {
         var categoryMini = Products.CategoryiesMini.Where(p => p.CategoryMiniName == Convert.ToString(e.Value)).First();
-        IdCaregoryMini = categoryMini.CategoryId;
+        IdCaregoryMini = categoryMini.CategoryMiniId;
+        error = IdCaregory + " " + IdCaregoryMini;
     }
 
     public void choicGender(ChangeEventArgs e)
@@ -271,7 +273,8 @@
             {
                 error = "Ошибка загрузки данных";
             }
-
+            // addProduct.AddProduct(name, IdFirm, IdCaregory, IdCaregoryMini, idGender, image, Convert.ToInt32(price), sizeCountProduct);
+            // navigationManager.NavigateTo("/ProductAdmin");
 
         }
         else

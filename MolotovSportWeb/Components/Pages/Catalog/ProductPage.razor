@@ -62,7 +62,7 @@
                                           .Include(p => p.CategoriesMini.Category)
                                           .Include(p => p.Gender)
                                           .Include(p => p.ProductSizes)
-                                         .Include(p => p.Firm) // Загрузка связанной фирмы
+                                         .Include(p => p.Firm) 
                                          .FirstOrDefault(p => p.ProductId == id);
 
         changeProduct = new Classes.DataBase.ChangeProductUser(UserState.UserId);

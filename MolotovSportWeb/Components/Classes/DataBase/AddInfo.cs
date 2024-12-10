@@ -33,7 +33,8 @@
                     {
                         ProductId = productNew.ProductId,
                         Size = item.Key,
-                        Count = item.Value
+                        //Count = item.Value
+                        Count = 50
                     };
                     context.Add(sizeNew);
                 }
@@ -69,7 +70,7 @@
                 {
                     FirmName = nameFirm,
                 };
-
+                context.Add(firm);
                 context.SaveChanges();
             }
         }
@@ -82,7 +83,7 @@
                 {
                     CategoryMiniName = categoryMiniNameText,
                 };
-
+                context.Add(categoryMini);
                 context.SaveChanges();
             }
         }

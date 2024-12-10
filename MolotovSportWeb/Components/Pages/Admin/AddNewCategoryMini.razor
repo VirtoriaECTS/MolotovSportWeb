@@ -25,7 +25,7 @@
         <h5 class="textScreenInput">Название подкатегории</h5>
         <br />
         <div>
-            <input class="StyleInputRegistation" />
+            <input class="StyleInputRegistation" @bind="nameMiniCategpries"/>
             <h5 style="color: red">@error</h5>
             <button class="AdminButtonAddProduct">Добавить</button>
         </div>
@@ -54,6 +54,7 @@
 </div>
 
 @code {
+    string nameMiniCategpries = "";
     int idCategory = 0;
     string error = "";
     Classes.DataBase.FilrtAndSorted Products;
@@ -69,7 +70,17 @@
 
     public void selectCategory(ChangeEventArgs e)
     {
-        idCategory = Products.Categoryies.Where(p => p.CategoryName == Convert.ToString(e.Value)).Select(p => p.CategoryId).First();
-
+        if(nameMiniCategpries.Length != 0)
+        {
+            idCategory = Products.Categoryies.Where(p => p.CategoryName == Convert.ToString(e.Value)).Select(p => p.CategoryId).First();
+            Classes.DataBase.AddInfo addProduct = new Classes.DataBase.AddInfo();
+            addProduct.AddCategoryMini(idCategory, nameMiniCategpries);
+            nameMiniCategpries = "";
+            StateHasChanged();
+        }
+        else
+        {
+            error = "Заполните поле";
+        }
     }
 }

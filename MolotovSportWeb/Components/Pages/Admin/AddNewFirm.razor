@@ -16,9 +16,9 @@
         <h5 class="textScreenInput">Название фирмы</h5>
         <br />
         <div>
-            <input class="StyleInputRegistation" />
+            <input class="StyleInputRegistation" @bind="nameFirm" />
             <h5 style="color: red">@error</h5>
-            <button class="AdminButtonAddProduct">Добавить</button>
+            <button @onclick="ClickAddNewFirm" class="AdminButtonAddProduct">Добавить</button>
         </div>
 
         <div class="PrintFirmForAdmin">
@@ -45,6 +45,7 @@
 </div>
 
 @code {
+    string nameFirm = "";
     string error = "";
 
     Classes.DataBase.FilrtAndSorted Products;
@@ -58,6 +59,16 @@
 
     public void ClickAddNewFirm()
     {
-
+        if(nameFirm.Length != 0)
+        {
+            Classes.DataBase.AddInfo addProduct = new Classes.DataBase.AddInfo();
+            addProduct.AddFirm(nameFirm);
+            nameFirm = "";
+            StateHasChanged();
+        }
+        else
+        {
+            error = "Заполните название";
+        }
     }
 }
