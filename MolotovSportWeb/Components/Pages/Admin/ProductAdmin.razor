@@ -18,20 +18,20 @@
     <button @onclick="onClickNewProduct" class="ButtonAddNewProductAdmin">Добавить товар</button>
 
     <pre class="TextFilrtAdminProduct">Сортировка:</pre>
-    <select  class="ListViewFiltr">
-        <option>Без сортировки</option>
-        <option>По возрастанию цены</option>
-        <option>По убыванию цены</option>
+    <select @onchange="Sort" class="ListViewFiltr">
+        <option value="-1">Без сортировки</option>
+        <option value="0">По возрастанию цены</option>
+        <option value="1">По убыванию цены</option>
 
     </select>
 
     <pre class="TextFilrtAdminProduct">Пол:</pre>
 
-    <select class="ListViewFiltr">
-        <option>Без фильтрации</option>
+    <select @onchange="GenderSorting" class="ListViewFiltr">
+        <option value="-1">Без фильтрации</option>
         @foreach (var gender in Products.GenderList)
         {
-            <option>
+            <option value="@gender.GenderId">
                 @gender.GenderName
             </option>
         }
@@ -39,11 +39,11 @@
 
     <pre class="TextFilrtAdminProduct">Подкатегория:</pre>
 
-    <select class="ListViewFiltr">
-        <option>Без фильтрации</option>
+    <select @onchange="CategoryMiniSorting" class="ListViewFiltr">
+        <option value="-1">Без фильтрации</option>
         @foreach (var categoryiesMini in Products.CategoryiesMini)
         {
-            <option>
+            <option value="@categoryiesMini.CategoryMiniId">
                 @categoryiesMini.CategoryMiniName
             </option>
         }
@@ -52,11 +52,11 @@
 
     <pre class="TextFilrtAdminProduct">Фирмы:</pre>
 
-    <select class="ListViewFiltr">
-        <option>Без фильтрации</option>
+    <select @onchange="FirmsSorting" class="ListViewFiltr">
+        <option value="-1">Без фильтрации</option>
         @foreach (var firms in Products.FirmList)
         {
-            <option>
+            <option value="@firms.FirmId">
                 @firms.FirmName
             </option>
         }
@@ -114,7 +114,7 @@
 
     
 
-    @foreach (var product in Products.Products)
+    @foreach (var product in products)
     {
 
         <tr>
@@ -151,7 +151,7 @@
                 <div style="text-align:center">
                     <button @onclick="() => onClickChangeProduct(product.ProductId)" class="buttonChangeAndDeleteProduct">Изменить</button>
                     <br />
-                    <button class="buttonChangeAndDeleteProduct">Удалить</button>
+                    <button @onclick="() => Delete(product)" class="buttonChangeAndDeleteProduct">Удалить</button>
                 </div>
 
             </td>
@@ -169,13 +169,38 @@
 </table>
 
 @code {
+
     Classes.DataBase.FilrtAndSorted Products;
+
+    int sortd = -1;
+    int gender = -1;
+    int categoryMini = -1;
+    int firms = -1;
+
+    List<Product> products = new List<Product>();
 
     protected override async Task OnInitializedAsync()
     {
 
         Products = new Classes.DataBase.FilrtAndSorted(-1);
+        products = Products.Products;
         Products.LoadingDataBaseAsync();
+    }
+
+    public void Delete(Product product)
+    {
+        using(var context = new MolotovSportWebContext())
+        {
+            foreach(var size in product.ProductSizes)
+            {
+                size.Count = -1;
+                context.Update(size);
+                context.SaveChanges();
+            }
+            context.SaveChanges();
+        }
+        StateHasChanged();
+        SortingAll();
     }
 
     public void onClickNewProduct(){
@@ -186,5 +211,68 @@
     public void onClickChangeProduct(int id)
     {
         navigationManager.NavigateTo($"/AddChangeProduct/{id}");
+    }
+
+    public void Sort(ChangeEventArgs e)
+    {
+        sortd = Convert.ToInt32(e.Value);
+        SortingAll();
+    }
+
+    public void GenderSorting(ChangeEventArgs e)
+    {
+        gender = Convert.ToInt32(e.Value);
+        SortingAll();
+    }
+
+    public void FirmsSorting(ChangeEventArgs e)
+    {
+        firms = Convert.ToInt32(e.Value);
+        SortingAll();
+    }
+
+    public void CategoryMiniSorting(ChangeEventArgs e)
+    {
+        categoryMini = Convert.ToInt32(e.Value);
+        SortingAll();
+    }
+
+    public void SortingAll()
+    {
+        products = Products.Products;
+
+
+        if(gender != -1)
+        {
+            products = products.Where(p => p.GenderId == gender).ToList();
+        }
+
+        if(categoryMini != -1)
+        {
+            products = products.Where(p => p.CategoryIdMini == categoryMini).ToList();
+        }
+
+        if(firms != -1)
+        {
+            products = products.Where(p => p.FirmId == firms).ToList();
+        }
+
+        if (sortd != -1)
+        {
+            switch (sortd)
+            {
+                case 0:
+                    products = products.OrderByDescending(p => p.Price).ToList();
+                    break;
+
+                case 1:
+                    products = products.OrderBy(p => p.Price).ToList();
+                    break;
+
+            }
+
+        }
+
+          StateHasChanged();
     }
 }

@@ -33,8 +33,8 @@
                     {
                         ProductId = productNew.ProductId,
                         Size = item.Key,
-                        //Count = item.Value
-                        Count = 50
+                        Count = item.Value
+                        //Count = 50
                     };
                     context.Add(sizeNew);
                 }

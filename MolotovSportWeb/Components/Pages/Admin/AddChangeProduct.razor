@@ -41,7 +41,7 @@
             <div>
                 <h5 class="textScreenInput">Фирма</h5>
                 <br />
-                <select @onchange="choiceFirm" class="ListViewFiltr">
+                <select @onchange="choiceFirm" class="ListViewFiltr" value="@firm">
                     @foreach (var firm in Products.FirmList)
                     {
                         <option>@firm.FirmName</option>
@@ -52,7 +52,7 @@
             <div>
                 <h5 class="textScreenInput">Категория</h5>
                 <br />
-                <select @onchange="choiceCategory" class="ListViewFiltr">
+                <select @onchange="choiceCategory" class="ListViewFiltr" value="@category">
                     @foreach (var firm in Products.Categoryies)
                     {
                         <option>@firm.CategoryName</option>
@@ -63,7 +63,7 @@
             <div>
                 <h5 class="textScreenInput">Подкатегория</h5>
                 <br />
-                <select @onchange="choiceCategoryMini" class="ListViewFiltr">
+                <select @onchange="choiceCategoryMini" class="ListViewFiltr" value="@categoryMini">
                     @foreach (var firm in Products.CategoryiesMini)
                     {
                         <option>@firm.CategoryMiniName</option>
@@ -162,6 +162,11 @@
     string sizeInput;
     string sizeOneText;
     string ImagePicture = "https://fitowatt.ru/assets/static/noimage.jpg";
+
+
+    string firm = "";
+    string category = "";
+    string categoryMini = "";
     // List<string> sizeProdict = new List<string>();
 
     Dictionary<string, int> sizeCountProduct = new Dictionary<string, int>();
@@ -188,6 +193,12 @@
         image = product.ImageUrl;
         price = Convert.ToString(product.Price);
 
+
+        firm = product.Firm.FirmName;
+        category = product.CategoriesMini.Category.CategoryName;
+        categoryMini = product.CategoriesMini.CategoryMiniName;
+
+        
     }
 
     public void OnClickAddSize()

@@ -77,7 +77,7 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 Products = context.Products
                 .Include(p => p.ProductSizes).Include(p => p.Gender).Include(p => p.Firm)
                 .Include(p => p.CategoriesMini).Include(p => p.CategoriesMini.Category)
-                .Where(p => p.ProductSizes.Any(p => p.Count > 0))
+                .Where(p => p.ProductSizes.Any(p => p.Count > -1))
                 .ToList();
 
                 Categoryies = context.Categories.ToList();

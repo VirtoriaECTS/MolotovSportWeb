@@ -18,7 +18,7 @@
 
 
             <pre class="TextFilrtAdminProduct">Сортировка:</pre>
-            <select class="ListViewFiltr">
+            <select @onchange="Sorting" class="ListViewFiltr">
                 <option>Без сортировки</option>
                 <option>Сначала старые заказы</option>
                 <option>Сначала новые заказы</option>
@@ -106,7 +106,7 @@
                         </td>
 
                         <td class="textOrderTD" style="vertical-align: top;">
-                            <input class="CheakBoxFiltrStileAdmin" type="checkbox" @bind="order.StatusOrder" />
+                            <input @onclick="() => UpdateStatut(order)" class="CheakBoxFiltrStileAdmin" type="checkbox" Disabled="@order.StatusOrder" @bind="order.StatusOrder" />
                         </td>
                     </tr>
 
@@ -136,5 +136,51 @@
         //orders.LoadingDataBaseAsync();
     }
 
+    public void UpdateStatut(Order order)
+    {
+        order.StatusOrder = true;
+        using(var context = new MolotovSportWebContext())
+        {
+            context.Update(order);
+            context.SaveChanges();
+        }
+    }
+
+    public void Sorting(ChangeEventArgs e)
+    {
+        string text = Convert.ToString(e.Value);
+
+        switch (text)
+        {
+            case "Без сортировки":
+                orders = ordersDataBase.FillOrderList();
+                StateHasChanged();
+                break;
+
+            case "Сначала старые заказы":
+                orders = ordersDataBase.FillOrderList();
+                orders = orders.OrderBy(p => p.OrderData).ToList();
+                StateHasChanged();
+                break;
+
+            case "Сначала новые заказы":
+                orders = ordersDataBase.FillOrderList();
+                orders = orders.OrderByDescending(p => p.OrderData).ToList();
+                StateHasChanged();
+                break;
+
+            case "Сначала не выполненные заказы":
+                orders = ordersDataBase.FillOrderList();
+                orders = orders.OrderBy(p => p.StatusOrder).ToList();
+                StateHasChanged();
+                break;
+
+            case "Сначала выполненные заказа":
+                orders = ordersDataBase.FillOrderList();
+                orders = orders.OrderByDescending(p => p.StatusOrder).ToList();
+                StateHasChanged();
+                break;
+        }
+    }
 
 }
