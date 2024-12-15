@@ -13,9 +13,15 @@ namespace MolotovSportWeb.Components.Classes.DataBase
             this.UserId = UserId;
         }
 
-        public void Create(string text)
+        public async void Create(string text)
         {
             string[] array = text.Split('|');
+
+            Classes.Servers.YandexGeocoderService yandexGeocoderService;
+
+
+
+
             using (var context = new MolotovSportWebContext())
             {
                 DateTime curDate = DateTime.Now;
