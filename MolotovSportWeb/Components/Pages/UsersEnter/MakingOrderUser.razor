@@ -7,17 +7,24 @@
 
 @inject MolotovSportWebContext context
 @inject Classes.Servers.UserStateService UserState
+@inject Components.Classes.Servers.YandexGeocoderService GeocoderService
 
-<script src="js/deliveryCalculator.js" type="text/javascript"></script>
+
+
+<script src="js/deliveryCalculator.js?v=1.1" type="text/javascript" v=2.0></script>
 
 <div class="ScreenLogUser">
     <div class="text-center">
         <h2 class="textHeaderPage">Выберите адрес</h2>
 
-            <div class="text-center" style="height: 500px; margin: 0px 0px 0px 780px;" id="map"></div>
 
-    
+        <div  class="text-center" style="height: 500px; margin: 0px 0px 0px 780px;" id="map"></div>
+
+
         <p>@location</p>
+        <br>
+        <p>@anwer</p>
+
         <button @onclick="ClickNewOrder" class="StyleButtonVhod">Оформить заказ</button>
     </div>
 
@@ -26,8 +33,11 @@
 
 
 @code {
+
     bool cheak = false;
-    string location { get; set; }
+    string location { get; set; } = "sssss";
+    string anwer = "sss1";
+
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -35,27 +45,55 @@
     }
 
 
-    async Task getLocationFromJS()
-    {
-        location = await JSRuntime.InvokeAsync<string>("getLocation");
-    }
+    // async Task getLocationFromJS()
+    // {
+    //     location = await JSRuntime.InvokeAsync<string>("getLocation");
+
+    //     string[] array = location.Split('|');
+
+
+    //     string[] coordinate =  array[0].Split(',');
+
+
+    //     // double Longitude = ; // Default value
+    //     // double Latitude = Convert.ToDouble(coordinate[1]); // Default value
+    //     anwer = Convert.ToString(coordinate.Length);
+    //     string adress = "";
+
+
+
+
+
+    // }
 
     int idUser = 0;
-    string adress = "Г. Березовский, ул. Красных героев 11, кв 41";
 
     protected override void OnParametersSet()
 
     {
+        Components.Classes.Save.FileWork fileWork = new Classes.Save.FileWork();
+
+        string[] array = fileWork.Read();
+        UserState.Login(array[0], Convert.ToInt32(array[1]), Convert.ToInt32(array[2]));
+
+
+
         idUser = UserState.CheakUserId();
     }
 
 
-    public void ClickNewOrder()
+    public async Task ClickNewOrder()
     {
+        location = await JSRuntime.InvokeAsync<string>("getLocation");
+
         Classes.DataBase.CreateOrder createOrder = new Classes.DataBase.CreateOrder(idUser);
 
-        createOrder.Create(adress);
+        createOrder.Create(location);
 
         navigationManager.NavigateTo("/");
     }
+
+ 
 }
+
+

@@ -87,11 +87,14 @@ function init() {
 
 
     function returnData(price, zoomControlPosition, fromAddress, toAddress) {
-        let stroka = `Адрес отправления: ${fromAddress}, Адрес назначения: ${toAddress}, Стоимость доставки: ${price} р., Позиция ZoomControl: ${JSON.stringify(zoomControlPosition)}`;
+        let stroka = `${toAddress}|${price}`;
         return stroka;
     }
 
     window.getLocation = () => {
         return location;
     }
+
+
+
 }

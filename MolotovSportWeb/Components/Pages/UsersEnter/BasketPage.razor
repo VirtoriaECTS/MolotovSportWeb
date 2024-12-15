@@ -95,6 +95,8 @@
     }
 
     public void ClickOrder(){
+        Components.Classes.Save.FileWork fileWork = new Classes.Save.FileWork();
+        fileWork.Write(UserState);
         navigationManager.NavigateTo("/MakingOrderUser");
 
     }

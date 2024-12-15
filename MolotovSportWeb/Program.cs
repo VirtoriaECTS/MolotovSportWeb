@@ -10,8 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+// Добавляем IHttpContextAccessor
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<UserStateService>();
+
+builder.Services.AddScoped<YandexGeocoderService>();
+
 builder.Services.AddMudServices();
 
 //Подключение бд
@@ -32,6 +39,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseRouting();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()

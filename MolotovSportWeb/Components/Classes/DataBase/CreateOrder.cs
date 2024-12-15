@@ -13,8 +13,9 @@ namespace MolotovSportWeb.Components.Classes.DataBase
             this.UserId = UserId;
         }
 
-        public void Create(string adress)
+        public void Create(string text)
         {
+            string[] array = text.Split('|');
             using (var context = new MolotovSportWebContext())
             {
                 DateTime curDate = DateTime.Now;
@@ -29,8 +30,8 @@ namespace MolotovSportWeb.Components.Classes.DataBase
 
                     TotalAmout = Convert.ToInt32(shoppingCart.TotalAmout) + 500,
                     StatusOrder = false,
-                    Adress = adress,
-                    PriceDeliviry = 500
+                    Adress = array[0],
+                    PriceDeliviry = Convert.ToInt32(array[1])
 
                 };
                 context.Orders.Add(order);
