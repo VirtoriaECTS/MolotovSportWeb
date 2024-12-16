@@ -1,0 +1,45 @@
+﻿@page "/AccountAdmin"
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@inject Classes.Servers.UserStateService UserState
+
+@using Microsoft.EntityFrameworkCore
+@using MolotovSportWeb.Models
+
+@inject MolotovSportWebContext DbContext
+
+<div class="ScreenLogUser">
+    <div class="text-center">
+
+        <button class="AdminButtonAddProduct" @onclick="ClickExit">Выйти</button>
+    </div>
+
+</div>
+
+
+@code {
+    int idUser = 0;
+    string error = "";
+
+    Classes.DataBase.OrdersDataBase ordersDataBase = new Classes.DataBase.OrdersDataBase();
+    List<Order> orders = new List<Order>();
+    List<Product> products = new List<Product>();
+    List<User> users = new List<User>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        idUser = UserState.UserId;
+        orders = ordersDataBase.FillOrderList();
+        
+        products = ordersDataBase.FillProductList();
+        users = ordersDataBase.FillUsersList();
+        StateHasChanged();
+        //orders.LoadingDataBaseAsync();
+    }
+
+    private void ClickExit()
+    {
+        UserState.Logout();
+        navigationManager.NavigateTo($"/");
+    }
+}
