@@ -1,0 +1,58 @@
+﻿@page "/Statictic"
+@layout Layout.AdminLayot;
+@rendermode InteractiveServer
+
+@inject NavigationManager navigationManager
+@using MudBlazor
+
+
+<div class="text-center">
+    <div class="ScreenLogUser">
+        <h2 class="textHeaderPage">Статистика</h2>
+        <br />
+
+
+       
+
+    </div>
+</div>
+
+<div>
+    <MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="Index"  Width="100%" Height="350px" ChartOptions="@Options" />
+    <MudGrid>
+        <MudItem xs="6">
+            <MudText Typo="Typo.body1" Class="py-3">Selected: @(Index < 0 ? "None" : Series[Index].Name)</MudText>
+        </MudItem>
+        <MudItem xs="6">
+            <MudSlider @bind-Value="Options.LineStrokeWidth" Min="1" Max="10" Color="Color.Info">Line Width: @Options.LineStrokeWidth.ToString()</MudSlider>
+        </MudItem>
+    </MudGrid>
+</div>
+
+@code {
+    private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
+    public ChartOptions Options = new ChartOptions();
+    Classes.Statistic.Statistic statistic;
+    List<double> money;
+    List<ChartSeries> Series = new List<ChartSeries>();
+    protected override void OnParametersSet()
+    {
+        statistic = new Classes.Statistic.Statistic();
+
+        DateTime date1 = new DateTime(2025, 1, 1); // год - месяц - день
+
+        List<double> money = statistic.priceMonth(date1);
+
+
+        Series.Add(new ChartSeries()
+            {
+                Name = "Продажи",
+                Data = money.ToArray()
+            });
+        StateHasChanged();
+
+    }
+
+
+
+}
