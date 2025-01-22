@@ -10,45 +10,265 @@
     <div class="ScreenLogUser">
         <h2 class="textHeaderPage">Статистика</h2>
         <br />
-
-
-       
-
     </div>
 </div>
 
 <div>
-    <MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="Index"  Width="100%" Height="350px" ChartOptions="@Options" />
+    <div class="staticHeader">
+
+        <pre class="TextFilrtAdminProduct">Доход:</pre>
+        <select @onchange="SortSell" class="ListViewFiltr">
+            <option selected="selected" value="-1">За все время</option>
+            <option value="1">Январь</option>
+            <option value="2">Февраль</option>
+            <option value="3">Март</option>
+            <option value="4">Апрель</option>
+            <option value="5">Май</option>
+            <option value="6">Июнь</option>
+            <option value="7">Июль</option>
+            <option value="8">Август</option>
+            <option value="9">Сентрябрь</option>
+            <option value="10">Октрябрь</option>
+            <option value="11">Ноябрь</option>
+            <option value="12">Декабрь</option>
+        </select>
+
+        <br />
+
+    </div>
+    <MudChart ChartType="ChartType.Line" ChartSeries="@SeriesSell" @bind-SelectedIndex="Index" Width="100%" Height="550px" ChartOptions="@OptionsSell" />
     <MudGrid>
-        <MudItem xs="6">
-            <MudText Typo="Typo.body1" Class="py-3">Selected: @(Index < 0 ? "None" : Series[Index].Name)</MudText>
-        </MudItem>
-        <MudItem xs="6">
-            <MudSlider @bind-Value="Options.LineStrokeWidth" Min="1" Max="10" Color="Color.Info">Line Width: @Options.LineStrokeWidth.ToString()</MudSlider>
-        </MudItem>
+
+
     </MudGrid>
+
+
+        <div class="staticHeader">
+
+        <pre class="TextFilrtAdminProduct">Продажи:</pre>
+        <select @onchange="SortProduct" class="ListViewFiltr">
+            <option selected="selected" value="-1">За все время</option>
+            <option value="1">Январь</option>
+            <option value="2">Февраль</option>
+            <option value="3">Март</option>
+            <option value="4">Апрель</option>
+            <option value="5">Май</option>
+            <option value="6">Июнь</option>
+            <option value="7">Июль</option>
+            <option value="8">Август</option>
+            <option value="9">Сентрябрь</option>
+            <option value="10">Октрябрь</option>
+            <option value="11">Ноябрь</option>
+            <option value="12">Декабрь</option>
+        </select>
+
+        <br />
+
+    </div>
+    <MudChart ChartType="ChartType.Line" ChartSeries="@SeriesProduct" @bind-SelectedIndex="Index" Width="100%" Height="550px" ChartOptions="@OptionsProduct" />
+    <MudGrid>
+    </MudGrid>
+
+
+    <MudChart ChartType="ChartType.Donut" Width="100%" Height="550px" InputData="@countSellProduct" LegendPosition="@LegendPosition"  InputLabels="@nameFirm">
+    <CustomGraphics>
+            
+    </CustomGraphics>
+    </MudChart>
+
+
+    <MudChart ChartType="ChartType.Donut" Width="100%" Height="550px" InputData="@countSellOneProduct" LegendPosition="@LegendPosition" InputLabels="@nameProduct">
+        <CustomGraphics>
+
+        </CustomGraphics>
+    </MudChart>
+
+
+
 </div>
 
 @code {
+    double[] countSellProduct;
+    double[] countSellOneProduct;
+    string[] nameFirm;
+    string[] nameProduct;
+
+
+    int sortdSell = -1;
+
+    int sortdProduct = -1;
+
+    public void SortSell(ChangeEventArgs e)
+    {
+        sortdSell = Convert.ToInt32(e.Value);
+        SeriesSell.Clear();
+        if(sortdSell == -1)
+        {
+
+            List<double> money = statistic.priceYear();
+
+
+            SeriesSell.Add(new ChartSeries()
+                {
+                    Name = "Доход",
+                    Data = money.ToArray()
+                });
+        }
+
+        else if(sortdSell == 12)
+        {
+            DateTime date1 = new DateTime(2025, sortdSell, 1); // год - месяц - день
+            DateTime date2 = new DateTime(2026, 1, 1); // год - месяц - день
+            List<double> money = statistic.priceMonth(date1, date2);
+
+            SeriesSell.Add(new ChartSeries()
+                {
+                    Name = "Доход",
+                    Data = money.ToArray()
+                });
+        }
+        else
+        {
+            DateTime date1 = new DateTime(2025, sortdSell, 1); // год - месяц - день
+            DateTime date2 = new DateTime(2025, sortdSell + 1, 1); // год - месяц - день
+            List<double> money = statistic.priceMonth(date1, date2);
+
+            SeriesSell.Add(new ChartSeries()
+                {
+                    Name = "Доход",
+                    Data = money.ToArray()
+                });
+        }
+
+        StateHasChanged();
+
+    }
+
+    public void SortProduct(ChangeEventArgs e)
+    {
+        sortdProduct = Convert.ToInt32(e.Value);
+        SeriesProduct.Clear();
+        if (sortdProduct == -1)
+        {
+
+
+            List<double> productCount = statistic.countYear();
+
+
+            SeriesProduct.Add(new ChartSeries()
+                {
+                    Name = "Продажи",
+                    Data = productCount.ToArray()
+                });
+
+        }
+
+        else if (sortdProduct == 12)
+        {
+            DateTime date1 = new DateTime(2025, sortdProduct, 1); // год - месяц - день
+            DateTime date2 = new DateTime(2026, 1, 1); // год - месяц - день
+
+            List<double> productCount = statistic.countMonth(date1, date2);
+
+            SeriesProduct.Add(new ChartSeries()
+                {
+                    Name = "Продажи",
+                    Data = productCount.ToArray()
+                });
+        }
+        else
+        {
+            DateTime date1 = new DateTime(2025, sortdProduct, 1); // год - месяц - день
+            DateTime date2 = new DateTime(2025, sortdProduct + 1, 1); // год - месяц - день
+            List<double> productCount = statistic.countMonth(date1, date2);
+
+            SeriesProduct.Add(new ChartSeries()
+                {
+                    Name = "Продажи",
+                    Data = productCount.ToArray()
+                });
+        }
+
+        StateHasChanged();
+
+    }
+
+    public Position LegendPosition { get; set; } = Position.Right;
+
+
     private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
-    public ChartOptions Options = new ChartOptions();
+    public ChartOptions OptionsSell = new ChartOptions();
+
+    public ChartOptions OptionsProduct = new ChartOptions()
+        {
+            ChartPalette = new string[]
+            {
+            "#00FF00"  // Зелёный для Renewable
+            }
+        };
+
     Classes.Statistic.Statistic statistic;
-    List<double> money;
-    List<ChartSeries> Series = new List<ChartSeries>();
+
+    List<ChartSeries> SeriesSell = new List<ChartSeries>();
+    List<ChartSeries> SeriesProduct = new List<ChartSeries>();
+
     protected override void OnParametersSet()
     {
         statistic = new Classes.Statistic.Statistic();
 
-        DateTime date1 = new DateTime(2025, 1, 1); // год - месяц - день
 
-        List<double> money = statistic.priceMonth(date1);
+        List<double> money = statistic.priceYear();
 
 
-        Series.Add(new ChartSeries()
+        List<double> productCount = statistic.countYear();
+        SeriesSell.Add(new ChartSeries()
             {
-                Name = "Продажи",
+                Name = "Доход",
                 Data = money.ToArray()
             });
+
+        SeriesProduct.Add(new ChartSeries()
+            {
+                Name = "Продажи",
+                Data = productCount.ToArray()
+            });
+
+        Dictionary<string, int> populatBrends = statistic.popularBrend();
+
+
+        List<double> countSellBrend = new List<double>();
+        List<string> nameBrend = new List<string>();
+
+
+
+
+        foreach(var item in populatBrends)
+        {
+            countSellBrend.Add(item.Value);
+            nameBrend.Add(item.Key);
+        }
+
+        countSellProduct =  countSellBrend.ToArray() ;
+        nameFirm = nameBrend.ToArray();
+
+        Dictionary<string, int> populatProduct = statistic.popularProduct();
+        List<double> countSellProductOne = new List<double>();
+        List<string> namePeoduct = new List<string>();
+
+
+
+
+        foreach (var item in populatProduct)
+        {
+            countSellProductOne.Add(item.Value);
+            namePeoduct.Add(item.Key);
+        }
+
+        countSellOneProduct = countSellProductOne.ToArray();
+        nameProduct = namePeoduct.ToArray();
+
+
+
         StateHasChanged();
 
     }

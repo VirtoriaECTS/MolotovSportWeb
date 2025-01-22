@@ -859,3 +859,10 @@ table {
     border-radius: 10px; /* Закругленные углы */
     margin: 20px; /* Отступы вокруг карты */
 }
+
+
+.staticHeader {
+    justify-content: space-between;
+    display: flex;
+    margin: 20px; /* Отступы вокруг карты */
+}
