@@ -1,12 +1,18 @@
 ﻿@page "/Account"
+@inject NavigationManager NavigationManager
+@inject HttpContextAccessor HttpContextAccessor
 @rendermode InteractiveServer
 @inject NavigationManager navigationManager
 @inject Classes.Servers.UserStateService UserState
 
 @using Microsoft.EntityFrameworkCore
 @using MolotovSportWeb.Models
+@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Authentication.Cookies;
+
 
 @inject MolotovSportWebContext DbContext
+@inject IHttpContextAccessor HttpContextAccessor
 
 <div class="ScreenLogUser">
     <div class="text-center">
@@ -95,7 +101,7 @@
         </table>
 
 
-        <button class="AdminButtonAddProduct" @onclick="ClickExit">Выйти</button>
+        <button class="AdminButtonAddProduct" @onclick="async () => await ClickExit()">Выйти</button>
     </div>
 
 </div>
@@ -114,16 +120,17 @@
     {
         idUser = UserState.UserId;
         orders = ordersDataBase.FillOrderList();
-        
+
         products = ordersDataBase.FillProductList();
         users = ordersDataBase.FillUsersList();
         StateHasChanged();
         //orders.LoadingDataBaseAsync();
     }
 
-    private void ClickExit()
+    private async Task ClickExit()
     {
+
         UserState.Logout();
-        navigationManager.NavigateTo($"/");
+        navigationManager.NavigateTo("/");
     }
 }
