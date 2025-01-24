@@ -1,13 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using MolotovSportWeb.Components;
-
 using MolotovSportWeb.Components.Classes.Servers;
 using MolotovSportWeb.Models;
 using MudBlazor.Services;
-using Syncfusion.HtmlConverter;
-using Syncfusion.Pdf;
-using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,11 +27,6 @@ builder.Services.AddDbContext<MolotovSportWebContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-
-
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,8 +38,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-
 
 app.UseStaticFiles();
 app.UseRouting();

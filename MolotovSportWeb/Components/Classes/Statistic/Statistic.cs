@@ -42,56 +42,6 @@ namespace MolotovSportWeb.Components.Classes.Statistic
             return money;
         }
 
-
-
-        public List<string> legenMoneyAllTime()
-        {
-            List<string> dateString = new List<string>();
-            using (var context = new MolotovSportWebContext())
-            {
-
-
-
-                var order = context.Orders.GroupBy(x => x.OrderData.Date);
-
-
-                foreach (var day in order)
-                {
-                    DateTime date = day.Select(x => x.OrderData).FirstOrDefault();
-                    dateString.Add(date.ToString("dd/M/yy"));
-                }
-
-
-            }
-
-            return dateString;
-        }
-
-        public List<string> legenMoneyDate(DateTime selectMonth, DateTime selectMonth2)
-        {
-            List<string> dateString = new List<string>();
-            using (var context = new MolotovSportWebContext())
-            {
-
-
-
-                var order = context.Orders.Where(x => x.OrderData > selectMonth && x.OrderData < selectMonth2).GroupBy(x => x.OrderData.Date);
-
-
-                foreach (var day in order)
-                {
-                    DateTime date = day.Select(x => x.OrderData).FirstOrDefault();
-                    dateString.Add(date.ToString("dd/M/yy"));
-                }
-            }
-
-            return dateString;
-        }
-
-
-
-
-
         public List<double> countYear()
         {
             List<double> countSell = new List<double>();
@@ -172,8 +122,6 @@ namespace MolotovSportWeb.Components.Classes.Statistic
         }
 
 
-
-
         public Dictionary<string, int> popularProduct()
         {
             Dictionary<string, int> popularDictonary = new Dictionary<string, int>();
@@ -222,7 +170,6 @@ namespace MolotovSportWeb.Components.Classes.Statistic
 
         public Dictionary<string, int> popularBrend()
         {
-            Dictionary<string, int> sortBrends = new Dictionary<string, int>();
             Dictionary<string, int> popularDictonary = new Dictionary<string, int>();
 
             Dictionary<int, int> popularproduct = new Dictionary<int, int>();
@@ -272,19 +219,12 @@ namespace MolotovSportWeb.Components.Classes.Statistic
 
                 }
 
-                foreach (var pair in popularDictonary.OrderByDescending(pair => pair.Value))
-                {
-
-                    sortBrends[pair.Key] = pair.Value;
-
-                }
-
 
 
 
             }
 
-            return sortBrends;
+            return popularDictonary ;
         }
 
 

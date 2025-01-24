@@ -866,10 +866,3 @@ table {
     display: flex;
     margin: 20px; /* Отступы вокруг карты */
 }
-
-
-.TextFilrtStatustic {
-    margin: 0px 0px 50px 50px;
-
-    font-size: 2vh;
-}

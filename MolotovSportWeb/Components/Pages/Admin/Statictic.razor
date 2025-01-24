@@ -1,9 +1,7 @@
 ﻿@page "/Statictic"
 @layout Layout.AdminLayot;
 @rendermode InteractiveServer
-@inject Microsoft.JSInterop.IJSRuntime JS
-@inject NavigationManager NavigationManager
-@using System.IO;
+
 @inject NavigationManager navigationManager
 @using MudBlazor
 
@@ -17,117 +15,73 @@
 
 <div>
     <div class="staticHeader">
-        <table>
-            <tr>
-                <td>
-                    <pre class="TextFilrtAdminProduct">Доход:</pre>
-                </td>
-            </tr>
-            <tr>
-                <td width="30%">
-                    <MudStack AlignItems="AlignItems.Center"  Style="width:650px; height:450px">
-                        <MudDateRangePicker  PickerVariant="@_variant" MaxDate="@_maxDate" DateRangeChanged="OnDateRangeChanged" Margin="Margin.Dense" />
-                <MudSpacer />
 
-            </MudStack>
-
-                </td>
-
-                <td>
-
-                    <MudChart ChartType="ChartType.Line" ChartSeries="@SeriesSell" XAxisLabels="@XAxisLabelsMoney"  @bind-SelectedIndex="Index" Width="100%" Height="550px" ChartOptions="@OptionsSell" />
-                    <MudGrid>
-
-
-                    </MudGrid>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td>
-                    <pre class="TextFilrtAdminProduct">Продажи:</pre>
-                </td>
-            </tr>
-            <tr>
-                <td width="30%">
-                    <MudStack AlignItems="AlignItems.Center" Style="width:650px; height:450px">
-                        <MudDateRangePicker PickerVariant="@_variant" MaxDate="@_maxDate" DateRangeChanged="OnDateRangeChangedSellProduct" Margin="Margin.Dense" />
-                        <MudSpacer />
-
-                    </MudStack>
-
-                </td>
-
-                <td>
-
-                    <MudChart ChartType="ChartType.Line" ChartSeries="@SeriesProduct" XAxisLabels="@XAxisLabelsCount" @bind-SelectedIndex="Index" Width="100%" Height="550px" ChartOptions="@OptionsProduct" />
-                    <MudGrid>
-                    </MudGrid>
-                </td>
-            </tr>
-
-
-
-            <tr>
-                <td>
-                    <pre class="TextFilrtAdminProduct">Статистика продаж брендов:</pre>
-                </td>
-            </tr>
-            <tr>
-                <td width="30%">
-                    <pre class="TextFilrtStatustic">@popularBrendText</pre>
-
-                </td>
-
-                <td>
-
-                    <MudChart ChartType="ChartType.Donut" class="TextFilrtStatustic" Width="100%" Height="550px" InputData="@countSellProduct" LegendPosition="@LegendPosition" InputLabels="@nameFirm">
-                        <CustomGraphics>
-
-                        </CustomGraphics>
-                    </MudChart>
-                </td>
-            </tr>
-
-
-
-            <tr>
-                <td>
-                    <pre class="TextFilrtAdminProduct">Топ 10 продаваемых товаров:</pre>
-                </td>
-            </tr>
-            <tr>
-                <td width="30%">
-
-                    <pre class="TextFilrtStatustic">@popularProductsText</pre>
-                </td>
-
-                <td>
-
-                    <MudChart ChartType="ChartType.Donut" class="TextFilrtStatustic" Width="100%" Height="550px" InputData="@countSellOneProduct" LegendPosition="@LegendPosition" InputLabels="@nameProduct">
-                        <CustomGraphics>
-
-                        </CustomGraphics>
-                    </MudChart>
-
-                </td>
-            </tr>
-        </table>
-        
-
-
-     
+        <pre class="TextFilrtAdminProduct">Доход:</pre>
+        <select @onchange="SortSell" class="ListViewFiltr">
+            <option selected="selected" value="-1">За все время</option>
+            <option value="1">Январь</option>
+            <option value="2">Февраль</option>
+            <option value="3">Март</option>
+            <option value="4">Апрель</option>
+            <option value="5">Май</option>
+            <option value="6">Июнь</option>
+            <option value="7">Июль</option>
+            <option value="8">Август</option>
+            <option value="9">Сентрябрь</option>
+            <option value="10">Октрябрь</option>
+            <option value="11">Ноябрь</option>
+            <option value="12">Декабрь</option>
+        </select>
 
         <br />
 
+    </div>
+    <MudChart ChartType="ChartType.Line" ChartSeries="@SeriesSell" @bind-SelectedIndex="Index" Width="100%" Height="550px" ChartOptions="@OptionsSell" />
+    <MudGrid>
 
+
+    </MudGrid>
+
+
+        <div class="staticHeader">
+
+        <pre class="TextFilrtAdminProduct">Продажи:</pre>
+        <select @onchange="SortProduct" class="ListViewFiltr">
+            <option selected="selected" value="-1">За все время</option>
+            <option value="1">Январь</option>
+            <option value="2">Февраль</option>
+            <option value="3">Март</option>
+            <option value="4">Апрель</option>
+            <option value="5">Май</option>
+            <option value="6">Июнь</option>
+            <option value="7">Июль</option>
+            <option value="8">Август</option>
+            <option value="9">Сентрябрь</option>
+            <option value="10">Октрябрь</option>
+            <option value="11">Ноябрь</option>
+            <option value="12">Декабрь</option>
+        </select>
+
+        <br />
 
     </div>
+    <MudChart ChartType="ChartType.Line" ChartSeries="@SeriesProduct" @bind-SelectedIndex="Index" Width="100%" Height="550px" ChartOptions="@OptionsProduct" />
+    <MudGrid>
+    </MudGrid>
 
 
+    <MudChart ChartType="ChartType.Donut" Width="100%" Height="550px" InputData="@countSellProduct" LegendPosition="@LegendPosition"  InputLabels="@nameFirm">
+    <CustomGraphics>
+            
+    </CustomGraphics>
+    </MudChart>
+
+
+    <MudChart ChartType="ChartType.Donut" Width="100%" Height="550px" InputData="@countSellOneProduct" LegendPosition="@LegendPosition" InputLabels="@nameProduct">
+        <CustomGraphics>
+
+        </CustomGraphics>
+    </MudChart>
 
 
 
@@ -139,84 +93,105 @@
     string[] nameFirm;
     string[] nameProduct;
 
-    string popularBrendText = "";
-    string popularProductsText = "";
-
-    private DateTime _maxDate = DateTime.Now.Date;
-
-    private PickerVariant _variant = PickerVariant.Static;
-    private DateRange _dateRange { get; set; }
-    private DateRange _dateRangeProduct { get; set; }
-    public string[] XAxisLabelsMoney;
-    public string[] XAxisLabelsCount;
 
     int sortdSell = -1;
 
     int sortdProduct = -1;
 
-
-
-    private void OnDateRangeChanged(DateRange dateRange)
+    public void SortSell(ChangeEventArgs e)
     {
-        _dateRange = dateRange; // Обновляем диапазон
-        Console.WriteLine($"Диапазон дат изменён: {_dateRange.Start?.ToShortDateString()} - {_dateRange.End?.ToShortDateString()}");
-
-        changeValueMoney();
-    }
-
-    private void OnDateRangeChangedSellProduct(DateRange dateRange)
-    {
-        _dateRangeProduct = dateRange; // Обновляем диапазон
-        Console.WriteLine($"Диапазон дат изменён: {_dateRangeProduct.Start?.ToShortDateString()} - {_dateRangeProduct.End?.ToShortDateString()}");
-        changeValueProduct();
-
-
-    }
-
-
-
-    public void changeValueMoney()
-    {
+        sortdSell = Convert.ToInt32(e.Value);
         SeriesSell.Clear();
-        DateTime date1 = Convert.ToDateTime(_dateRange.Start); // год - месяц - день
-        DateTime date2 = Convert.ToDateTime(_dateRange.End); // год - месяц - день
+        if(sortdSell == -1)
+        {
 
-        List<double> money = statistic.priceMonth(date1, date2);
+            List<double> money = statistic.priceYear();
 
-        SeriesSell.Add(new ChartSeries()
-            {
-                Name = "Доход",
-                Data = money.ToArray()
-            });
 
-        XAxisLabelsMoney = statistic.legenMoneyDate(date1, date2).ToArray();
+            SeriesSell.Add(new ChartSeries()
+                {
+                    Name = "Доход",
+                    Data = money.ToArray()
+                });
+        }
+
+        else if(sortdSell == 12)
+        {
+            DateTime date1 = new DateTime(2025, sortdSell, 1); // год - месяц - день
+            DateTime date2 = new DateTime(2026, 1, 1); // год - месяц - день
+            List<double> money = statistic.priceMonth(date1, date2);
+
+            SeriesSell.Add(new ChartSeries()
+                {
+                    Name = "Доход",
+                    Data = money.ToArray()
+                });
+        }
+        else
+        {
+            DateTime date1 = new DateTime(2025, sortdSell, 1); // год - месяц - день
+            DateTime date2 = new DateTime(2025, sortdSell + 1, 1); // год - месяц - день
+            List<double> money = statistic.priceMonth(date1, date2);
+
+            SeriesSell.Add(new ChartSeries()
+                {
+                    Name = "Доход",
+                    Data = money.ToArray()
+                });
+        }
+
         StateHasChanged();
+
     }
 
-
-    public void changeValueProduct()
+    public void SortProduct(ChangeEventArgs e)
     {
+        sortdProduct = Convert.ToInt32(e.Value);
         SeriesProduct.Clear();
-        DateTime date1 = Convert.ToDateTime(_dateRangeProduct.Start); // год - месяц - день
-        DateTime date2 = Convert.ToDateTime(_dateRangeProduct.End); // год - месяц - день
-
-        List<double> productCount = statistic.countMonth(date1, date2);
+        if (sortdProduct == -1)
+        {
 
 
-        SeriesProduct.Add(new ChartSeries()
-            {
-                Name = "Продажи",
-                Data = productCount.ToArray()
-            });
-        XAxisLabelsCount = statistic.legenMoneyDate(date1, date2).ToArray();
+            List<double> productCount = statistic.countYear();
+
+
+            SeriesProduct.Add(new ChartSeries()
+                {
+                    Name = "Продажи",
+                    Data = productCount.ToArray()
+                });
+
+        }
+
+        else if (sortdProduct == 12)
+        {
+            DateTime date1 = new DateTime(2025, sortdProduct, 1); // год - месяц - день
+            DateTime date2 = new DateTime(2026, 1, 1); // год - месяц - день
+
+            List<double> productCount = statistic.countMonth(date1, date2);
+
+            SeriesProduct.Add(new ChartSeries()
+                {
+                    Name = "Продажи",
+                    Data = productCount.ToArray()
+                });
+        }
+        else
+        {
+            DateTime date1 = new DateTime(2025, sortdProduct, 1); // год - месяц - день
+            DateTime date2 = new DateTime(2025, sortdProduct + 1, 1); // год - месяц - день
+            List<double> productCount = statistic.countMonth(date1, date2);
+
+            SeriesProduct.Add(new ChartSeries()
+                {
+                    Name = "Продажи",
+                    Data = productCount.ToArray()
+                });
+        }
+
         StateHasChanged();
+
     }
-
-
-
-
-
-
 
     public Position LegendPosition { get; set; } = Position.Right;
 
@@ -252,10 +227,6 @@
                 Data = money.ToArray()
             });
 
-        XAxisLabelsMoney = statistic.legenMoneyAllTime().ToArray();
-        XAxisLabelsCount = statistic.legenMoneyAllTime().ToArray();
-
-
         SeriesProduct.Add(new ChartSeries()
             {
                 Name = "Продажи",
@@ -268,16 +239,13 @@
         List<double> countSellBrend = new List<double>();
         List<string> nameBrend = new List<string>();
 
-        int i = 1;
+
 
 
         foreach(var item in populatBrends)
         {
             countSellBrend.Add(item.Value);
             nameBrend.Add(item.Key);
-
-            popularBrendText += i + ". " + item.Key + " - " + item.Value + " проданных товаров\n";
-            i++;
         }
 
         countSellProduct =  countSellBrend.ToArray() ;
@@ -287,16 +255,13 @@
         List<double> countSellProductOne = new List<double>();
         List<string> namePeoduct = new List<string>();
 
-        i = 1;
+
 
 
         foreach (var item in populatProduct)
         {
             countSellProductOne.Add(item.Value);
             namePeoduct.Add(item.Key);
-
-            popularProductsText += i + ". " + item.Key + " - " + item.Value + " проданных товаров\n";
-            i++;
         }
 
         countSellOneProduct = countSellProductOne.ToArray();
@@ -311,4 +276,3 @@
 
 
 }
-

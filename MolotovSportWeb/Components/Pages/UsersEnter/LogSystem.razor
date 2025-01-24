@@ -3,15 +3,10 @@
 @using Microsoft.EntityFrameworkCore
 @using MolotovSportWeb.Models
 @using Classes.Hash;
-@using System.Collections.Generic;
-@using System.Security.Claims;
-@using Microsoft.AspNetCore.Authentication;
-@using Microsoft.AspNetCore.Authentication.Cookies;
 
 @rendermode InteractiveServer
 @inject Classes.Servers.UserStateService UserState
 @inject NavigationManager navigationManager
-@inject IHttpContextAccessor HttpContextAccessor
 
 
 
@@ -27,7 +22,7 @@
         <br />
         <input type="password" class="StyleInputRegistation" @bind=password />
         <br />
-        <button @onclick="Login" class="StyleButtonVhod">Войти</button>
+        <button @onclick="ClickVhod" class="StyleButtonVhod">Войти</button>
         <br />
         <a href="/Registration" class="textScreenInputRegistation">Зарегистироваться</a>
         <h5 style="color: red">@error</h5>
@@ -37,7 +32,6 @@
 
 </div>
 @code{
-
     string text = "";
 
     string email;
@@ -49,50 +43,17 @@
     int idUser = 0;
     int idRole = 0;
 
-
-    bool UserTruePassword()
-    {
-        using (var context = new MolotovSportWebContext())
-        {
-            try
-            {
-                var User = context.Users.Where(x => x.Email == email).First();
-
-                HashPassword hashPassword = new HashPassword();
-
-                bool cheak = hashPassword.unHashing(password, User.Salt, User.PasswordHash);
-
-
-
-
-                nameUser = User.UserName;
-                idUser = User.UserId;
-                idRole = User.RoleId;
-
-
-                return cheak;
-            }
-            catch
-            {
-                return false;
-            }
-
-
-        }
-    }
-
-
-    private async Task Login()
+    public void ClickVhod()
     {
         if (UserTruePassword())
         {
             error = "";
             UserState.Login(nameUser, idUser, idRole);
-            if (idRole == 1)
+            if(idRole == 1)
             {
                 navigationManager.NavigateTo($"/");
             }
-            else if (idRole == 2)
+            else if(idRole == 2)
             {
                 navigationManager.NavigateTo($"/Admin");
             }
@@ -107,6 +68,31 @@
 
 
     }
-}
+
+    bool UserTruePassword()
+    {
+        using (var context = new MolotovSportWebContext())
+        {
+            try
+            {
+                var User = context.Users.Where(x => x.Email == email).First();
+
+                HashPassword hashPassword = new HashPassword();
+
+                bool cheak = hashPassword.unHashing(password, User.Salt, User.PasswordHash);
+
+                nameUser = User.UserName;
+                idUser = User.UserId;
+                idRole = User.RoleId;
+                return cheak;
+            }
+            catch
+            {
+                return false;
+            }
+
+
+        }
+    }
 
 }
