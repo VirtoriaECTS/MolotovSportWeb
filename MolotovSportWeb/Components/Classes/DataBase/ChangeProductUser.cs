@@ -24,17 +24,35 @@ namespace MolotovSportWeb.Components.Classes.DataBase
             {
                 ShopingCart shopingCart = context.ShopingCarts.Where(u => u.UserId == UserId).First();
 
-                var shopintItems = new ShopingItem
+                List< ShopingItem> shopingItems = context.ShopingItems.Where(x => x.CartId == shopingCart.CartId).ToList();
+
+                bool cheakFindCart = false;
+                foreach (var item in shopingItems)
                 {
+                    if(item.SizeId == idSize) cheakFindCart = true;
+                }
+                if (cheakFindCart)
+                {
+                    var shopingItemOneProduct = shopingItems.Where(x => x.SizeId == idSize).FirstOrDefault();
 
-                    CartId = shopingCart.CartId,
-                    ProductId = SelectedProduct.ProductId,
-                    SizeId = idSize,
-                    Count = 1,
-                    Price = SelectedProduct.Price
-                };
+                    shopingItemOneProduct.Count += 1;
 
-                context.ShopingItems.Add(shopintItems);
+                }
+                else
+                {
+                    var shopintItems = new ShopingItem
+                    {
+
+                        CartId = shopingCart.CartId,
+                        ProductId = SelectedProduct.ProductId,
+                        SizeId = idSize,
+                        Count = 1,
+                        Price = SelectedProduct.Price
+                    };
+
+                    context.ShopingItems.Add(shopintItems);
+                }
+
                 context.SaveChanges();
 
                 shopingCart.TotalAmout = shopingCart.TotalAmout + priceProduct;
