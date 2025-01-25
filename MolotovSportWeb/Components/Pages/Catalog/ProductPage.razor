@@ -40,11 +40,24 @@
             <h5 style="color: red">@error</h5>
             <br />
             <button @onclick="ClickAddCart" class="OneElementButtonCart">В корзину</button>
-            <input type="number" class="OneElementButtonCart" min="0" />
+            @if (showBuyProduct)
+                {
+                <div class="AlertInfo">
+                    <MudAlert Severity="Severity.Success"  ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Добавлено в корзину!</MudAlert>
+                    </div>
+
+                }
+
+
 
         </td>
 
+
+
     </tr>
+
+
+
 }
 
 @code {
@@ -53,9 +66,16 @@
     string error = "";
     int idSize = 0;
 
+    private bool showBuyProduct= false;
+
     Classes.DataBase.ChangeProductUser changeProduct;
 
     private MolotovSportWeb.Models.Product SelectedProduct;
+
+    private void CloseMe(bool value)
+    {
+        showBuyProduct = false;
+    }
 
     protected override  void OnInitialized()
     {
@@ -68,6 +88,7 @@
 
         changeProduct = new Classes.DataBase.ChangeProductUser(UserState.UserId);
     }
+
 
     private void ClickAddCart()
     {
@@ -82,7 +103,10 @@
         else
         {
             error = "";
+            showBuyProduct = true;
             changeProduct.NewProductAddBasket(SelectedProduct, idSize, Convert.ToInt32(SelectedProduct.Price));
+ 
+
         }
 
     }

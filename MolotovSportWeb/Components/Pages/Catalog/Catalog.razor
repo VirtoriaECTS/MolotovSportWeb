@@ -69,7 +69,7 @@
                         <pre class="TextProduct"> 
                             @Convert.ToInt32(product.Price) ₽<br /><br />@product.ProductName
                                             </pre>
-                        <button class="StyleButtonKorzina">В корзину</button>
+                        <button @onclick="() => clickImage(product.ProductId)" class="StyleButtonKorzina">В корзину</button>
 
                     </div>
 
