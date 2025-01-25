@@ -13,7 +13,11 @@ namespace MolotovSportWeb.Components.Classes.DataBase
             {
                 var sizeChange = context.ProductSizes.Where(p => p.SizeId == sizeId).First();
 
-                sizeChange.Count = count;
+                
+                    sizeChange.Count = count + 1;
+
+
+
                 context.SaveChanges();
             }
         }

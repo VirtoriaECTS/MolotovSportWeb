@@ -1,4 +1,5 @@
 ﻿using MolotovSportWeb.Models;
+using static MudBlazor.CategoryTypes;
 
 namespace MolotovSportWeb.Components.Classes.DataBase
 {
@@ -24,9 +25,26 @@ namespace MolotovSportWeb.Components.Classes.DataBase
 
             using (var context = new MolotovSportWebContext())
             {
-                DateTime curDate = DateTime.Now;
+                DateTime curDate = DateTime.Now; 
                 var shoppingCart = context.ShopingCarts.Where(p => p.UserId == UserId).First();
-                var shopingItems = context.ShopingItems.Where(p => p.CartId == shoppingCart.CartId);
+
+                var shopingItemsAll = context.ShopingItems.Where(p => p.CartId == shoppingCart.CartId).ToList();
+                var allSize = context.ProductSizes.ToList();
+                List<ShopingItem> shopingItems = new List<ShopingItem>();
+
+                foreach (var item in context.ShopingItems.Where(p => p.CartId == shoppingCart.CartId))
+                {
+                    int sizeId = item.SizeId;
+                    var count = allSize.Where(x => x.SizeId == sizeId).Select(x => x.Count).FirstOrDefault();
+                    if(count >= item.Count)
+                    {
+                        shopingItems.Add(item);
+                    }
+                }
+
+
+
+                var sizeAll = context.ProductSizes;
 
                 var order = new Order
 
@@ -34,7 +52,7 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                     UserId = UserId,
                     OrderData = curDate,
 
-                    TotalAmout = Convert.ToInt32(shoppingCart.TotalAmout) + 500,
+                    TotalAmout = Convert.ToInt32(Classes.DataBase.StaticTotal.GetTotalPrice(UserId)) + 500,
                     StatusOrder = false,
                     Adress = array[0],
                     PriceDeliviry = Convert.ToInt32(array[1])
@@ -42,14 +60,26 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 };
                 context.Orders.Add(order);
                 context.SaveChanges();
+                
 
                 var newOrder = context.Orders.Where(p => p.UserId == order.UserId).Where(p => p.OrderData == order.OrderData)
-                    //.Where(p => p.TotalAmout == order.TotalAmout).Where(p => p.StatusOrder == order.StatusOrder).Where(p => p.Adress == order.Adress).Where(p => p.PriceDeliviry == order.PriceDeliviry)
+                //.Where(p => p.TotalAmout == order.TotalAmout).Where(p => p.StatusOrder == order.StatusOrder).Where(p => p.Adress == order.Adress).Where(p => p.PriceDeliviry == order.PriceDeliviry)
                     .First();
+                foreach (var item in shopingItems)
+                {
+                    
+                    var sizeCount = sizeAll.Where(x => x.SizeId == item.SizeId).First();
+                    sizeCount.Count -= item.Count;
+                    context.SaveChanges();
+                }
+
+
 
                 foreach (var item in shopingItems)
 
                 {
+
+                    context.SaveChanges();
 
                     var newItemOrder = new OrderItem
                     {
@@ -61,8 +91,14 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                     };
                     context.OrderItems.Add(newItemOrder);
 
+                    
+
 
                 }
+                context.SaveChanges();
+
+
+
                 context.SaveChanges();
 
                 foreach (var item in shopingItems)
@@ -70,8 +106,10 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 {
                     context.ShopingItems.Remove(item);
                 }
+                context.SaveChanges();
 
 
+                
                 shoppingCart.TotalAmout = 0;
                 context.SaveChanges();
 

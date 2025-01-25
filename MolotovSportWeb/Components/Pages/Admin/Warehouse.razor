@@ -68,7 +68,8 @@
                                         </td>
 
                                         <td >
-                                            <input type="number" @oninput="() => ClickAddNewSize(size.SizeId, size.Count)" class="InputCountScladForNewProduct" @bind="size.Count" />
+                                            <input type="number"  @oninput="() => ClickAddNewSize(size.SizeId, size.Count)" class="InputCountScladForNewProduct" @bind="size.Count" min="0" />
+
                                         </td>
                                     </tr>
                                 </table>

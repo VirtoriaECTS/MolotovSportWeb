@@ -37,6 +37,29 @@
 
 
         }
+        @foreach (var product in shopingItemsNotProduct)
+        {
+            <div class="ShopingNotProduct">
+                <img class="ImageStyleProduct2" src="@product.Product.ImageUrl" />
+
+                <div class="StyleSize">
+                    <pre class="ImageTextNameBacket">@product.Product.ProductName</pre>
+                    <pre class="ImageSizeNameBacket">@product.Size.Size размер</pre>
+                    <h5 style="color: red">Недостаточное количество на складе</h5>
+                </div>
+
+                <div class="ButtonDivCount">
+                    <button class="buttonMinus" @onclick="() =>ClickMinusCount(product,Convert.ToInt32(product.Price / product.Count))">-</button>
+                    <pre class="TextCountBasket">@product.Count</pre>
+                    <button @onclick="() =>ClickPlusCount(product,Convert.ToInt32(product.Price / product.Count))" class="buttonPlus">+</button>
+                </div>
+                <pre class="PriceProductBasket">@Convert.ToInt32(product.Price) ₽</pre>
+
+            </div>
+            <br />
+
+
+        }
     </td>
     <td class="ItogBasket">
         <pre class="PriceProductBasketAll">Итог: @Convert.ToInt32(totalPrice) ₽</pre>
@@ -50,14 +73,34 @@
     decimal totalPrice = 0;
     Classes.DataBase.ChangeProductUser changeProduct;
     List<ShopingItem> shopingItems = new List<ShopingItem>();
+    List<ShopingItem> shopingItemsNotProduct = new List<ShopingItem>();
     ShopingCart shopingCart = new ShopingCart();
 
     public void LoadData()
     {
+        shopingItems.Clear();
+        shopingItemsNotProduct.Clear();
+
         ShopingCart ShopingCart = context.ShopingCarts.Where(u => u.UserId == idUser).First();
         shopingCart = ShopingCart;
         List<ShopingItem> ShopingItems = context.ShopingItems.Where(s => s.CartId == shopingCart.CartId).Include(p => p.Product).Include(p => p.Size).ToList();
-        shopingItems = ShopingItems;
+
+        foreach(var item in ShopingItems)
+        {
+            var count = context.ProductSizes.Where(x => x.SizeId == item.SizeId).Select(x => x.Count).First();
+
+            if(count >= item.Count)
+            {
+                shopingItems.Add(item);
+            }
+            else
+            {
+                shopingItemsNotProduct.Add(item);
+
+            }
+        }
+
+        StateHasChanged();
 
 
     }
