@@ -2,6 +2,7 @@
 {
     using Microsoft.EntityFrameworkCore;
     using MolotovSportWeb.Models;
+    using System.Collections.Generic;
 
     public class AddInfo
     {
@@ -86,6 +87,16 @@
                 context.Add(categoryMini);
                 context.SaveChanges();
             }
+        }
+
+        public List<CategoriesMini> GetAllCategoryMini()
+        {
+            List < CategoriesMini> CategoriesMini = new List<CategoriesMini>();
+            using (var context = new MolotovSportWebContext())
+            {
+                CategoriesMini = context.CategoriesMinis.ToList();
+            }
+            return CategoriesMini;
         }
     }
 }

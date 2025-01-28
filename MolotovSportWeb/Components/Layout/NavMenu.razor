@@ -45,7 +45,7 @@
 
     public void ClickSearch()
     {
-        if (searchText.Length > 0)
+        if (searchText.Length > 0 && searchText != ".")
         {
             navigationManager.NavigateTo($"/SearchPage/{searchText}");
             searchText = "";

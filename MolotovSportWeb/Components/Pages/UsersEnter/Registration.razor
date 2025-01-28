@@ -85,35 +85,49 @@
     {
         using (var context = new MolotovSportWebContext())
         {
-            HashPassword hashPassword = new HashPassword();
-            DataHash dataHash = hashPassword.hashing(password);
-            var newUser = new User
-                {
-                    UserName = name,
-                    PasswordHash = dataHash.Hash,
-                    Salt = dataHash.Salt,
-                    Email = email,
-                    RoleId = 1
-                };
+            List<User> users = context.Users.ToList();
 
-            context.Users.Add(newUser);
-            context.SaveChanges();
+            List<User> cheakEmail = users.Where(x => x.Email == email).ToList();
 
-            User user = context.Users.Where(u => u.Email == email).First();
+            if(cheakEmail.Count == 0)
+            {
+                HashPassword hashPassword = new HashPassword();
+                DataHash dataHash = hashPassword.hashing(password);
+                var newUser = new User
+                    {
+                        UserName = name,
+                        PasswordHash = dataHash.Hash,
+                        Salt = dataHash.Salt,
+                        Email = email,
+                        RoleId = 1
+                    };
 
-            var newCartUser = new ShopingCart
-                {
-                    UserId = user.UserId,
-                    TotalAmout = 0
-                };
-            context.ShopingCarts.Add(newCartUser);
-            context.SaveChanges();
+                context.Users.Add(newUser);
+                context.SaveChanges();
 
-            UserState.Login(name, user.UserId, 1);
-        }
+                User user = context.Users.Where(u => u.Email == email).First();
+
+                var newCartUser = new ShopingCart
+                    {
+                        UserId = user.UserId,
+                        TotalAmout = 0
+                    };
+                context.ShopingCarts.Add(newCartUser);
+                context.SaveChanges();
+
+                UserState.Login(name, user.UserId, 1);
+                navigationManager.NavigateTo($"/");
+            }
+
+            else if(cheakEmail.Count > 0)
+            {
+                errorEmail = "Пользователь с таким email уже есть";
+            }
+
+         }  
 
 
-        navigationManager.NavigateTo($"/");
+           
 
 
     }
