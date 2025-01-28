@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MolotovSportWeb.Models;
+using System.Collections.Concurrent;
 
 
 namespace MolotovSportWeb.Components.Classes.DataBase
@@ -56,9 +57,9 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 .ToList();
 
 
-                CategoryiesMini = context.CategoriesMinis.Where(p => p.CategoryId == IdCategoryScreen).ToList();
+                CategoryiesMini = ActualyCategoryMini().Where(p => p.CategoryId == IdCategoryScreen).ToList();
                 GenderList = context.Genders.ToList();
-                FirmList = context.Firms.ToList();
+                FirmList = ActualyFirm();
             }
 
             else if(IdCategoryScreen == 0) 
@@ -68,9 +69,9 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 .ToList();
 
 
-                CategoryiesMini = context.CategoriesMinis.ToList();
+                CategoryiesMini = ActualyCategoryMini();
                 GenderList = context.Genders.ToList();
-                FirmList = context.Firms.ToList();
+                FirmList = ActualyFirm(); ;
             }
             else if (IdCategoryScreen == -1)
             {
@@ -81,11 +82,72 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                 .ToList();
 
                 Categoryies = context.Categories.ToList();
-                CategoryiesMini = context.CategoriesMinis.ToList();
+                CategoryiesMini = ActualyCategoryMini();
                 GenderList = context.Genders.ToList();
-                FirmList = context.Firms.ToList();
+                FirmList = ActualyFirm();
             }
         }
+
+        public List<Firm> ActualyFirm()
+        {
+            List<Firm> actialfirms = new List<Firm>();
+            List<Firm> allFirm = context.Firms.ToList();
+            List<Product> allProduct = context.Products.Include(x => x.ProductSizes).ToList();
+
+
+            foreach (Firm firm in allFirm)
+            {
+                var productFirmSize = allProduct.Where(x => x.FirmId == firm.FirmId).Select(x => x.ProductSizes).ToList();
+                if (productFirmSize.Count == 0)
+                {                
+                    actialfirms.Add(firm);
+                    continue;
+                }
+
+
+                foreach (var size in productFirmSize)
+                {
+                    int count = size.Sum(x => x.Count);
+                    if(count >= 0)
+                    {
+                        actialfirms.Add(firm);
+                        break;
+                    }
+                }
+            }
+                return actialfirms;
+        }
+
+        public List<CategoriesMini> ActualyCategoryMini()
+        {
+            List<CategoriesMini> actialcategoryMini = new List<CategoriesMini>();
+            List<CategoriesMini> allCategoryMini = context.CategoriesMinis.ToList();
+            List<Product> allProduct = context.Products.Include(x => x.ProductSizes).ToList();
+
+
+            foreach (CategoriesMini category in allCategoryMini)
+            {
+                var productCategorySize = allProduct.Where(x => x.CategoryIdMini == category.CategoryMiniId).Select(x => x.ProductSizes).ToList();
+                if (productCategorySize.Count == 0)
+                {
+                    actialcategoryMini.Add(category);
+                    continue;
+                }
+
+
+                foreach (var size in productCategorySize)
+                {
+                    int count = size.Sum(x => x.Count);
+                    if (count >= 0)
+                    {
+                        actialcategoryMini.Add(category);
+                        break;
+                    }
+                }
+            }
+            return actialcategoryMini;
+        }
+
 
         public async void UpdateFiltr()
         {

@@ -44,24 +44,24 @@
             }
         }
 
-        //Дописать удаление
-        //public void DeleteFirm(int idFirm)
-        //{
-        //    using (var context = new MolotovSportWebContext())
-        //    {
-        //        var listProduct = context.Products.Where(p => p.FirmId == idFirm).ToList();
+        public void DeleteFirm(int idFirm)
+        {
+            using (var context = new MolotovSportWebContext())
+            {
+                var listProduct = context.Products.Where(p => p.FirmId == idFirm).Include(x => x.ProductSizes).ToList();
+                var allSize = context.ProductSizes;
 
-        //        foreach (var product in listProduct)
-        //        {
-        //            foreach (var size in product.ProductSizes)
-        //            {
-        //                size.Count = 0;
-        //            }
-        //        }
-        //        context.SaveChanges();
-        //    }
+                foreach (var item in listProduct)
+                {
+                    var sizedelete = allSize.Where(x => x.ProductId == item.ProductId).ForEachAsync(x => x.Count = -1);
+                    
+                }
 
-        //}
+                
+                context.SaveChanges();
+            }
+
+        }
 
         public void AddFirm(string nameFirm)
         {
@@ -82,6 +82,7 @@
             {
                 var categoryMini = new CategoriesMini
                 {
+                    CategoryId = idCategory,
                     CategoryMiniName = categoryMiniNameText,
                 };
                 context.Add(categoryMini);
@@ -89,14 +90,25 @@
             }
         }
 
-        public List<CategoriesMini> GetAllCategoryMini()
+       
+
+        public void DeleteCategoryMin(int idCategoryMini)
         {
-            List < CategoriesMini> CategoriesMini = new List<CategoriesMini>();
             using (var context = new MolotovSportWebContext())
             {
-                CategoriesMini = context.CategoriesMinis.ToList();
+                var listProduct = context.Products.Where(p => p.CategoryIdMini == idCategoryMini).Include(x => x.ProductSizes).ToList();
+                var allSize = context.ProductSizes;
+
+                foreach (var item in listProduct)
+                {
+                    var sizedelete = allSize.Where(x => x.ProductId == item.ProductId).ForEachAsync(x => x.Count = -1);
+
+                }
+
+
+                context.SaveChanges();
             }
-            return CategoriesMini;
+
         }
     }
 }

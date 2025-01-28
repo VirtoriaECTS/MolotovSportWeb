@@ -15,8 +15,8 @@
 
         <h5 class="textScreenInput">Выберите категорию</h5>
         <br />
-        <select @onchange="selectCategory" selected="@Products.Categoryies.Select( p => p.CategoryName).First()" class="StyleInputRegistation">
-            @foreach (var item in Products.Categoryies)
+        <select @onchange="selectCategory" selected="@filrtAndSorted.Categoryies.Select( p => p.CategoryName).First()" class="StyleInputRegistation">
+            @foreach (var item in filrtAndSorted.Categoryies)
             {
                 <option value="@item.CategoryId"> @item.CategoryName</option>
             }
@@ -27,7 +27,7 @@
         <div>
             <input class="StyleInputRegistation" @bind="nameMiniCategpries"/>
             <h5 style="color: red">@error</h5>
-            <button class="AdminButtonAddProduct">Добавить</button>
+            <button @onclick="AddCategoryMini" class="AdminButtonAddProduct">Добавить</button>
         </div>
 
         <div class="PrintFirmForAdmin">
@@ -41,7 +41,7 @@
 
                         </td>
 
-                        <td class="BorderTable">
+                        <td @onclick="() => DeleteCategpryMini(item.CategoryMiniId)" class="BorderTable">
                             <button class="ButtonDeleteListView"></button>
                         </td>
                     </tr>
@@ -57,40 +57,52 @@
     string nameMiniCategpries = "";
     int idCategory = 0;
     string error = "";
-    Classes.DataBase.FilrtAndSorted Products;
+    Classes.DataBase.FilrtAndSorted filrtAndSorted;
     List<CategoriesMini> categoriesMinis = new List<CategoriesMini>();
-    Classes.DataBase.AddInfo addProduct = new Classes.DataBase.AddInfo();
+    Classes.DataBase.AddInfo addInfo = new Classes.DataBase.AddInfo();
 
     protected override async Task OnInitializedAsync()
     {
 
-        Products = new Classes.DataBase.FilrtAndSorted(-1);
-        idCategory = Products.Categoryies.Select(p => p.CategoryId).First();
-        Products.LoadingDataBaseAsync();
+        filrtAndSorted = new Classes.DataBase.FilrtAndSorted(-1);
+        idCategory = filrtAndSorted.Categoryies.Select(p => p.CategoryId).First();
+        filrtAndSorted.LoadingDataBaseAsync();
 
-        categoriesMinis = addProduct.GetAllCategoryMini().Where(x => x.CategoryId == idCategory).ToList();
+        categoriesMinis = filrtAndSorted.ActualyCategoryMini().Where(x => x.CategoryId == idCategory).ToList();
     }
 
     public void selectCategory(ChangeEventArgs e)
     {
-        // if(nameMiniCategpries.Length != 0)
-        // {
-        //     idCategory = Products.Categoryies.Where(p => p.CategoryName == Convert.ToString(e.Value)).Select(p => p.CategoryId).First();
-        //     Classes.DataBase.AddInfo addProduct = new Classes.DataBase.AddInfo();
-        //     addProduct.AddCategoryMini(idCategory, nameMiniCategpries);
-        //     nameMiniCategpries = "";
-        //     StateHasChanged();
-        // }
-        // else
-        // {
-        //     error = "Заполните поле";
-        // }
-        if (nameMiniCategpries.Length == 0){
+
+
+        idCategory = Convert.ToInt32(e.Value);
+        categoriesMinis.Clear();
+        categoriesMinis = filrtAndSorted.ActualyCategoryMini().Where(x => x.CategoryId == Convert.ToInt32(e.Value)).ToList();
+        StateHasChanged();
+
+    }
+
+
+
+    public void AddCategoryMini()
+    {
+        if (nameMiniCategpries.Length == 0)
+        {
             error = "Заполните поле";
         }
+        else
+        {
+            error = "";
+            addInfo.AddCategoryMini(idCategory, nameMiniCategpries);
+            StateHasChanged();
+        }
 
-        categoriesMinis.Clear();
-        categoriesMinis = addProduct.GetAllCategoryMini().Where(x => x.CategoryId == Convert.ToInt32(e.Value)).ToList();
+    }
+
+    public void DeleteCategpryMini(int idCategoryMini)
+    {
+        addInfo.DeleteCategoryMin(idCategoryMini);
         StateHasChanged();
+
     }
 }

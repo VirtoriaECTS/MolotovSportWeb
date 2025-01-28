@@ -24,7 +24,7 @@
         <div class="PrintFirmForAdmin">
             <table class="tableFirmsAdmin">
 
-                @foreach (var firm in Products.FirmList)
+                @foreach (var firm in firms)
                 {
                     <tr class="table_center_by_css">
                         <td class="BorderTable">
@@ -32,8 +32,8 @@
 
                         </td >
 
-                        <td class="BorderTable">
-                            <button class="ButtonDeleteListView"></button>
+                        <td @onclick="() => DeleteClick(firm.FirmId)" class="BorderTable">
+                            <button  class="ButtonDeleteListView"></button>
                         </td>
                     </tr>
                 }
@@ -44,17 +44,23 @@
     </div>
 </div>
 
+<pre>@cheak</pre>
+
 @code {
     string nameFirm = "";
     string error = "";
 
-    Classes.DataBase.FilrtAndSorted Products;
+    string cheak = "s";
+
+    Classes.DataBase.FilrtAndSorted filrtAndSorted;
+    Classes.DataBase.AddInfo addInfo;
+    List<Firm> firms = new List<Firm>();
 
     protected override async Task OnInitializedAsync()
     {
-
-        Products = new Classes.DataBase.FilrtAndSorted(-1);
-        Products.LoadingDataBaseAsync();
+        addInfo = new Classes.DataBase.AddInfo();
+        filrtAndSorted = new Classes.DataBase.FilrtAndSorted(-1);
+        firms = filrtAndSorted.ActualyFirm();
     }
 
     public void ClickAddNewFirm()
@@ -70,5 +76,14 @@
         {
             error = "Заполните название";
         }
+    }
+
+    public void DeleteClick(int idFirm)
+    {
+        cheak = idFirm.ToString();
+        addInfo.DeleteFirm(idFirm);
+        firms.Clear();
+        firms = filrtAndSorted.ActualyFirm();
+        StateHasChanged();
     }
 }
