@@ -18,12 +18,10 @@
         <h2 class="textHeaderPage">Выберите адрес</h2>
 
 
-        <div  class="text-center" style="height: 500px; margin: 0px 0px 0px 780px;" id="map"></div>
+@*         <div  class="text-center" style="height: 500px; margin: 0px 0px 0px 780px;" id="map"></div> *@
+        <input class="StyleInputRegistation" @bind="adress" />
 
-
-        <p>@location</p>
-        <br>
-        <p>@anwer</p>
+        <br />
 
         <button @onclick="ClickNewOrder" class="StyleButtonVhod">Оформить заказ</button>
     </div>
@@ -37,7 +35,7 @@
     bool cheak = false;
     string location { get; set; } = "sssss";
     string anwer = "sss1";
-
+    string adress;
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -84,13 +82,17 @@
 
     public async Task ClickNewOrder()
     {
-        location = await JSRuntime.InvokeAsync<string>("getLocation");
+        // location = await JSRuntime.InvokeAsync<string>("getLocation");
+        if(adress.Length > 0)
+        {
+            Classes.DataBase.CreateOrder createOrder = new Classes.DataBase.CreateOrder(idUser);
 
-        Classes.DataBase.CreateOrder createOrder = new Classes.DataBase.CreateOrder(idUser);
+            createOrder.Create(adress + "|" + "500");
 
-        createOrder.Create(location);
+            navigationManager.NavigateTo("/");
+        }
 
-        navigationManager.NavigateTo("/");
+
     }
 
  

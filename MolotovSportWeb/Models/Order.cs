@@ -13,7 +13,7 @@ public partial class Order
 
     public int TotalAmout { get; set; }
 
-    public bool StatusOrder { get; set; }
+    public decimal StatusOrder { get; set; }
 
     public string Adress { get; set; } = null!;
 

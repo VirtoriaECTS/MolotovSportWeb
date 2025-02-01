@@ -53,7 +53,7 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                     OrderData = curDate,
 
                     TotalAmout = Convert.ToInt32(Classes.DataBase.StaticTotal.GetTotalPrice(UserId)) + 500,
-                    StatusOrder = false,
+                    StatusOrder = 0,
                     Adress = array[0],
                     PriceDeliviry = Convert.ToInt32(array[1])
 

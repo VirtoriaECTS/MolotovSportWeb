@@ -105,8 +105,13 @@
                             <pre class="txtOrderArmin">@Convert.ToInt32(order.TotalAmout) рублей</pre>
                         </td>
 
-                        <td class="textOrderTD" style="vertical-align: top;">
-                            <input @onclick="() => UpdateStatut(order)" class="CheakBoxFiltrStileAdmin" type="checkbox" Disabled="@order.StatusOrder" @bind="order.StatusOrder" />
+                        <td class="textOrderTD" style="vertical-align: top; padding: 5px">
+                            <select class="ListViewFiltr"  style="background-color: @GetBackgroundColor(order.StatusOrder); color: white;"  @onchange="(e) => ChangeStatus(e, order)">
+                                <option value="1">Выполнен</option>
+                                <option value="0">В разработке</option>
+                                <option value="-1">Отменен</option>
+                            </select>
+
                         </td>
                     </tr>
 
@@ -125,7 +130,19 @@
     List<Order> orders = new List<Order>();
     List<Product> products = new List<Product>();
     List<User> users = new List<User>();
+    // Метод для определения цвета фона в зависимости от выбранного фрукта
 
+
+    private string GetBackgroundColor(decimal status)
+    {
+        return status switch
+        {
+            1 => "#1AAD03", 
+            0 => "#AEB000",  
+            -1 => "#B4191C", 
+            _ => "#E5E5E5"       
+        };
+    }
     protected override async Task OnInitializedAsync()
     {
 
@@ -138,12 +155,27 @@
 
     public void UpdateStatut(Order order)
     {
-        order.StatusOrder = true;
+        order.StatusOrder = 1;
         using(var context = new MolotovSportWebContext())
         {
             context.Update(order);
             context.SaveChanges();
         }
+    }
+
+    public void ChangeStatus(ChangeEventArgs e, Order order)
+    {
+        // decimal id = Convert.ToDecimal(e.ToString);
+
+        using (var context = new MolotovSportWebContext())
+        {
+            var oprOrder = context.Orders.Where(x => x.OrderId == order.OrderId).FirstOrDefault();
+            oprOrder.StatusOrder = order.StatusOrder;
+            context.SaveChanges();
+        }
+
+        orders = ordersDataBase.FillOrderList();
+        StateHasChanged();
     }
 
     public void Sorting(ChangeEventArgs e)
@@ -182,5 +214,7 @@
                 break;
         }
     }
+
+
 
 }
