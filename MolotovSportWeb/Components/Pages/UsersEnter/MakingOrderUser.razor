@@ -18,8 +18,8 @@
         <h2 class="textHeaderPage">Выберите адрес</h2>
 
 
-@*         <div  class="text-center" style="height: 500px; margin: 0px 0px 0px 780px;" id="map"></div> *@
-        <input class="StyleInputRegistation" @bind="adress" />
+        <div  class="text-center" style="height: 500px; margin: 0px 0px 0px 780px;" id="map"></div>
+@*         <input class="StyleInputRegistation" @bind="adress" /> *@
 
         <br />
 
@@ -82,16 +82,12 @@
 
     public async Task ClickNewOrder()
     {
-        // location = await JSRuntime.InvokeAsync<string>("getLocation");
-        if(adress.Length > 0)
-        {
-            Classes.DataBase.CreateOrder createOrder = new Classes.DataBase.CreateOrder(idUser);
+        location = await JSRuntime.InvokeAsync<string>("getLocation");
+        Classes.DataBase.CreateOrder createOrder = new Classes.DataBase.CreateOrder(idUser);
 
-            createOrder.Create(adress + "|" + "500");
+        createOrder.Create(location + "|" + "500");
 
-            navigationManager.NavigateTo("/");
-        }
-
+        navigationManager.NavigateTo("/");
 
     }
 

@@ -85,8 +85,12 @@
                         <pre class="txtOrderArmin">@Convert.ToInt32(order.TotalAmout) рублей</pre>
                     </td>
 
-                    <td class="textOrderTD" style="vertical-align: top;">
-                        <input Disabled="false" class="CheakBoxFiltrStileAdmin" type="checkbox" @bind="order.StatusOrder" />
+                    <td class="textOrderTD" style="vertical-align: top; " >
+                        <select Disabled="false" class="ListViewFiltr" style="background-color: @GetBackgroundColor(order.StatusOrder); color: white; margin: 10px 10px 10px 10px;" @bind=order.StatusOrder>
+                            <option  value="1">Выполнен</option>
+                            <option value="0">В разработке</option>
+                            <option value="-1">Отменен</option>
+                        </select>
                     </td>
                 </tr>
 
@@ -109,6 +113,17 @@
     List<Order> orders = new List<Order>();
     List<Product> products = new List<Product>();
     List<User> users = new List<User>();
+
+    private string GetBackgroundColor(decimal status)
+    {
+        return status switch
+        {
+            1 => "#1AAD03",
+            0 => "#AEB000",
+            -1 => "#B4191C",
+            _ => "#E5E5E5"
+        };
+    }
 
     protected override async Task OnInitializedAsync()
     {

@@ -106,10 +106,26 @@
                         </td>
 
                         <td class="textOrderTD" style="vertical-align: top; padding: 5px">
-                            <select class="ListViewFiltr"  style="background-color: @GetBackgroundColor(order.StatusOrder); color: white;"  @onchange="(e) => ChangeStatus(e, order)">
-                                <option value="1">Выполнен</option>
-                                <option value="0">В разработке</option>
-                                <option value="-1">Отменен</option>
+                            <select class="ListViewFiltr"   style="background-color: @GetBackgroundColor(order.StatusOrder); color: white;" @onchange="(e) => ChangeStatus(e, order)">
+                                @if(order.StatusOrder == 1)
+                                {
+                                    <option selected=selected value="1">Выполнен</option>
+                                    <option value="0">В разработке</option>
+                                    <option value="-1">Отменен</option>
+                                }
+                                else if (order.StatusOrder == 0)
+                                {
+                                    <option  value="1">Выполнен</option>
+                                    <option selected=selected value="0">В разработке</option>
+                                    <option value="-1">Отменен</option>
+                                }
+                                else
+                                {
+                                    <option value="1">Выполнен</option>
+                                    <option value="0">В разработке</option>
+                                    <option selected=selected value="-1">Отменен</option>
+                                }
+
                             </select>
 
                         </td>
@@ -143,6 +159,10 @@
             _ => "#E5E5E5"       
         };
     }
+    private decimal GetText(decimal status)
+    {
+        return status;
+    }
     protected override async Task OnInitializedAsync()
     {
 
@@ -165,12 +185,12 @@
 
     public void ChangeStatus(ChangeEventArgs e, Order order)
     {
-        // decimal id = Convert.ToDecimal(e.ToString);
+        decimal text = Convert.ToDecimal(Convert.ToString(e.Value));
 
         using (var context = new MolotovSportWebContext())
         {
             var oprOrder = context.Orders.Where(x => x.OrderId == order.OrderId).FirstOrDefault();
-            oprOrder.StatusOrder = order.StatusOrder;
+            oprOrder.StatusOrder = text;
             context.SaveChanges();
         }
 

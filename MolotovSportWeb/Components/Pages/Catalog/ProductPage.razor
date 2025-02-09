@@ -28,12 +28,20 @@
 
             <div class="SpisokSize">
                 <select  id="SizeElemenrProduct" multiple>
-                    @foreach (var size in SelectedProduct.ProductSizes.Where(p => p.Count > 0))
+                    @if (SelectedProduct.ProductSizes.Where(p => p.Count > 0).ToList().Count == 1 && SelectedProduct.ProductSizes.Where(p => p.Count > 0).Select(x => x.Size).ToList().First() == "-")
                     {
-
-                        <option @onclick="() => ChangeSize(size.SizeId)" value=@size.SizeId>@size.Size</option>
-
+                        ChangeSize(SelectedProduct.ProductSizes.Where(p => p.Count > 0).Select(x => x.SizeId).ToList().First());
                     }
+                    else
+                    {
+                        @foreach (var size in SelectedProduct.ProductSizes.Where(p => p.Count > 0))
+                        {
+
+                            <option @onclick="() => ChangeSize(size.SizeId)" value=@size.SizeId>@size.Size</option>
+
+                        }
+                    }
+
 
                 </select>
             </div>

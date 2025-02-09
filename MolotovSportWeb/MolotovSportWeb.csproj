@@ -16,6 +16,7 @@
     <PackageReference Include="MudBlazor" Version="7.15.0" />
     <PackageReference Include="Syncfusion.Blazor.Buttons" Version="27.2.2" />
     <PackageReference Include="Syncfusion.Blazor.Core" Version="27.2.2" />
+    <PackageReference Include="Yandex.Geocoder.v2" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
