@@ -1,12 +1,13 @@
 ﻿using MolotovSportWeb.Models;
 using static MudBlazor.CategoryTypes;
+using System.Globalization;
 
 namespace MolotovSportWeb.Components.Classes.DataBase
 {
     public class CreateOrder
 
     {
-
+        Classes.Servers.Geocode Geocode= new Servers.Geocode();
         int UserId;
 
         public CreateOrder(int UserId)
@@ -17,8 +18,26 @@ namespace MolotovSportWeb.Components.Classes.DataBase
         public async void Create(string text)
         {
             string[] array = text.Split('|');
+            string adressText = "";
 
-            Classes.Servers.YandexGeocoderService yandexGeocoderService;
+
+            try
+            {
+                string[] koordinate = array[0].Split(',');
+                double x = Convert.ToDouble(koordinate[0], CultureInfo.InvariantCulture);
+
+                double y = Convert.ToDouble(koordinate[1], CultureInfo.InvariantCulture);
+                 adressText = await Geocode.GetAddressAsync(x, y);
+            }
+
+            catch
+            {
+                adressText = array[0];
+            }
+
+
+
+ 
 
 
 
@@ -52,9 +71,9 @@ namespace MolotovSportWeb.Components.Classes.DataBase
                     UserId = UserId,
                     OrderData = curDate,
 
-                    TotalAmout = Convert.ToInt32(Classes.DataBase.StaticTotal.GetTotalPrice(UserId)) + 500,
+                    TotalAmout = Convert.ToInt32(Classes.DataBase.StaticTotal.GetTotalPrice(UserId)) + Convert.ToInt32(array[1]),
                     StatusOrder = 0,
-                    Adress = array[0],
+                    Adress = adressText,
                     PriceDeliviry = Convert.ToInt32(array[1])
 
                 };

@@ -54,7 +54,8 @@
                     <pre class="TextCountBasket">@product.Count</pre>
                     <button @onclick="() =>ClickPlusCount(product,Convert.ToInt32(product.Price / product.Count))" class="buttonPlus">+</button>
                 </div>
-                <pre class="PriceProductBasket">@Convert.ToInt32(product.Price) ₽</pre>
+                
+                <pre  class="PriceProductBasket">@Convert.ToInt32(product.Price) ₽</pre>
 
             </div>
             <br />
@@ -64,12 +65,23 @@
     </td>
     <td class="ItogBasket">
         <pre class="PriceProductBasketAll">Итог: @Convert.ToInt32(totalPrice) ₽</pre>
-        <button @onclick="ClickOrder" class="ClickCreateOrder">Заказать</button>
+
+        @if(totalPrice == 0)
+        {
+            <button Disabled="false" @onclick="ClickOrder" class="ClickCreateOrder">Заказать</button>
+
+        }
+        else
+        {
+            <button @onclick="ClickOrder" class="ClickCreateOrder">Заказать</button>
+        }
+
     </td>
 </tr>
 
 
 @code {
+
     int idUser = 0;
     decimal totalPrice = 0;
     Classes.DataBase.ChangeProductUser changeProduct;
@@ -102,6 +114,8 @@
         }
 
         StateHasChanged();
+
+
 
 
     }
